@@ -8,8 +8,7 @@ PROJECT_ROOT="${PROJECT_ROOT:-$(dirname "$SCRIPT_DIR")}"
 source "$PROJECT_ROOT/scripts/lib/ui.sh"
 
 RULES_DIR="$PWD/.cursor/rules"
-TEMPLATE_CLI="$PROJECT_ROOT/scripts/templates/master-prompt-cli.template"
-TEMPLATE_CHAT="$PROJECT_ROOT/scripts/templates/master-prompt-chat.template"
+TEMPLATE_FILE="$PROJECT_ROOT/scripts/templates/master-prompt-chat.template"
 OUTPUT_DIR="$PWD/.gemini/.tmp"
 OUTPUT_FILE="$OUTPUT_DIR/master-prompt.md"
 PLACEHOLDER="{{GOVERNANCE_RULES}}"
@@ -36,8 +35,8 @@ check_dependencies() {
     log_error "No rules found at .cursor/rules/. Run 'gdev gov rules' first."
   fi
 
-  if [ ! -f "$TEMPLATE_CLI" ] || [ ! -f "$TEMPLATE_CHAT" ]; then
-    log_error "Templates not found in scripts/templates/. Check toolkit installation."
+  if [ ! -f "$TEMPLATE_FILE" ]; then
+    log_error "Template not found in scripts/templates/. Check toolkit installation."
   fi
 }
 
@@ -80,8 +79,9 @@ build_rules_payload() {
     echo "" >>"$payload_file"
     echo "# $filename" >>"$payload_file"
     echo "" >>"$payload_file"
-    strip_frontmatter "$file" >>"$payload_file"
-    echo "" >>"$payload_file"
+
+    strip_frontmatter "$file" | sed -e :a -e '/^\n*$/{$d;N;ba' -e '}' >>"$payload_file"
+
     echo "" >>"$payload_file"
   done < <(find "$RULES_DIR" -type f -name "*.mdc" | sort)
 
@@ -110,27 +110,16 @@ inject_into_template() {
 }
 
 cmd_generate() {
-  log_step "Reading Rules"
-
   local count
   count=$(find "$RULES_DIR" -type f -name "*.mdc" | wc -l | tr -d ' ')
-  log_info "$count rules found"
+
+  log_step "Reading .cursor/rules ($count found)"
 
   while IFS= read -r file; do
     log_info "$(basename "$file")"
   done < <(find "$RULES_DIR" -type f -name "*.mdc" | sort)
 
-  select_option "Template type?" "cli" "chat"
-
-  local template_type="$SELECTED_OPTION"
-  local template_file
-  if [ "$template_type" == "cli" ]; then
-    template_file="$TEMPLATE_CLI"
-  else
-    template_file="$TEMPLATE_CHAT"
-  fi
-
-  select_option "Generate $template_type master prompt from $count rules?" "Yes" "No"
+  select_option "Generate master prompt from $count rules?" "Yes" "No"
 
   if [ "$SELECTED_OPTION" == "No" ]; then
     log_warn "Cancelled"
@@ -143,10 +132,9 @@ cmd_generate() {
   local payload_file
   payload_file=$(build_rules_payload)
 
-  inject_into_template "$payload_file" "$template_file"
+  inject_into_template "$payload_file" "$TEMPLATE_FILE"
   rm "$payload_file"
 
-  log_info "Template: $template_type"
   log_info "Output: .gemini/.tmp/master-prompt.md"
 }
 
