@@ -1,0 +1,8 @@
+[stack]
+name = "claude"
+extends = ""
+runtime = ""
+scaffold = ""
+
+[sync]
+source = "seeds"

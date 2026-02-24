@@ -15,7 +15,7 @@ with placeholders and tool mappings.
 All planning docs live in `.claude/` at the project root. Git tracked — they are
 part of the project, not throwaway notes.
 
-> **Setup:** Run `gdev scaffold` in a new project to generate this structure with
+> **Setup:** Run `gdev claude init` in a new project to generate this structure with
 > placeholder templates automatically.
 
 ```
@@ -298,8 +298,7 @@ src/
 │                  │    │ → /git:commit                 │
 │ If design issue  │    │ → /git:pr                     │
 │ escalate to      │    │ Next feature                  │
-│ Claude chat      │    └──────────────────────────────┘
-└──────────────────┘
+└──────────────────┘    └──────────────────────────────┘
 
 Feedback routing rule:
   verify fails  → Gemini chat (code problem, it has context)
