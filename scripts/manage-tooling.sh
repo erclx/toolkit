@@ -11,6 +11,7 @@ source "$PROJECT_ROOT/scripts/lib/inject.sh"
 declare -A SEEN_CONFIGS
 declare -A SEEN_SEEDS
 declare -A SEEN_REFS
+declare -A SEEN_GITIGNORE
 declare -A CONFIG_SOURCE_STACK
 
 show_help() {
@@ -145,6 +146,57 @@ collect_stack_seeds() {
   fi
 }
 
+collect_stack_gitignore() {
+  local stack="$1"
+  local target="$2"
+  local -n _gi_missing=$3
+
+  local manifest="$PROJECT_ROOT/tooling/$stack/manifest.toml"
+  [ ! -f "$manifest" ] && return
+
+  local extends
+  extends=$(grep '^extends' "$manifest" 2>/dev/null | cut -d'"' -f2)
+
+  if [ -n "$extends" ]; then
+    collect_stack_gitignore "$extends" "$target" "$3"
+  fi
+
+  local gitignore="$target/.gitignore"
+  local in_section=0
+
+  while IFS= read -r line; do
+    if [[ "$line" =~ ^\[gitignore\] ]]; then
+      in_section=1
+      continue
+    fi
+
+    if [[ "$in_section" -eq 1 && "$line" =~ ^\[.+\] ]]; then
+      break
+    fi
+
+    [ "$in_section" -eq 0 ] && continue
+    [ -z "$line" ] && continue
+
+    if [[ "$line" =~ ^\"(#[^\"]+)\"[[:space:]]*=[[:space:]]*\[(.*)$ ]]; then
+      local rest="${BASH_REMATCH[2]}"
+
+      if [[ "$rest" =~ \] ]]; then
+        rest="${rest%%]*}"
+        while IFS= read -r entry; do
+          entry=$(echo "$entry" | tr -d '",' | xargs)
+          [ -z "$entry" ] && continue
+          [[ -v SEEN_GITIGNORE["$entry"] ]] && continue
+          SEEN_GITIGNORE["$entry"]=1
+
+          if [ ! -f "$gitignore" ] || ! grep -qxF "$entry" "$gitignore"; then
+            _gi_missing+=("$entry")
+          fi
+        done < <(echo "$rest" | tr ',' '\n')
+      fi
+    fi
+  done <"$manifest"
+}
+
 scan_configs() {
   local stack="$1"
   local target="$2"
@@ -176,6 +228,19 @@ scan_configs() {
     log_add "Missing:   $f"
   done
 
+  log_step "Scanning Gitignore"
+
+  collect_stack_gitignore "$stack" "$target" GITIGNORE_MISSING_FILES
+
+  if [ "${#GITIGNORE_MISSING_FILES[@]}" -eq 0 ]; then
+    log_info "Up to date"
+  fi
+  for f in "${GITIGNORE_MISSING_FILES[@]}"; do
+    log_add "Missing:   $f"
+  done
+
+  GITIGNORE_CHANGES=${#GITIGNORE_MISSING_FILES[@]}
+
   log_step "Scanning References"
 
   collect_stack_references "$stack" "$target" REF_UPDATE_FILES REF_MISSING_FILES
@@ -188,7 +253,7 @@ scan_configs() {
   done
 
   REF_CHANGES=$((${#REF_UPDATE_FILES[@]} + ${#REF_MISSING_FILES[@]}))
-  TOTAL_CHANGES=$((CONFIG_CHANGES + SEED_CHANGES + REF_CHANGES))
+  TOTAL_CHANGES=$((CONFIG_CHANGES + SEED_CHANGES + GITIGNORE_CHANGES + REF_CHANGES))
 }
 
 open_diffs() {
@@ -251,14 +316,17 @@ cmd_sync() {
   MATCHING_FILES=()
   SEEDED_FILES=()
   SEED_MISSING_FILES=()
+  GITIGNORE_MISSING_FILES=()
   REF_UPDATE_FILES=()
   REF_MISSING_FILES=()
   SEEN_CONFIGS=()
   SEEN_SEEDS=()
   SEEN_REFS=()
+  SEEN_GITIGNORE=()
   CONFIG_SOURCE_STACK=()
   CONFIG_CHANGES=0
   SEED_CHANGES=0
+  GITIGNORE_CHANGES=0
   REF_CHANGES=0
   TOTAL_CHANGES=0
 
@@ -275,6 +343,10 @@ cmd_sync() {
   if [ "${#NEW_FILES[@]}" -gt 0 ]; then
     [ -n "$summary" ] && summary+=", "
     summary+="${#NEW_FILES[@]} missing"
+  fi
+  if [ "${#GITIGNORE_MISSING_FILES[@]}" -gt 0 ]; then
+    [ -n "$summary" ] && summary+=", "
+    summary+="${#GITIGNORE_MISSING_FILES[@]} gitignore"
   fi
   if [ "${#REF_UPDATE_FILES[@]}" -gt 0 ] || [ "${#REF_MISSING_FILES[@]}" -gt 0 ]; then
     [ -n "$summary" ] && summary+=", "
