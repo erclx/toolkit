@@ -18,10 +18,10 @@ Run `gdev` from the repo root.
 
 ### Governance
 
-| Command                | Description                                        |
-| ---------------------- | -------------------------------------------------- |
-| `gdev gov build`       | Compile rules and standards into `.toml` artifacts |
-| `gdev gov sync [path]` | Push rules and standards to a target project       |
+| Command                | Description                                  |
+| ---------------------- | -------------------------------------------- |
+| `gdev gov build`       | Compile rules into `rules.toml`              |
+| `gdev gov sync [path]` | Push rules and standards to a target project |
 
 ### Tooling
 
