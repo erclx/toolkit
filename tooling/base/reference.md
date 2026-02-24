@@ -60,6 +60,15 @@
 - `verify.sh` supports `VERIFY_NESTED=true` env var to suppress timeline boundaries when called by other scripts.
 - `update.sh` calls `VERIFY_NESTED=true verify.sh` after interactive dependency update.
 
+## Snapshot
+
+- Script: `scripts/snapshot.sh`.
+- Output: `.claude/PROJECT.md` — auto-generated, should be gitignored.
+- Writes project name, filtered directory tree, and `package.json` contents.
+- Tree excludes: `node_modules`, `.git`, `dist`, `coverage`, `.gemini`, `.claude`, `*.lock`.
+- Run manually with `bun run snapshot` or call with `VERIFY_NESTED=true` from other scripts.
+- Add `.claude/PROJECT.md` to `.gitignore` — it is ephemeral, not committed.
+
 ## VS Code
 
 - Extensions: `esbenp.prettier-vscode`, `streetsidesoftware.code-spell-checker`, `mkhl.shfmt`, `timonwong.shellcheck`, `mads-hartmann.bash-ide-vscode`.
