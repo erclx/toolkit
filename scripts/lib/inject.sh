@@ -56,7 +56,7 @@ inject_tooling_configs() {
     return
   fi
 
-  log_info "Applying $stack_name configs to $target_path"
+  log_step "Applying $stack_name configs"
 
   while IFS= read -r file; do
     local rel="${file#"$configs_dir"/}"
@@ -120,6 +120,7 @@ inject_tooling_seeds() {
   local seeds_dir="$tooling_dir/$stack_name/seeds"
   [ ! -d "$seeds_dir" ] && return
 
+  log_step "Applying $stack_name seeds"
   while IFS= read -r file; do
     local rel="${file#"$seeds_dir"/}"
     local dest="$target_path/$rel"
@@ -150,8 +151,84 @@ inject_tooling_reference() {
 
   local dest_dir="$target_path/tooling"
   mkdir -p "$dest_dir"
+  log_step "Applying $stack_name reference"
   cp "$reference_file" "$dest_dir/$stack_name.md"
   log_info "  tooling/$stack_name.md"
+}
+
+merge_gitignore() {
+  local stack_name="$1"
+  local target_path="${2:-.}"
+  local tooling_dir="$PROJECT_ROOT/tooling"
+  local manifest="$tooling_dir/$stack_name/manifest.toml"
+
+  if [ ! -f "$manifest" ]; then
+    return
+  fi
+
+  local extends
+  extends=$(grep '^extends' "$manifest" | cut -d'"' -f2)
+
+  if [ -n "$extends" ]; then
+    merge_gitignore "$extends" "$target_path"
+  fi
+
+  local gitignore="$target_path/.gitignore"
+  touch "$gitignore"
+
+  local in_section=0
+  local current_header=""
+  local current_entries=()
+
+  while IFS= read -r line; do
+    if [[ "$line" =~ ^\[gitignore\] ]]; then
+      in_section=1
+      continue
+    fi
+
+    if [[ "$in_section" -eq 1 && "$line" =~ ^\[.+\] ]]; then
+      break
+    fi
+
+    [ "$in_section" -eq 0 ] && continue
+    [ -z "$line" ] && continue
+
+    if [[ "$line" =~ ^\"(#[^\"]+)\"[[:space:]]*=[[:space:]]*\[(.*)$ ]]; then
+      current_header="${BASH_REMATCH[1]}"
+      current_entries=()
+      local rest="${BASH_REMATCH[2]}"
+
+      if [[ "$rest" =~ \] ]]; then
+        rest="${rest%%]*}"
+        while IFS= read -r entry; do
+          entry=$(echo "$entry" | tr -d '",' | xargs)
+          [ -n "$entry" ] && current_entries+=("$entry")
+        done < <(echo "$rest" | tr ',' '\n')
+
+        local missing=()
+        for entry in "${current_entries[@]}"; do
+          local normalized="${entry%/}"
+          if ! grep -qxF "$entry" "$gitignore" && ! grep -qxF "$normalized" "$gitignore"; then
+            missing+=("$entry")
+          fi
+        done
+
+        if [ "${#missing[@]}" -gt 0 ]; then
+          if [ "${#missing[@]}" -eq "${#current_entries[@]}" ]; then
+            echo "" >>"$gitignore"
+            echo "$current_header" >>"$gitignore"
+          fi
+          for entry in "${missing[@]}"; do
+            echo "$entry" >>"$gitignore"
+            log_add ".gitignore: $entry"
+          done
+        fi
+
+        current_header=""
+        current_entries=()
+      fi
+    fi
+  done <"$manifest"
 }
 
 inject_tooling_manifest() {
@@ -168,7 +245,7 @@ inject_tooling_manifest() {
   read -r -a deps_array <<<"$(awk '/packages = \[/{f=1; next} /\]/{f=0} f' "$manifest" | tr -d '",' | tr '\n' ' ')"
 
   if [ ${#deps_array[@]} -gt 0 ]; then
-    log_info "Installing $stack_name dev dependencies in $target_path"
+    log_step "Applying $stack_name dependencies"
     (cd "$target_path" && bun add -D "${deps_array[@]}")
   fi
 
@@ -186,8 +263,10 @@ inject_tooling_manifest() {
       });
         fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
     " "$scripts")
-    log_info "Applied $stack_name package scripts"
   fi
+
+  log_step "Applying $stack_name gitignore"
+  merge_gitignore "$stack_name" "$target_path"
 }
 
 inject_dependencies() {
