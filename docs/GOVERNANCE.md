@@ -66,6 +66,6 @@ To add a standard, create a `.md` file in `standards/` and run `gdev gov build`.
 
 ## Notes
 
-- `gemini/commands/gov/rules.toml` and `standards.toml` are overwritten on every build — never edit them directly.
+- `gemini/commands/gov/rules.toml` and `standards.toml` are overwritten on every build. Never edit them directly.
 - Adding a new compilable target type is one line in the `BUILD_TARGETS` array in `build-gov.sh`.
 - `gdev gov sync` diffs before applying and requires confirmation, so it is safe to run repeatedly.

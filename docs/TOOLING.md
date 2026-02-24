@@ -77,7 +77,7 @@ Each stack has a sandbox at `scripts/sandbox/tooling/<stack>.sh`. Run via `gdev`
 2. Create `tooling/<n>/seeds/` with pre-populated dictionary terms
 3. Create `tooling/<n>/manifest.toml` with `extends`, deps, scripts, and optionally `[gitignore]`
 4. Create `tooling/<n>/reference.md` with prose documentation
-5. Create `scripts/sandbox/tooling/<n>.sh` — inject configs, seeds, manifest, run verify
+5. Create `scripts/sandbox/tooling/<n>.sh`: inject configs, seeds, manifest, run verify
 6. Test via `gdev` → tooling → `<n>`
 
 Sync auto-discovers the new stack.

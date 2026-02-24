@@ -6,7 +6,7 @@ A concise overview of all documents in the dev workflow, with placeholders and t
 
 ## File Location
 
-All planning docs live in `.claude/` at the project root. Git tracked — they are part of the project, not throwaway notes.
+All planning docs live in `.claude/` at the project root. Git tracked, part of the project, not throwaway notes.
 
 > **Setup:** Run `gdev claude init` in a new project to generate this structure with placeholder templates automatically.
 
