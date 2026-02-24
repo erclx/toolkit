@@ -124,7 +124,7 @@ cmd_update() {
   fi
 
   cp "$CLAUDE_SEED" "$dest"
-  log_info "CLAUDE.md updated"
+  log_add "CLAUDE.md"
 }
 
 main() {
