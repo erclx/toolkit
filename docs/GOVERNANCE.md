@@ -2,7 +2,7 @@
 
 ## Overview
 
-Governance manages the rules and standards that guide AI agents working in projects. Rules compile into `.toml` artifacts for Gemini and sync as `.mdc` files for Cursor. Standards are markdown docs injected as context.
+Governance manages the rules and standards that guide AI agents working in projects. Rules compile into a `.toml` artifact for Gemini and sync as `.mdc` files for Cursor. Standards are markdown docs synced directly to target projects.
 
 ## Structure
 
@@ -10,10 +10,9 @@ Governance manages the rules and standards that guide AI agents working in proje
 .cursor/rules/         ← source rules (.mdc), organized by domain
 standards/             ← source standards (.md)
 gemini/commands/gov/
-├── rules.toml         ← compiled artifact, do not edit directly
-└── standards.toml     ← compiled artifact, do not edit directly
+└── rules.toml         ← compiled artifact, do not edit directly
 scripts/
-├── build-gov.sh       ← compiles sources into .toml artifacts
+├── build-gov.sh       ← compiles rules into .toml artifact
 ├── sync-gov.sh        ← syncs rules/standards to external projects
 └── manage-gov.sh      ← entry point (gdev gov)
 ```
@@ -32,18 +31,16 @@ Rules follow a numbering scheme by domain. When adding a rule, pick a number in 
 | `300–399` | lib (testing libs, Zod, TanStack, security, etc.)  |
 | `900+`    | workflow (Node, tooling, etc.)                     |
 
-Standards cover developer workflow conventions, not code style. Current standards: branch, changelog, commit, PR, prose, readme. Code style belongs in rules.
+Standards cover developer workflow conventions, not code style. Current standards: branch, changelog, commit, PR, prose, readme. Code style belongs in rules. Standards are the same across every project, so they sync directly without a compilation step.
 
-Compiled artifacts are committed. `rules.toml` and `standards.toml` are generated but committed so Gemini commands work without a build step on first use.
-
-Build detects changes via git. `build-gov.sh` diffs source files against the last build commit, recompiles only when sources or templates change, then auto-commits the updated artifacts.
+`rules.toml` is generated but committed so Gemini commands work without a build step on first use. `build-gov.sh` diffs source files against the last build commit, recompiles only when sources or the template change, then auto-commits the updated artifact.
 
 ## CLI
 
-| Command                | What it does                                          |
-| ---------------------- | ----------------------------------------------------- |
-| `gdev gov build`       | Scan for changes, recompile `.toml` artifacts, commit |
-| `gdev gov sync [path]` | Push rules and/or standards to a target project       |
+| Command                | What it does                                     |
+| ---------------------- | ------------------------------------------------ |
+| `gdev gov build`       | Scan for changes, recompile `rules.toml`, commit |
+| `gdev gov sync [path]` | Push rules and/or standards to a target project  |
 
 `gdev gov` with no args shows a picker: `build` or `sync`.
 
@@ -62,10 +59,10 @@ gdev gov sync ../my-app
 
 To add a rule, create a `.mdc` file anywhere under `.cursor/rules/` using the numbering convention above, then run `gdev gov build`. It is auto-discovered with no other changes needed.
 
-To add a standard, create a `.md` file in `standards/` and run `gdev gov build`.
+To add a standard, create a `.md` file in `standards/`. No build step needed. Standards sync directly.
 
 ## Notes
 
-- `gemini/commands/gov/rules.toml` and `standards.toml` are overwritten on every build. Never edit them directly.
+- `gemini/commands/gov/rules.toml` is overwritten on every build. Never edit it directly.
 - Adding a new compilable target type is one line in the `BUILD_TARGETS` array in `build-gov.sh`.
 - `gdev gov sync` diffs before applying and requires confirmation, so it is safe to run repeatedly.
