@@ -20,13 +20,9 @@ When updating a document, output the full updated file content only — no expla
 
 After any response that produces updated document content, always end with a sync block:
 
----
-
 SYNC REQUIRED
 □ .claude/TASKS.md — updated above, copy and overwrite
 □ .claude/FEATURES/[name].md — updated above, copy and overwrite
-
----
 
 List only files that actually changed. Order by priority (TASKS.md first).
 Sync after each completed feature, not end of session.
