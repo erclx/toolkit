@@ -18,6 +18,10 @@ The claude stack seeds the `.claude/` workflow directory into a project.
     └── done/          ← completed features, never load into context
 ```
 
+## Gitignore
+
+- `# Claude` — `.claude/PROJECT.md`
+
 ## CLI
 
 | Command              | What it does                                                     |
