@@ -298,8 +298,7 @@ src/
 │                  │    │ → /git:commit                 │
 │ If design issue  │    │ → /git:pr                     │
 │ escalate to      │    │ Next feature                  │
-│ Claude chat      │    └──────────────────────────────┘
-└──────────────────┘
+└──────────────────┘    └──────────────────────────────┘
 
 Feedback routing rule:
   verify fails  → Gemini chat (code problem, it has context)

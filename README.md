@@ -38,9 +38,10 @@ Run `gdev` from the repo root.
 
 ### Claude
 
-| Command       | Description                                  |
-| ------------- | -------------------------------------------- |
-| `gdev claude` | Manage Claude AI-assisted workflow documents |
+| Command              | Description                                    |
+| -------------------- | ---------------------------------------------- |
+| `gdev claude init`   | Seed .claude/ workflow docs into a project     |
+| `gdev claude update` | Diff CLAUDE.md against seed and offer to apply |
 
 ### Sandbox
 
@@ -90,7 +91,7 @@ Run `gdev` from the repo root.
 ## Architecture
 
 Governance rules (`.cursor/rules/`) and standards (`standards/`) are the source of truth. `scripts/build-gov.sh` compiles them into Gemini command artifacts under `gemini/commands/gov/`. Tooling stacks live in `tooling/` and sync directly as concrete files.
-The Claude tooling (`tooling/claude/`) provides seed documents and workflow management for Claude AI-assisted development. See [tooling/claude/reference.md](tooling/claude/reference.md) for details.
+The Claude tooling (`tooling/claude/`) provides seed documents and commands for managing Claude AI-assisted workflow documents, including scaffolding and updating. See [tooling/claude/reference.md](tooling/claude/reference.md) for details.
 
 See [GOVERNANCE.md](docs/GOVERNANCE.md), [TOOLING.md](docs/TOOLING.md), [SANDBOX.md](docs/SANDBOX.md), [PROMPTS.md](docs/PROMPTS.md), and [WORKFLOW.md](docs/WORKFLOW.md) for detailed documentation.
 
