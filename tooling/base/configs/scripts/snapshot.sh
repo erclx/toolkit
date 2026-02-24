@@ -36,6 +36,7 @@ is_ignored() {
   local patterns="$2"
 
   [ "$name" = ".git" ] && return 0
+  [ "$name" = "_" ] && return 0
 
   while IFS= read -r pattern; do
     [ -z "$pattern" ] && continue
