@@ -38,6 +38,10 @@ Keep scripts minimal while maintaining the established visual system.
 - Do not echo command names before running them (output speaks for itself).
 - Do not log "Starting..." and "Finished..." around every action.
 - Do not log intermediate variable assignments.
+- Use `log_add` for item writes (files created, entries added, keys written).
+- Use `log_info` for status confirmations only ("up to date", "check passed").
+- Use `log_warn` for drift, skipped states, or recoverable issues.
+- Never use `log_info` for file or entry writes.
 
 ## VISUAL SYSTEM
 
@@ -296,4 +300,6 @@ Before responding, verify:
 - Cancellation shows single `◇ ... Cancelled` line without subsequent `log_error`.
 - Functions follow single responsibility: each does one thing, `main()` delegates to helpers.
 - Logging is concise: no "Starting.../Finished..." bloat, no intermediate variable logging.
+- `log_add` is used for all file, entry, and key writes.
+- `log_info` is used for status confirmations only, not writes.
 - File ends with exactly one empty line.
