@@ -6,9 +6,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="${PROJECT_ROOT:-$(dirname "$SCRIPT_DIR")}"
 
 source "$PROJECT_ROOT/scripts/lib/ui.sh"
-source "$PROJECT_ROOT/scripts/lib/inject.sh"
 
-CLAUDE_SEED="$PROJECT_ROOT/tooling/claude/seeds/.claude/CLAUDE.md"
+CLAUDE_SEEDS_DIR="$PROJECT_ROOT/tooling/claude/seeds/.claude"
+CLAUDE_SEED="$CLAUDE_SEEDS_DIR/CLAUDE.md"
 
 show_help() {
   echo -e "${GREY}┌${NC}"
@@ -41,6 +41,26 @@ validate_target() {
   if [ "$target_abs" = "$PROJECT_ROOT" ]; then
     log_error "Cannot init claude workflow in ai-toolkit root."
   fi
+}
+
+seed_claude_docs() {
+  local target="$1"
+  local dest_dir="$target/.claude"
+
+  mkdir -p "$dest_dir"
+
+  while IFS= read -r file; do
+    local name
+    name=$(basename "$file")
+    local dest="$dest_dir/$name"
+
+    if [ -f "$dest" ]; then
+      log_info "${GREY}Exists:  .claude/$name${NC}"
+    else
+      cp "$file" "$dest"
+      log_add ".claude/$name"
+    fi
+  done < <(find "$CLAUDE_SEEDS_DIR" -maxdepth 1 -type f | sort)
 }
 
 add_to_gitignore() {
@@ -83,7 +103,7 @@ cmd_init() {
   validate_target "$target"
 
   log_step "Seeding .claude/"
-  inject_tooling_seeds "claude" "$target"
+  seed_claude_docs "$target"
 
   log_step "Scaffolding Features"
   create_features_dirs "$target"
