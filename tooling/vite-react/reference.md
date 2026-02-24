@@ -75,6 +75,13 @@
 - Web server: `bun run dev` on port 5173, reuse existing server locally.
 - Trace: `on-first-retry`.
 
+## Gitignore (Extend)
+
+- `# Build` — `dist/`
+- `# Coverage` — `coverage/`
+- `# Playwright` — `test-results/`, `playwright-report/`, `blob-report/`, `playwright/.cache/`
+- `# VS Code` — `.vscode/*`, `!.vscode/extensions.json`, `!.vscode/settings.json`
+
 ## VS Code (Extend)
 
 - Extensions: add `dbaeumer.vscode-eslint`, `bradlc.vscode-tailwindcss`, `ms-playwright.playwright`, `vitest.explorer`.
