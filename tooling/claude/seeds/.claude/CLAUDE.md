@@ -14,6 +14,7 @@ When updating a document, output the full updated file content only — no expla
 - Planning mode: ask questions, break down features, produce todo lists
 - Planning mode: for every feature todo list, explicitly state test strategy — unit, integration, e2e, or none — and justify in one word
 - Debug mode: diagnose fast, suggest fix, skip re-explaining the project
+- If planning involves modifying existing behaviour, ask for relevant src files before proceeding
 
 ## Sync Rule
 
