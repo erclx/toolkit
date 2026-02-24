@@ -11,7 +11,6 @@ ENGINE_SCRIPT="$PROJECT_ROOT/scripts/lib/compiler.sh"
 
 BUILD_TARGETS=(
   "Rules:.cursor/rules:mdc:gemini/commands/gov/rules.toml:scripts/templates/rules.toml.template:{{INJECT_ALL_RULES}}"
-  "Standards:standards:md:gemini/commands/gov/standards.toml:scripts/templates/standards.toml.template:{{INJECT_STANDARDS}}"
 )
 
 TEMP_DIR=""
@@ -26,8 +25,8 @@ show_help() {
   log_step "Governance Build"
   echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} gdev build"
   echo -e "${GREY}│${NC}"
-  echo -e "${GREY}│${NC}  Scans source rules and standards for changes,"
-  echo -e "${GREY}│${NC}  recompiles .toml artifacts, and commits the"
+  echo -e "${GREY}│${NC}  Scans source rules for changes,"
+  echo -e "${GREY}│${NC}  recompiles .toml artifact, and commits the"
   echo -e "${GREY}│${NC}  compiled output."
   echo -e "${GREY}└${NC}"
   exit 0

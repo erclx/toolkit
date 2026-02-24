@@ -42,7 +42,7 @@ Gitignore entries are declared in `manifest.toml` under `[gitignore]` as named g
 
 | Command                           | What it does                                     |
 | --------------------------------- | ------------------------------------------------ |
-| `gdev gov build`                  | Compile rules/standards into `.toml` artifacts   |
+| `gdev gov build`                  | Compile rules into `rules.toml` artifact         |
 | `gdev gov sync [path]`            | Push governance rules and standards to a project |
 | `gdev tooling [stack] [path]`     | Full sync: configs, seeds, refs, deps, gitignore |
 | `gdev tooling ref [stack] [path]` | Drop reference docs only                         |

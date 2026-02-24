@@ -24,11 +24,11 @@ Output writes to the target project at runtime:
 
 ## Key Decisions
 
-Rules come from the target project, not the toolkit. `gdev prompt` reads `.cursor/rules/` in the current working directory. Run `gdev gov rules` in the target project first to install the relevant rule set before generating a prompt.
+Rules come from the target project, not the toolkit. `gdev prompt` reads `.cursor/rules/` in the current working directory. Run `gdev gov sync` in the target project first to install the relevant rule set before generating a prompt.
 
 A single template serves the chat workflow. `master-prompt-chat.template` assumes a human is the executor, structuring output as `# FILES / # VERIFY` blocks intended to be pasted into `apply.toml` for file application.
 
-Governance injection is identical across both templates. Frontmatter is stripped from each `.mdc` file, rules are concatenated with separators, and the payload is injected at `{{GOVERNANCE_RULES}}`. The template type only changes the surrounding instructions.
+Prompts inject rules only. Rules are stack-aware and compiled; standards sync separately via `gdev gov sync` and are not included in generated prompts. Frontmatter is stripped from each `.mdc` file, rules are concatenated with separators, and the payload replaces `{{GOVERNANCE_RULES}}`.
 
 Output is ephemeral. `.gemini/.tmp/` is gitignored. The master prompt is regenerated per session, reflects whatever rules are currently installed, and can be edited mid-session without affecting the source rules.
 
@@ -39,16 +39,16 @@ Output is ephemeral. `.gemini/.tmp/` is gitignored. The master prompt is regener
 | `gdev prompt`          | Generate a master prompt using the chat template |
 | `gdev prompt generate` | Same as `gdev prompt`                            |
 
-`gdev prompt` lists installed rules, prompts for template type, then asks for confirmation before generating.
+`gdev prompt` lists installed rules, then asks for confirmation before generating.
 
 ## Workflow
 
 Typical session setup:
 
 ```bash
-gdev gov rules          # install rules for detected stack
-gdev prompt             # pick cli or chat, confirm, generate
-````
+gdev gov sync ../my-app   # sync rules and standards to project
+gdev prompt               # confirm, generate
+```
 
 For chat sessions, copy `.gemini/.tmp/master-prompt.md` as the system prompt in your chat interface. After the model responds with `# FILES / # VERIFY` blocks, apply the output with:
 
@@ -62,6 +62,7 @@ Templates live in `scripts/templates/`. Each must contain the `{{GOVERNANCE_RULE
 
 ## Notes
 
-- Run `gdev gov rules` before `gdev prompt` when switching projects or stacks.
+- Run `gdev gov sync` before `gdev prompt` when switching projects or stacks.
 - The generated prompt includes raw rule content, so review it before a sensitive session.
 - Add `.gemini/.tmp/` to `.gitignore` if missing.
+````
