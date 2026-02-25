@@ -103,6 +103,15 @@ configure_identity() {
 
   TITLE=$(echo "$PROJECT_NAME" | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2))}1')
   export TITLE
+
+  echo -e "${GREY}│${NC}"
+  log_info "Project: ${WHITE}$PROJECT_NAME${NC}"
+  log_info "This will reset git history and cannot be undone."
+  select_option "Apply changes?" "Yes" "No"
+  if [ "$SELECTED_OPTION" = "No" ]; then
+    echo -e "${GREY}└${NC}"
+    exit 0
+  fi
 }
 
 update_package_json() {
