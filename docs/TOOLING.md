@@ -18,6 +18,11 @@ tooling/
 │   ├── seeds/
 │   ├── manifest.toml  ← extends = "base"
 │   └── reference.md
+├── chrome/
+│   ├── manifest.toml
+│   ├── reference.md
+│   ├── configs/
+│   └── seeds/
 └── claude/
     ├── seeds/         ← .claude/ workflow docs, seeded once never overwritten
     ├── manifest.toml  ← gitignore only, no configs or deps
