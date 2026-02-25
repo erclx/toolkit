@@ -1,4 +1,5 @@
 axios
+crxjs
 cspell
 fastapi
 gitattributes
@@ -7,8 +8,8 @@ mypy
 nextjs
 noopener
 noreferrer
-nvmrc
 nullglob
+nvmrc
 pip
 pnpm
 pycache
