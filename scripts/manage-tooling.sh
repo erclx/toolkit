@@ -359,10 +359,18 @@ cmd_sync() {
   [ "${#REF_UPDATE_FILES[@]}" -gt 0 ] && has_diffs=true
 
   local prompt_opts=()
-  if [ "$has_diffs" = true ]; then
-    prompt_opts=("Apply (skip references)" "Review diffs" "Apply all" "Cancel")
+  if [ "$TOTAL_CHANGES" -eq "$REF_CHANGES" ]; then
+    if [ "$has_diffs" = true ]; then
+      prompt_opts=("Apply all" "Review diffs" "Cancel")
+    else
+      prompt_opts=("Apply all" "Cancel")
+    fi
   else
-    prompt_opts=("Apply (skip references)" "Apply all" "Cancel")
+    if [ "$has_diffs" = true ]; then
+      prompt_opts=("Apply (skip references)" "Review diffs" "Apply all" "Cancel")
+    else
+      prompt_opts=("Apply (skip references)" "Apply all" "Cancel")
+    fi
   fi
 
   select_option "Apply $TOTAL_CHANGES changes ($summary)?" "${prompt_opts[@]}"
@@ -370,7 +378,11 @@ cmd_sync() {
   case "$SELECTED_OPTION" in
   "Review diffs")
     open_diffs "$target"
-    select_option "Apply $TOTAL_CHANGES changes ($summary)?" "Apply (skip references)" "Apply all" "Cancel"
+    if [ "$TOTAL_CHANGES" -eq "$REF_CHANGES" ]; then
+      select_option "Apply $TOTAL_CHANGES changes ($summary)?" "Apply all" "Cancel"
+    else
+      select_option "Apply $TOTAL_CHANGES changes ($summary)?" "Apply (skip references)" "Apply all" "Cancel"
+    fi
     [ "$SELECTED_OPTION" == "Cancel" ] && {
       log_warn "Sync cancelled"
       echo -e "${GREY}└${NC}" >&2
