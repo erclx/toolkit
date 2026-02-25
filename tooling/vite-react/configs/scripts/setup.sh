@@ -135,25 +135,10 @@ update_html_title() {
   fi
 }
 
-update_readme() {
-  if [ -f "README.md" ]; then
-    # shellcheck disable=SC2016
-    node -e '
-      const fs = require("fs");
-      const title = process.env.TITLE || "Project";
-      let readme = fs.readFileSync("README.md", "utf8");
-      readme = readme.replace(/^#\s+.*$/m, "# " + title);
-      fs.writeFileSync("README.md", readme);
-    ' || log_error "README.md update failed"
-    log_add "README.md"
-  fi
-}
-
 update_metadata() {
   log_step "Updating Project Metadata"
   update_package_json
   update_html_title
-  update_readme
 }
 
 setup_environment() {
