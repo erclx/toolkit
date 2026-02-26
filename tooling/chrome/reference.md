@@ -45,7 +45,7 @@ The chrome stack layers a Chrome Extension setup using CRXJS and Vite on top of 
 
 ## Dev Dependencies (Extend)
 
-- `@crxjs/vite-plugin`, `vite-plugin-zip-pack`.
+- `@crxjs/vite-plugin`, `vite-plugin-zip-pack`, `@types/chrome`.
 
 ## Setup Script
 
