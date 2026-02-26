@@ -63,10 +63,9 @@ Run `gdev` from the repo root.
 
 ### Governance
 
-| Command          | Description                             |
-| ---------------- | --------------------------------------- |
-| `/gov:rules`     | Install governance rules into a project |
-| `/gov:standards` | Install project reference standards     |
+| Command      | Description                             |
+| ------------ | --------------------------------------- |
+| `/gov:rules` | Install governance rules into a project |
 
 ### Development
 

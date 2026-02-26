@@ -256,7 +256,7 @@ src/
 ┌─────────────────────────────────────────────────────┐
 │  APPLY + VERIFY                                      │
 │  → /dev:apply          # writes files to disk        │
-│  → bun run check       # lint, format, spell, tests  │
+│  → bun run check       # applies formatting, lints, spell checks, and runs tests  │
 │    (includes bun run snapshot — refreshes PROJECT.md)│
 └──────────────────────┬──────────────────────────────┘
                        │
