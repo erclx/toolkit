@@ -43,9 +43,19 @@ The chrome stack layers a Chrome Extension setup using CRXJS and Vite on top of 
 - Derives title-cased display name for HTML titles.
 - Updates `package.json`: sets `name`, `description`, `author`, resets `version` to `0.1.0`, injects `verify`, `clean`, `update` scripts, removes `setup`.
 - Updates `<title>` in `src/popup/index.html` and `src/sidepanel/index.html`.
-- Wipes `.git`, re-inits with `--initial-branch=main`, makes scripts executable, commits everything as `chore(root): initialize <name>`.
+- Wipes `.git`, re-inits with `--initial-branch=main`, makes scripts executable, commits everything as `chore(root): initialize <n>`.
 - Renames project folder to match kebab-case name if needed.
 - Offers to open in VS Code or Cursor and installs dependencies if an editor is launched.
+
+## CI Workflow
+
+- File: `.github/workflows/verify.yml`.
+- Trigger: pull requests to `main` + `workflow_dispatch`.
+- Three jobs only: `static-checks`, `unit-tests`, `build-verify` — no E2E (extensions cannot run Playwright against a dev server).
+- All jobs: checkout → setup bun (latest) → `bun install --frozen-lockfile`.
+- `static-checks`: install shfmt, typecheck, lint, check:format, check:spell.
+- `unit-tests`: `bun run test:coverage`.
+- `build-verify`: `bun run build`.
 
 ## Gitignore (Extend)
 
@@ -54,5 +64,4 @@ The chrome stack layers a Chrome Extension setup using CRXJS and Vite on top of 
 
 ## Package Scripts (Extend)
 
-- `build` — `tsc -b && vite build`
 - `setup` — `./scripts/setup.sh`
