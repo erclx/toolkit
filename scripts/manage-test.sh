@@ -198,7 +198,7 @@ configure_agent_settings() {
   cat <<EOF >"$SANDBOX/.gemini/settings.json"
 {
   "model": {
-    "name": "$GEMINI_MODEL"
+    "name": "$DEFAULT_GEMINI_MODEL "
   }
 }
 EOF
@@ -231,7 +231,7 @@ initialize_sandbox_environment() {
 }
 
 commit_sandbox_changes() {
-  if [ -z "$GEMINI_SKIP_AUTO_COMMIT" ]; then
+  if [ -z "$SANDBOX_SKIP_AUTO_COMMIT" ]; then
     log_step "Staging environment changes"
     (
       cd "$SANDBOX"
@@ -352,6 +352,10 @@ reset_sandbox() {
 }
 
 main() {
+  if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    show_help
+  fi
+
   if [[ "$1" == "gov" ]]; then
     shift
     exec "$PROJECT_ROOT/scripts/manage-gov.sh" "$@"
@@ -379,10 +383,6 @@ main() {
 
   SANDBOX="$PROJECT_ROOT/.sandbox"
   SANDBOX_DIR="$PROJECT_ROOT/scripts/sandbox"
-
-  if [[ "$1" == "-h" || "$1" == "--help" ]]; then
-    show_help
-  fi
 
   if [[ "$1" == "reset" ]]; then
     reset_sandbox

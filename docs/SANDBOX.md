@@ -13,6 +13,7 @@ scripts/sandbox/
 │   ├── vite-react.sh  ← tests vite-react configs against anchor repo
 │   ├── claude.sh      ← tests claude workflow initialization
 │   ├── chrome.sh      ← tests chrome extension tooling configs against anchor repo
+│   └── gemini.sh      ← tests gemini settings.json config injection
 ├── infra/
 │   └── cursor.sh      ← Cursor IDE playground with full governance injected
 ├── git/
@@ -53,7 +54,7 @@ Each sandbox is a `.sh` file with a `stage_setup` function:
 
 ```bash
 stage_setup() {
-  export GEMINI_SKIP_AUTO_COMMIT="true"  # when you need git control
+  export SANDBOX_SKIP_AUTO_COMMIT="true"  # when you need git control
 
   # scaffold scenario state
   # end with SCENARIO READY instructions

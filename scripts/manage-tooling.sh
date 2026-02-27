@@ -20,8 +20,9 @@ show_help() {
   echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} gdev tooling [command] [stack] [target-path]"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Commands:${NC}"
-  echo -e "${GREY}│${NC}    sync     ${GREY}# Sync configs, seeds, deps, and references (default)${NC}"
-  echo -e "${GREY}│${NC}    ref      ${GREY}# Drop reference docs only, no config changes${NC}"
+  echo -e "${GREY}│${NC}    sync       ${GREY}# Sync configs, seeds, deps, and references (default)${NC}"
+  echo -e "${GREY}│${NC}    ref        ${GREY}# Drop reference docs only, no config changes${NC}"
+  echo -e "${GREY}│${NC}    scaffold   ${GREY}# Scaffold a new stack with stub manifest and reference${NC}"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Arguments:${NC}"
   echo -e "${GREY}│${NC}    stack         Name of the tooling stack (e.g., base, vite-react)"
@@ -33,6 +34,7 @@ show_help() {
   echo -e "${GREY}│${NC}  ${WHITE}Examples:${NC}"
   echo -e "${GREY}│${NC}    gdev tooling base ."
   echo -e "${GREY}│${NC}    gdev tooling ref vite-react ../my-app"
+  echo -e "${GREY}│${NC}    gdev tooling scaffold"
   echo -e "${GREY}└${NC}"
   exit 0
 }
@@ -294,6 +296,64 @@ cmd_ref() {
   inject_tooling_reference "$stack" "$target"
 }
 
+cmd_scaffold() {
+  local stack="$1"
+
+  if [ -z "$stack" ]; then
+    echo -e "${GREY}│${NC}" >&2
+    echo -ne "${GREEN}◆${NC} Stack name? " >&2
+    read -r stack
+    echo -e "\033[1A\r\033[K${GREY}◇${NC} Stack name? ${WHITE}${stack}${NC}" >&2
+  fi
+
+  if [ -z "$stack" ]; then
+    log_error "Stack name is required"
+  fi
+
+  local dest="$PROJECT_ROOT/tooling/$stack"
+
+  if [ -d "$dest" ]; then
+    log_error "Stack already exists: $stack"
+  fi
+
+  log_step "Scaffolding Stack: $stack"
+
+  mkdir -p "$dest/configs"
+  log_add "tooling/$stack/configs/"
+
+  mkdir -p "$dest/seeds"
+  log_add "tooling/$stack/seeds/"
+
+  cat >"$dest/manifest.toml" <<EOF
+[stack]
+name = "$stack"
+extends = ""
+runtime = ""
+scaffold = ""
+
+[sync]
+source = "configs"
+
+[dependencies.dev]
+packages = []
+
+[scripts]
+
+[gitignore]
+EOF
+  log_add "tooling/$stack/manifest.toml"
+
+  cat >"$dest/reference.md" <<EOF
+# TOOLING $(echo "$stack" | tr '[:lower:]' '[:upper:]' | tr '-' ' ') REFERENCE
+
+## Overview
+
+[One or two sentences: what this stack provides and its purpose.]
+
+EOF
+  log_add "tooling/$stack/reference.md"
+}
+
 cmd_sync() {
   local stack="$1"
   local target="${2:-.}"
@@ -421,7 +481,7 @@ main() {
   local command="$1"
 
   if [ -z "$command" ]; then
-    select_option "Tooling command?" "sync" "ref"
+    select_option "Tooling command?" "sync" "ref" "scaffold"
     command="$SELECTED_OPTION"
   fi
 
@@ -431,6 +491,12 @@ main() {
     cmd_ref "$@"
     echo -e "${GREY}└${NC}\n" >&2
     echo -e "${GREEN}✓ References synced${NC}" >&2
+    ;;
+  scaffold)
+    shift 2>/dev/null || true
+    cmd_scaffold "$@"
+    echo -e "${GREY}└${NC}\n" >&2
+    echo -e "${GREEN}✓ Stack scaffolded${NC}" >&2
     ;;
   sync | "")
     shift 2>/dev/null || true
