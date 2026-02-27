@@ -352,6 +352,10 @@ reset_sandbox() {
 }
 
 main() {
+  if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    show_help
+  fi
+
   if [[ "$1" == "gov" ]]; then
     shift
     exec "$PROJECT_ROOT/scripts/manage-gov.sh" "$@"
@@ -379,10 +383,6 @@ main() {
 
   SANDBOX="$PROJECT_ROOT/.sandbox"
   SANDBOX_DIR="$PROJECT_ROOT/scripts/sandbox"
-
-  if [[ "$1" == "-h" || "$1" == "--help" ]]; then
-    show_help
-  fi
 
   if [[ "$1" == "reset" ]]; then
     reset_sandbox
