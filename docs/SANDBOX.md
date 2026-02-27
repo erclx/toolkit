@@ -13,6 +13,7 @@ scripts/sandbox/
 │   ├── vite-react.sh  ← tests vite-react configs against anchor repo
 │   ├── claude.sh      ← tests claude workflow initialization
 │   ├── chrome.sh      ← tests chrome extension tooling configs against anchor repo
+│   └── gemini.sh      ← tests gemini settings.json config injection
 ├── infra/
 │   └── cursor.sh      ← Cursor IDE playground with full governance injected
 ├── git/
