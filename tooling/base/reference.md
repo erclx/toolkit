@@ -30,10 +30,11 @@
 
 ## Shell Tooling
 
-- Lint: `shellcheck` with `--severity=warning`.
-- Format: `shfmt` with `--indent 2`.
-- Config: `.shellcheckrc` with `external-sources=true`.
-- Project `.vscode/settings.json` with `"shellcheck.customArgs": ["--severity=warning"]`.
+- Format: `shfmt --indent 2 scripts/` — shfmt supports directory args natively, no `find` needed.
+- Lint: `find scripts -name '*.sh' -exec shellcheck --severity=warning {} +` — shellcheck has no directory mode, `find` is required.
+- Config: `.shellcheckrc` with `external-sources=true`. Required for shellcheck to follow `source` directives — keep even with EditorConfig present.
+- All shell scripts live in `scripts/`. Do not place `.sh` files outside `scripts/`.
+- EditorConfig: `.editorconfig` at root with `[*.sh]` block enforcing `indent_style = space`, `indent_size = 2`. Prevents editor/shfmt conflicts that produce spurious git diffs.
 
 ## Commit Lint
 
@@ -52,6 +53,7 @@
 - Lint-staged globs:
   - `**/*.{json,md,mdc}` → `["prettier --write --ignore-path .gitignore", "cspell --no-must-find-files"]`
   - `**/*.sh` → `["shfmt --write --indent 2", "shellcheck --severity=warning"]`
+- Note: lint-staged handles its own glob expansion and passes matched files as arguments — `**/*.sh` is safe here, unlike in package.json scripts.
 
 ## GitHub
 
@@ -75,6 +77,12 @@
 - `update.sh` — runs `bun update --interactive` then calls `verify.sh` with `VERIFY_NESTED=true` to confirm project health after updates.
 - `snapshot.sh` — generates `.claude/PROJECT.md` with a directory tree and `package.json` contents. Creates `.claude/` if it does not exist. Tree respects `.gitignore`. Output is ephemeral — add `.claude/PROJECT.md` to `.gitignore`, do not commit it.
 
+## EditorConfig
+
+- Config: `.editorconfig` at root, `root = true`.
+- `[*.sh]`: `indent_style = space`, `indent_size = 2`.
+- Ensures consistent shell script indentation across editors, preventing shfmt vs editor conflicts that produce spurious git diffs.
+
 ## VS Code
 
 - Extensions: `esbenp.prettier-vscode`, `streetsidesoftware.code-spell-checker`, `mkhl.shfmt`, `timonwong.shellcheck`, `mads-hartmann.bash-ide-vscode`.
@@ -83,9 +91,9 @@
 ## Package Scripts
 
 - `check:spell` — runs cspell across all files, shows context on failures.
-- `check:format` — checks prettier and shfmt formatting without writing.
-- `check:shell` — runs shellcheck at warning severity across all `.sh` files.
-- `format` — writes prettier and shfmt formatting in place.
+- `check:format` — checks prettier and shfmt formatting without writing. shfmt targets `scripts/` directory directly.
+- `check:shell` — runs shellcheck at warning severity via `find scripts -name '*.sh'` (shellcheck has no directory mode).
+- `format` — writes prettier and shfmt formatting in place. shfmt targets `scripts/` directory directly.
 - `prepare` — initializes husky hooks (runs automatically on `bun install`).
 - `check` — runs `scripts/verify.sh`, the full verification suite. Auto-formats before asserting.
 - `clean` — runs `scripts/clean.sh`, wipes and reinstalls dependencies.
