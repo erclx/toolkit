@@ -13,6 +13,7 @@ declare -A SEEN_SEEDS
 declare -A SEEN_REFS
 declare -A SEEN_GITIGNORE
 declare -A SEEN_SCRIPTS
+declare -A SEEN_DEPS
 declare -A CONFIG_SOURCE_STACK
 
 show_help() {
@@ -256,6 +257,62 @@ collect_stack_scripts() {
   done <"$manifest"
 }
 
+collect_stack_deps() {
+  local stack="$1"
+  local target="$2"
+  local -n _missing_deps=$3
+
+  local manifest="$PROJECT_ROOT/tooling/$stack/manifest.toml"
+  [ ! -f "$manifest" ] && return
+
+  local extends
+  extends=$(grep '^extends' "$manifest" 2>/dev/null | cut -d'"' -f2)
+
+  if [ -n "$extends" ]; then
+    collect_stack_deps "$extends" "$target" "$3"
+  fi
+
+  local pkg="$target/package.json"
+  [ ! -f "$pkg" ] && return
+
+  local in_deps=0
+  while IFS= read -r line; do
+    if [[ "$line" =~ ^\[dependencies\.dev\] ]]; then
+      in_deps=1
+      continue
+    fi
+
+    if [[ "$in_deps" -eq 1 && "$line" =~ ^\[.+\] ]]; then
+      break
+    fi
+
+    [ "$in_deps" -eq 0 ] && continue
+    [ -z "$line" ] && continue
+
+    if [[ "$line" =~ ^packages ]]; then
+      continue
+    fi
+
+    local pkg_name
+    pkg_name=$(echo "$line" | tr -d '"[],' | xargs)
+    [ -z "$pkg_name" ] && continue
+
+    [[ -v SEEN_DEPS["$pkg_name"] ]] && continue
+    SEEN_DEPS["$pkg_name"]=1
+
+    local found
+    found=$(node -e "
+      const p = JSON.parse(require('fs').readFileSync('$pkg'));
+      const all = Object.assign({}, p.dependencies, p.devDependencies);
+      process.stdout.write(all['$pkg_name'] !== undefined ? 'yes' : 'no');
+    " 2>/dev/null)
+
+    if [ "$found" = "no" ]; then
+      _missing_deps+=("$pkg_name")
+    fi
+  done <"$manifest"
+}
+
 scan_configs() {
   local stack="$1"
   local target="$2"
@@ -303,6 +360,19 @@ scan_configs() {
 
   SCRIPT_CHANGES=$((${#DRIFTED_SCRIPTS[@]} + ${#MISSING_SCRIPTS[@]}))
 
+  log_step "Scanning Dependencies"
+
+  collect_stack_deps "$stack" "$target" MISSING_DEPS
+
+  if [ "${#MISSING_DEPS[@]}" -eq 0 ]; then
+    log_info "Up to date"
+  fi
+  for d in "${MISSING_DEPS[@]}"; do
+    log_warn "$d (missing)"
+  done
+
+  DEP_CHANGES=${#MISSING_DEPS[@]}
+
   log_step "Scanning Gitignore"
 
   collect_stack_gitignore "$stack" "$target" GITIGNORE_MISSING_FILES
@@ -328,7 +398,7 @@ scan_configs() {
   done
 
   REF_CHANGES=$((${#REF_UPDATE_FILES[@]} + ${#REF_MISSING_FILES[@]}))
-  TOTAL_CHANGES=$((CONFIG_CHANGES + SEED_CHANGES + GITIGNORE_CHANGES + REF_CHANGES))
+  TOTAL_CHANGES=$((CONFIG_CHANGES + SEED_CHANGES + GITIGNORE_CHANGES + SCRIPT_CHANGES + DEP_CHANGES + REF_CHANGES))
 }
 
 open_diffs() {
@@ -452,6 +522,7 @@ cmd_sync() {
   GITIGNORE_MISSING_FILES=()
   DRIFTED_SCRIPTS=()
   MISSING_SCRIPTS=()
+  MISSING_DEPS=()
   REF_UPDATE_FILES=()
   REF_MISSING_FILES=()
   SEEN_CONFIGS=()
@@ -459,11 +530,13 @@ cmd_sync() {
   SEEN_REFS=()
   SEEN_GITIGNORE=()
   SEEN_SCRIPTS=()
+  SEEN_DEPS=()
   CONFIG_SOURCE_STACK=()
   CONFIG_CHANGES=0
   SEED_CHANGES=0
   GITIGNORE_CHANGES=0
   SCRIPT_CHANGES=0
+  DEP_CHANGES=0
   REF_CHANGES=0
   TOTAL_CHANGES=0
 
@@ -484,6 +557,10 @@ cmd_sync() {
   if [ "$SCRIPT_CHANGES" -gt 0 ]; then
     [ -n "$summary" ] && summary+=", "
     summary+="${SCRIPT_CHANGES} scripts"
+  fi
+  if [ "$DEP_CHANGES" -gt 0 ]; then
+    [ -n "$summary" ] && summary+=", "
+    summary+="${DEP_CHANGES} deps"
   fi
   if [ "${#GITIGNORE_MISSING_FILES[@]}" -gt 0 ]; then
     [ -n "$summary" ] && summary+=", "
