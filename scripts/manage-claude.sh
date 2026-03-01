@@ -89,7 +89,8 @@ cmd_update() {
 
   if diff -q "$CLAUDE_SEED" "$dest" >/dev/null 2>&1; then
     log_info "SESSION.md already up to date"
-    return 0
+    echo -e "${GREY}└${NC}"
+    exit 0
   fi
 
   log_step "Reviewing Changes"
