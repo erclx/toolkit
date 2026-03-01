@@ -90,6 +90,7 @@ cmd_update() {
   if diff -q "$CLAUDE_SEED" "$dest" >/dev/null 2>&1; then
     log_info "SESSION.md already up to date"
     echo -e "${GREY}└${NC}"
+    echo -e "${GREEN}✓ Claude workflow up to date${NC}"
     exit 0
   fi
 
