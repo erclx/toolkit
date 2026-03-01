@@ -238,6 +238,57 @@ merge_gitignore() {
   done <"$manifest"
 }
 
+resolve_missing_deps() {
+  local stack_name="$1"
+  local target_path="$2"
+  local -n _missing=$3
+  local tooling_dir="$PROJECT_ROOT/tooling"
+  local manifest="$tooling_dir/$stack_name/manifest.toml"
+
+  [ ! -f "$manifest" ] && return
+
+  local extends
+  extends=$(grep '^extends' "$manifest" | cut -d'"' -f2)
+
+  if [ -n "$extends" ]; then
+    resolve_missing_deps "$extends" "$target_path" "$3"
+  fi
+
+  local pkg="$target_path/package.json"
+  [ ! -f "$pkg" ] && return
+
+  local in_deps=0
+  while IFS= read -r line; do
+    if [[ "$line" =~ ^\[dependencies\.dev\] ]]; then
+      in_deps=1
+      continue
+    fi
+
+    if [[ "$in_deps" -eq 1 && "$line" =~ ^\[.+\] ]]; then
+      break
+    fi
+
+    [ "$in_deps" -eq 0 ] && continue
+    [ -z "$line" ] && continue
+    [[ "$line" =~ ^packages ]] && continue
+
+    local pkg_name
+    pkg_name=$(echo "$line" | tr -d '"[],' | xargs)
+    [ -z "$pkg_name" ] && continue
+
+    local found
+    found=$(node -e "
+      const p = JSON.parse(require('fs').readFileSync('$pkg'));
+      const all = Object.assign({}, p.dependencies, p.devDependencies);
+      process.stdout.write(all['$pkg_name'] !== undefined ? 'yes' : 'no');
+    " 2>/dev/null)
+
+    if [ "$found" = "no" ]; then
+      _missing+=("$pkg_name")
+    fi
+  done <"$manifest"
+}
+
 inject_tooling_manifest() {
   local stack_name="$1"
   local target_path="${2:-.}"
@@ -245,15 +296,15 @@ inject_tooling_manifest() {
 
   [ ! -f "$manifest" ] && return
 
-  local extends
-  extends=$(grep '^extends' "$manifest" | cut -d'"' -f2)
-  [ -n "$extends" ] && inject_tooling_manifest "$extends" "$target_path"
+  local missing_deps=()
+  resolve_missing_deps "$stack_name" "$target_path" missing_deps
 
-  read -r -a deps_array <<<"$(awk '/packages = \[/{f=1; next} /\]/{f=0} f' "$manifest" | tr -d '",' | tr '\n' ' ')"
-
-  if [ ${#deps_array[@]} -gt 0 ]; then
-    log_step "Applying $stack_name dependencies"
-    (cd "$target_path" && bun add -D "${deps_array[@]}")
+  if [ "${#missing_deps[@]}" -gt 0 ]; then
+    log_step "Installing missing dependencies"
+    (cd "$target_path" && bun add -D "${missing_deps[@]}")
+    for d in "${missing_deps[@]}"; do
+      log_add "$d"
+    done
   fi
 
   local scripts
