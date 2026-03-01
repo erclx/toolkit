@@ -27,7 +27,7 @@ Run `gdev` from the repo root.
 
 | Command                           | Description                                                        |
 | --------------------------------- | ------------------------------------------------------------------ |
-| `gdev tooling [stack] [path]`     | Sync golden configs, seeds, deps, .gitignore, and references       |
+| `gdev tooling [stack] [path]`     | Sync golden configs, seeds, deps, and .gitignore                   |
 | `gdev tooling ref [stack] [path]` | Drop reference docs only                                           |
 | `gdev tooling scaffold`           | Scaffold a new stack with stub manifest, reference, configs, seeds |
 
