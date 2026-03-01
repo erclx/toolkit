@@ -34,6 +34,7 @@ sandboxed
 sandboxing
 scannability
 scoutreport
+shadcn
 shellcheck
 shfmt
 ssot
