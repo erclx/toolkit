@@ -10,7 +10,6 @@ source "$PROJECT_ROOT/scripts/lib/inject.sh"
 
 declare -A SEEN_CONFIGS
 declare -A SEEN_SEEDS
-declare -A SEEN_REFS
 declare -A SEEN_GITIGNORE
 declare -A SEEN_SCRIPTS
 declare -A SEEN_DEPS
@@ -53,36 +52,6 @@ select_stack() {
 
   select_option "Select tooling stack:" "${stacks[@]}"
   echo "$SELECTED_OPTION"
-}
-
-collect_stack_references() {
-  local stack="$1"
-  local target="$2"
-  local -n _ref_update=$3
-  local -n _ref_missing=$4
-
-  local manifest="$PROJECT_ROOT/tooling/$stack/manifest.toml"
-  local extends
-  extends=$(grep '^extends' "$manifest" 2>/dev/null | cut -d'"' -f2)
-
-  local reference_file="$PROJECT_ROOT/tooling/$stack/reference.md"
-  if [ -f "$reference_file" ]; then
-    local ref_key="tooling/$stack.md"
-    if ! [[ -v SEEN_REFS["$ref_key"] ]]; then
-      SEEN_REFS["$ref_key"]=1
-      local dest="$target/$ref_key"
-
-      if [ ! -f "$dest" ]; then
-        _ref_missing+=("$ref_key")
-      elif ! diff -q "$reference_file" "$dest" >/dev/null 2>&1; then
-        _ref_update+=("$ref_key")
-      fi
-    fi
-  fi
-
-  if [ -n "$extends" ]; then
-    collect_stack_references "$extends" "$target" "$3" "$4"
-  fi
 }
 
 collect_stack_configs() {
@@ -321,9 +290,9 @@ scan_configs() {
 
   collect_stack_configs "$stack" "$target" NEW_FILES DRIFTED_FILES MATCHING_FILES
 
-  for f in "${MATCHING_FILES[@]}"; do
-    log_info "${GREY}$f${NC}"
-  done
+  if [ "${#DRIFTED_FILES[@]}" -eq 0 ] && [ "${#NEW_FILES[@]}" -eq 0 ]; then
+    log_info "${#MATCHING_FILES[@]} files up to date"
+  fi
   for f in "${DRIFTED_FILES[@]}"; do
     log_warn "$f (drifted)"
   done
@@ -337,12 +306,14 @@ scan_configs() {
 
   collect_stack_seeds "$stack" "$target" SEEDED_FILES SEED_MISSING_FILES
 
-  for f in "${SEEDED_FILES[@]}"; do
-    log_info "${GREY}$f${NC}"
-  done
+  if [ "${#SEED_MISSING_FILES[@]}" -eq 0 ]; then
+    log_info "${#SEEDED_FILES[@]} files up to date"
+  fi
   for f in "${SEED_MISSING_FILES[@]}"; do
     log_add "$f"
   done
+
+  SEED_CHANGES=${#SEED_MISSING_FILES[@]}
 
   log_step "Scanning Scripts"
 
@@ -386,19 +357,7 @@ scan_configs() {
 
   GITIGNORE_CHANGES=${#GITIGNORE_MISSING_FILES[@]}
 
-  log_step "Scanning References"
-
-  collect_stack_references "$stack" "$target" REF_UPDATE_FILES REF_MISSING_FILES
-
-  for f in "${REF_UPDATE_FILES[@]}"; do
-    log_warn "$f (outdated)"
-  done
-  for f in "${REF_MISSING_FILES[@]}"; do
-    log_add "$f"
-  done
-
-  REF_CHANGES=$((${#REF_UPDATE_FILES[@]} + ${#REF_MISSING_FILES[@]}))
-  TOTAL_CHANGES=$((CONFIG_CHANGES + SEED_CHANGES + GITIGNORE_CHANGES + SCRIPT_CHANGES + DEP_CHANGES + REF_CHANGES))
+  TOTAL_CHANGES=$((CONFIG_CHANGES + SEED_CHANGES + GITIGNORE_CHANGES + SCRIPT_CHANGES + DEP_CHANGES))
 }
 
 open_diffs() {
@@ -407,12 +366,6 @@ open_diffs() {
   for f in "${DRIFTED_FILES[@]}"; do
     local src_stack="${CONFIG_SOURCE_STACK[$f]}"
     code --diff "$PROJECT_ROOT/tooling/$src_stack/configs/$f" "$target/$f"
-  done
-
-  for f in "${REF_UPDATE_FILES[@]}"; do
-    local stack_name="${f#tooling/}"
-    stack_name="${stack_name%.md}"
-    code --diff "$PROJECT_ROOT/tooling/$stack_name/reference.md" "$target/$f"
   done
 }
 
@@ -523,11 +476,8 @@ cmd_sync() {
   DRIFTED_SCRIPTS=()
   MISSING_SCRIPTS=()
   MISSING_DEPS=()
-  REF_UPDATE_FILES=()
-  REF_MISSING_FILES=()
   SEEN_CONFIGS=()
   SEEN_SEEDS=()
-  SEEN_REFS=()
   SEEN_GITIGNORE=()
   SEEN_SCRIPTS=()
   SEEN_DEPS=()
@@ -537,7 +487,6 @@ cmd_sync() {
   GITIGNORE_CHANGES=0
   SCRIPT_CHANGES=0
   DEP_CHANGES=0
-  REF_CHANGES=0
   TOTAL_CHANGES=0
 
   scan_configs "$stack" "$target"
@@ -566,28 +515,15 @@ cmd_sync() {
     [ -n "$summary" ] && summary+=", "
     summary+="${#GITIGNORE_MISSING_FILES[@]} gitignore"
   fi
-  if [ "${#REF_UPDATE_FILES[@]}" -gt 0 ] || [ "${#REF_MISSING_FILES[@]}" -gt 0 ]; then
-    [ -n "$summary" ] && summary+=", "
-    summary+="${REF_CHANGES} references"
-  fi
 
   local has_diffs=false
   [ "${#DRIFTED_FILES[@]}" -gt 0 ] && has_diffs=true
-  [ "${#REF_UPDATE_FILES[@]}" -gt 0 ] && has_diffs=true
 
   local prompt_opts=()
-  if [ "$TOTAL_CHANGES" -eq "$REF_CHANGES" ]; then
-    if [ "$has_diffs" = true ]; then
-      prompt_opts=("Apply all" "Review diffs" "Cancel")
-    else
-      prompt_opts=("Apply all" "Cancel")
-    fi
+  if [ "$has_diffs" = true ]; then
+    prompt_opts=("Apply all" "Review diffs" "Cancel")
   else
-    if [ "$has_diffs" = true ]; then
-      prompt_opts=("Apply (skip references)" "Review diffs" "Apply all" "Cancel")
-    else
-      prompt_opts=("Apply (skip references)" "Apply all" "Cancel")
-    fi
+    prompt_opts=("Apply all" "Cancel")
   fi
 
   select_option "Apply $TOTAL_CHANGES changes ($summary)?" "${prompt_opts[@]}"
@@ -595,11 +531,7 @@ cmd_sync() {
   case "$SELECTED_OPTION" in
   "Review diffs")
     open_diffs "$target"
-    if [ "$TOTAL_CHANGES" -eq "$REF_CHANGES" ]; then
-      select_option "Apply $TOTAL_CHANGES changes ($summary)?" "Apply all" "Cancel"
-    else
-      select_option "Apply $TOTAL_CHANGES changes ($summary)?" "Apply (skip references)" "Apply all" "Cancel"
-    fi
+    select_option "Apply $TOTAL_CHANGES changes ($summary)?" "Apply all" "Cancel"
     [ "$SELECTED_OPTION" == "Cancel" ] && {
       log_warn "Sync cancelled"
       echo -e "${GREY}└${NC}" >&2
@@ -619,10 +551,6 @@ cmd_sync() {
 
   if [ "$SEED_CHANGES" -gt 0 ]; then
     inject_tooling_seeds "$stack" "$target"
-  fi
-
-  if [ "$REF_CHANGES" -gt 0 ] && [ "$SELECTED_OPTION" != "Apply (skip references)" ]; then
-    inject_tooling_reference "$stack" "$target"
   fi
 
   inject_tooling_manifest "$stack" "$target"
