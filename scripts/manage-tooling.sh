@@ -12,6 +12,7 @@ declare -A SEEN_CONFIGS
 declare -A SEEN_SEEDS
 declare -A SEEN_REFS
 declare -A SEEN_GITIGNORE
+declare -A SEEN_SCRIPTS
 declare -A CONFIG_SOURCE_STACK
 
 show_help() {
@@ -200,6 +201,61 @@ collect_stack_gitignore() {
   done <"$manifest"
 }
 
+collect_stack_scripts() {
+  local stack="$1"
+  local target="$2"
+  local -n _drifted_scripts=$3
+  local -n _missing_scripts=$4
+
+  local manifest="$PROJECT_ROOT/tooling/$stack/manifest.toml"
+  [ ! -f "$manifest" ] && return
+
+  local extends
+  extends=$(grep '^extends' "$manifest" 2>/dev/null | cut -d'"' -f2)
+
+  if [ -n "$extends" ]; then
+    collect_stack_scripts "$extends" "$target" "$3" "$4"
+  fi
+
+  local pkg="$target/package.json"
+  [ ! -f "$pkg" ] && return
+
+  local in_scripts=0
+  while IFS= read -r line; do
+    if [[ "$line" =~ ^\[scripts\] ]]; then
+      in_scripts=1
+      continue
+    fi
+
+    if [[ "$in_scripts" -eq 1 && "$line" =~ ^\[.+\] ]]; then
+      break
+    fi
+
+    [ "$in_scripts" -eq 0 ] && continue
+    [ -z "$line" ] && continue
+
+    if [[ "$line" =~ ^\"([^\"]+)\"[[:space:]]*=[[:space:]]*\"(.*)\"[[:space:]]*$ ]]; then
+      local key="${BASH_REMATCH[1]}"
+      local val="${BASH_REMATCH[2]}"
+
+      [[ -v SEEN_SCRIPTS["$key"] ]] && continue
+      SEEN_SCRIPTS["$key"]=1
+
+      local pkg_val
+      pkg_val=$(node -e "
+        const p = JSON.parse(require('fs').readFileSync('$pkg'));
+        process.stdout.write(p.scripts && p.scripts['$key'] !== undefined ? p.scripts['$key'] : '__MISSING__');
+      " 2>/dev/null)
+
+      if [ "$pkg_val" = "__MISSING__" ]; then
+        _missing_scripts+=("$key")
+      elif [ "$pkg_val" != "$val" ]; then
+        _drifted_scripts+=("$key")
+      fi
+    fi
+  done <"$manifest"
+}
+
 scan_configs() {
   local stack="$1"
   local target="$2"
@@ -230,6 +286,22 @@ scan_configs() {
   for f in "${SEED_MISSING_FILES[@]}"; do
     log_add "$f"
   done
+
+  log_step "Scanning Scripts"
+
+  collect_stack_scripts "$stack" "$target" DRIFTED_SCRIPTS MISSING_SCRIPTS
+
+  if [ "${#DRIFTED_SCRIPTS[@]}" -eq 0 ] && [ "${#MISSING_SCRIPTS[@]}" -eq 0 ]; then
+    log_info "Up to date"
+  fi
+  for s in "${DRIFTED_SCRIPTS[@]}"; do
+    log_warn "$s (drifted)"
+  done
+  for s in "${MISSING_SCRIPTS[@]}"; do
+    log_add "$s"
+  done
+
+  SCRIPT_CHANGES=$((${#DRIFTED_SCRIPTS[@]} + ${#MISSING_SCRIPTS[@]}))
 
   log_step "Scanning Gitignore"
 
@@ -378,16 +450,20 @@ cmd_sync() {
   SEEDED_FILES=()
   SEED_MISSING_FILES=()
   GITIGNORE_MISSING_FILES=()
+  DRIFTED_SCRIPTS=()
+  MISSING_SCRIPTS=()
   REF_UPDATE_FILES=()
   REF_MISSING_FILES=()
   SEEN_CONFIGS=()
   SEEN_SEEDS=()
   SEEN_REFS=()
   SEEN_GITIGNORE=()
+  SEEN_SCRIPTS=()
   CONFIG_SOURCE_STACK=()
   CONFIG_CHANGES=0
   SEED_CHANGES=0
   GITIGNORE_CHANGES=0
+  SCRIPT_CHANGES=0
   REF_CHANGES=0
   TOTAL_CHANGES=0
 
@@ -404,6 +480,10 @@ cmd_sync() {
   if [ "${#NEW_FILES[@]}" -gt 0 ]; then
     [ -n "$summary" ] && summary+=", "
     summary+="${#NEW_FILES[@]} missing"
+  fi
+  if [ "$SCRIPT_CHANGES" -gt 0 ]; then
+    [ -n "$summary" ] && summary+=", "
+    summary+="${SCRIPT_CHANGES} scripts"
   fi
   if [ "${#GITIGNORE_MISSING_FILES[@]}" -gt 0 ]; then
     [ -n "$summary" ] && summary+=", "
