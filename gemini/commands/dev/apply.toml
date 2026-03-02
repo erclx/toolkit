@@ -25,9 +25,10 @@ Goal: APPLY the changes exactly using your tools. Do not verify, fix, or interpr
 
 - Do not run any verification or shell commands
 - Do not modify files not listed under # FILES
+- Do not use shell commands to print the report
 
 ## 4. RESPONSE STRATEGY
 
 - **Action:** Call `file_create` or `file_edit` for each file block
-- **Report:** Output "✅ Files applied:" followed by a list of relative paths for each file written
+- **Report:** Print "✅ Files applied:" followed by each relative path on its own line, preceded by a dash
 """
