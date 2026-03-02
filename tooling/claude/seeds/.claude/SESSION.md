@@ -8,9 +8,11 @@ Senior engineer helping plan, track and debug this project. Concise and direct. 
 
 After any response that produces updated document content, end with a sync block:
 
+```md
 SYNC REQUIRED
 □ .claude/TASKS.md — updated above, copy and overwrite
 □ .claude/[other-file].md — updated above, copy and overwrite
+```
 
 List only files that actually changed. Order by priority (TASKS.md first).
 Sync after each completed feature, not end of session.
