@@ -10,11 +10,11 @@ source "$PROJECT_ROOT/scripts/lib/ui.sh"
 show_help() {
   echo -e "${GREY}┌${NC}"
   log_step "Governance Sync Usage"
-  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} gdev gov sync [target-path]"
+  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} aitk gov sync [target-path]"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  Syncs rules already installed in the target project."
-  echo -e "${GREY}│${NC}  To add new rules, use 'gdev gov install' instead."
-  echo -e "${GREY}│${NC}  To sync standards, use 'gdev standards sync' instead."
+  echo -e "${GREY}│${NC}  To add new rules, use 'aitk gov install' instead."
+  echo -e "${GREY}│${NC}  To sync standards, use 'aitk standards sync' instead."
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Arguments:${NC}"
   echo -e "${GREY}│${NC}    target-path      ${GREY}# Target directory (default: current directory)${NC}"
@@ -44,7 +44,7 @@ collect_changes() {
   local target_rules_dir="$target_dir/.cursor/rules"
 
   if [ ! -d "$target_rules_dir" ]; then
-    log_warn "No .cursor/rules/ found in target. Run 'gdev gov install' first."
+    log_warn "No .cursor/rules/ found in target. Run 'aitk gov install' first."
     echo "0"
     return
   fi

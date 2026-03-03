@@ -10,7 +10,7 @@ source "$PROJECT_ROOT/scripts/lib/ui.sh"
 show_help() {
   echo -e "${GREY}┌${NC}"
   log_step "Tooling Usage"
-  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} gdev tooling [command] [stack] [target-path]"
+  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} aitk tooling [command] [stack] [target-path]"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Commands:${NC}"
   echo -e "${GREY}│${NC}    sync       ${GREY}# Sync configs, seeds, deps, and references (default)${NC}"
@@ -25,9 +25,9 @@ show_help() {
   echo -e "${GREY}│${NC}    -h, --help    ${GREY}# Show this help message${NC}"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Examples:${NC}"
-  echo -e "${GREY}│${NC}    gdev tooling base ."
-  echo -e "${GREY}│${NC}    gdev tooling ref vite-react ../my-app"
-  echo -e "${GREY}│${NC}    gdev tooling scaffold"
+  echo -e "${GREY}│${NC}    aitk tooling base ."
+  echo -e "${GREY}│${NC}    aitk tooling ref vite-react ../my-app"
+  echo -e "${GREY}│${NC}    aitk tooling scaffold"
   echo -e "${GREY}└${NC}"
   exit 0
 }

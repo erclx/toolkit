@@ -29,21 +29,21 @@ scripts/sandbox/
     └── changelog.sh   ← commit history scenario for testing /release:changelog
 ```
 
-All sandboxes provision into `.sandbox/` at the repo root. Git history initializes fresh each run. A `sandbox-baseline` tag marks the post-setup state for `gdev reset`.
+All sandboxes provision into `.sandbox/` at the repo root. Git history initializes fresh each run. A `sandbox-baseline` tag marks the post-setup state for `aitk reset`.
 
 ## Running
 
 ```bash
-gdev          # interactive category + command picker
-gdev reset    # restore sandbox to baseline
-gdev clean    # wipe sandbox entirely
+aitk          # interactive category + command picker
+aitk reset    # restore sandbox to baseline
+aitk clean    # wipe sandbox entirely
 ```
 
 After provisioning, your terminal cwd may need a refresh. Add this to `.zshrc` or `.bashrc`:
 
 ```bash
-gdev() {
-  command gdev "$@"
+aitk() {
+  command aitk "$@"
   cd .
 }
 ```

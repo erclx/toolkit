@@ -15,7 +15,7 @@ CLAUDE_MANIFEST="$PROJECT_ROOT/tooling/claude/manifest.toml"
 show_help() {
   echo -e "${GREY}┌${NC}"
   log_step "Claude Workflow"
-  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} gdev claude [command] [target-path]"
+  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} aitk claude [command] [target-path]"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Commands:${NC}"
   echo -e "${GREY}│${NC}    init      ${GREY}# Seed .claude/ workflow docs into a project${NC}"
@@ -28,9 +28,9 @@ show_help() {
   echo -e "${GREY}│${NC}    -h, --help    ${GREY}# Show this help message${NC}"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Examples:${NC}"
-  echo -e "${GREY}│${NC}    gdev claude init"
-  echo -e "${GREY}│${NC}    gdev claude init ../my-app"
-  echo -e "${GREY}│${NC}    gdev claude update ../my-app"
+  echo -e "${GREY}│${NC}    aitk claude init"
+  echo -e "${GREY}│${NC}    aitk claude init ../my-app"
+  echo -e "${GREY}│${NC}    aitk claude update ../my-app"
   echo -e "${GREY}└${NC}"
   exit 0
 }
@@ -177,7 +177,7 @@ cmd_update() {
   local dest="$target/.claude/SESSION.md"
 
   if [ ! -f "$dest" ]; then
-    log_error "SESSION.md not found at $target/.claude/. Run 'gdev claude init' first."
+    log_error "SESSION.md not found at $target/.claude/. Run 'aitk claude init' first."
   fi
 
   if diff -q "$CLAUDE_SEED" "$dest" >/dev/null 2>&1; then

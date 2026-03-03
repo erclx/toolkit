@@ -16,7 +16,7 @@ PLACEHOLDER="{{GOVERNANCE_RULES}}"
 show_help() {
   echo -e "${GREY}┌${NC}"
   log_step "Prompt Manager"
-  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} gdev prompt [command]"
+  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} aitk prompt [command]"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Commands:${NC}"
   echo -e "${GREY}│${NC}    generate    ${GREY}# Build master prompt from installed cursor rules${NC}"
@@ -25,14 +25,14 @@ show_help() {
   echo -e "${GREY}│${NC}    -h, --help  ${GREY}# Show this help message${NC}"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Prerequisites:${NC}"
-  echo -e "${GREY}│${NC}    Run 'gdev gov rules' first to install rules for your stack."
+  echo -e "${GREY}│${NC}    Run 'aitk gov rules' first to install rules for your stack."
   echo -e "${GREY}└${NC}"
   exit 0
 }
 
 check_dependencies() {
   if [ ! -d "$RULES_DIR" ] || ! ls "$RULES_DIR"/*.mdc >/dev/null 2>&1; then
-    log_error "No rules found at .cursor/rules/. Run 'gdev gov rules' first."
+    log_error "No rules found at .cursor/rules/. Run 'aitk gov rules' first."
   fi
 
   if [ ! -f "$TEMPLATE_FILE" ]; then

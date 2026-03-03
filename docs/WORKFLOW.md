@@ -8,7 +8,7 @@ A concise overview of all documents in the dev workflow, with tool mappings.
 
 All planning docs live in `.claude/` at the project root. Git tracked, part of the project, not throwaway notes.
 
-> **Setup:** Run `gdev claude init` in a new project to interactively seed this structure.
+> **Setup:** Run `aitk claude init` in a new project to interactively seed this structure.
 
 ```
 .claude/
@@ -111,9 +111,9 @@ Note: Gemini CLI is a file writer only via /dev:apply.
 
 | Stage                  | Tool            | Command / Note                                                           |
 | ---------------------- | --------------- | ------------------------------------------------------------------------ |
-| Scaffold .claude/      | gdev            | Interactively seed .claude/ docs and sync .gitignore                     |
+| Scaffold .claude/      | aitk            | Interactively seed .claude/ docs and sync .gitignore                     |
 | Planning (all docs)    | Claude chat     | Paste SESSION.md first; add REQUIREMENTS + ARCHITECTURE for new features |
-| Code generation        | Gemini pro chat | Master prompt via `gdev prompt`                                          |
+| Code generation        | Gemini pro chat | Master prompt via `aitk prompt`                                          |
 | Apply file changes     | Gemini CLI      | `/dev:apply` — file writer only, no planning                             |
 | Lint / format / tests  | bun scripts     | `bun run check`                                                          |
 | Fix failures           | Gemini chat     | Paste error in same session                                              |
@@ -122,12 +122,12 @@ Note: Gemini CLI is a file writer only via /dev:apply.
 | Commit message         | Gemini CLI      | `/git:commit`                                                            |
 | PR description         | Gemini CLI      | `/git:pr`                                                                |
 | Changelog              | Gemini CLI      | `/release:changelog`                                                     |
-| Prompt generation      | gdev            | `gdev prompt`                                                            |
-| Install gov rules      | gdev            | `gdev gov install [stack] [path]`                                        |
-| Sync gov rules         | gdev            | `gdev gov sync [path]`                                                   |
-| Install standards      | gdev            | `gdev standards install [path]`                                          |
-| Sync standards         | gdev            | `gdev standards sync [path]`                                             |
-| Install standards      | gdev            | `gdev standards install [path]`                                          |
-| Sync standards         | gdev            | `gdev standards sync [path]`                                             |
+| Prompt generation      | aitk            | `aitk prompt`                                                            |
+| Install gov rules      | aitk            | `aitk gov install [stack] [path]`                                        |
+| Sync gov rules         | aitk            | `aitk gov sync [path]`                                                   |
+| Install standards      | aitk            | `aitk standards install [path]`                                          |
+| Sync standards         | aitk            | `aitk standards sync [path]`                                             |
+| Install standards      | aitk            | `aitk standards install [path]`                                          |
+| Sync standards         | aitk            | `aitk standards sync [path]`                                             |
 
 > Gov rules apply to code generation and fix failures only.

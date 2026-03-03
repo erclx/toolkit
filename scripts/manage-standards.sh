@@ -12,7 +12,7 @@ STANDARDS_SOURCE="$PROJECT_ROOT/standards"
 show_help() {
   echo -e "${GREY}┌${NC}"
   log_step "Standards"
-  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} gdev standards [command] [target-path]"
+  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} aitk standards [command] [target-path]"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Commands:${NC}"
   echo -e "${GREY}│${NC}    install   ${GREY}# Copy all standards into a project (overwrites)${NC}"
@@ -25,8 +25,8 @@ show_help() {
   echo -e "${GREY}│${NC}    -h, --help    ${GREY}# Show this help message${NC}"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Examples:${NC}"
-  echo -e "${GREY}│${NC}    gdev standards install ../my-app"
-  echo -e "${GREY}│${NC}    gdev standards sync ../my-app"
+  echo -e "${GREY}│${NC}    aitk standards install ../my-app"
+  echo -e "${GREY}│${NC}    aitk standards sync ../my-app"
   echo -e "${GREY}└${NC}"
   exit 0
 }
@@ -98,7 +98,7 @@ collect_sync_changes() {
   local count=0
 
   if [ ! -d "$standards_target" ]; then
-    log_warn "No standards/ found in target. Run 'gdev standards install' first."
+    log_warn "No standards/ found in target. Run 'aitk standards install' first."
     echo "0"
     return
   fi
