@@ -59,7 +59,7 @@ Dependencies and scripts declared in `manifest.toml` under `[dependencies.dev]` 
 | `gdev tooling [stack] [path]`     | Full sync: configs, seeds, deps, gitignore                   |
 | `gdev tooling ref [stack] [path]` | Sync reference docs for a stack and its parents              |
 | `gdev tooling scaffold`           | Scaffold a new stack folder with stub manifest and reference |
-| `gdev claude init [path]`         | Seed `.claude/` workflow docs into a project                 |
+| `gdev claude init [path]`         | Seed `.claude/` workflow docs and sync .gitignore            |
 | `gdev claude update [path]`       | Diff `SESSION.md` against seed, offer to apply               |
 | `gdev`                            | Sandbox picker: provision and test scenarios                 |
 
