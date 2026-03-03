@@ -1,6 +1,6 @@
 # Workflow Documents Reference
 
-A concise overview of all documents in the dev workflow, with placeholders and tool mappings.
+A concise overview of all documents in the dev workflow, with tool mappings.
 
 > **Session note:** "Session start" = opening a new chat tab (new context window). New message in the same chat = no re-orientation needed. New chat tab = paste in this order: `SESSION.md` → `TASKS.md` → `PROJECT.md` → active feature context. Add `REQUIREMENTS.md` + `ARCHITECTURE.md` only when starting a brand new feature.
 
@@ -13,155 +13,33 @@ All planning docs live in `.claude/` at the project root. Git tracked, part of t
 ```
 .claude/
 ├── SESSION.md           ← session system prompt, paste first always
-├── REQUIREMENTS.md
-├── ARCHITECTURE.md
-├── TASKS.md
+├── REQUIREMENTS.md      ← project goals, non-goals, MVP scope
+├── ARCHITECTURE.md      ← technical design decisions and open questions
+├── DESIGN.md            ← color, typography, spacing, and motion decisions
+├── TASKS.md             ← persistent task tracker, source of truth for progress
+├── REVIEW.md            ← review prompt template, copy-paste into fresh chat
 └── PROJECT.md           ← ASCII tree only, auto-generated, gitignored
 ```
 
-## 1. `SESSION.md` — Session System Prompt
+## Documents
 
-> Created with: **Claude chat**, once per project. Paste this first every session.
+**`SESSION.md`** — System prompt for Claude. Defines role, sync format, output rules, and planning behavior. Paste first every session. Created once per project with Claude chat.
 
-```md
-# Claude: [Project Name]
+**`REQUIREMENTS.md`** — Project goals, non-goals, MVP scope, tech stack, and constraints. Created before any code with Claude chat.
 
-## Role
+**`ARCHITECTURE.md`** — Technical design decisions, folder structure, storage shape, and open risks. Created before any code with Claude chat.
 
-Senior engineer helping plan, track and debug this project. Concise and direct. No fluff.
+**`DESIGN.md`** — Color tokens, typography, spacing, border, and motion decisions. Created before UI implementation with Claude chat.
 
-## Sync
+**`TASKS.md`** — Persistent task tracker. Source of truth for what is in progress, up next, done, and blocked. Updated every session.
 
-After any response that produces updated document content, end with a sync block:
+**`REVIEW.md`** — Prompt template for per-feature code review. Open it, copy the template, fill in task, plan, and code, paste into a fresh chat.
 
-SYNC REQUIRED
-□ .claude/TASKS.md — updated above, copy and overwrite
-□ .claude/[other-file].md — updated above, copy and overwrite
+**`CHANGELOG.md`** — Release notes. Generated with `/release:changelog` after features are done.
 
-List only files that actually changed. Order by priority (TASKS.md first).
-Sync after each completed feature, not end of session.
+**`PROJECT.md`** — ASCII tree of the project structure. Auto-generated via `bun run snapshot`. Gitignored. Regenerate when structure changes.
 
-## Output
-
-- Output full updated file content only — no explanation around it.
-- Use the `present_files` tool for any file output — never write file contents inline into chat.
-
-## Planning
-
-- Clarify before planning. Use the `ask_user_input` tool — never prose questions.
-- Before modifying existing behavior, request relevant src files first.
-- For any feature with UI, generate ASCII wireframes before the todo list — layout and component hierarchy only, no decoration.
-- For every feature todo list, state test strategy explicitly: unit, integration, e2e, or none. Justify in one word.
-- Never offer to implement. Planning ends at synced docs; implementation happens in Gemini.
-
-## Debug
-
-- Diagnose fast, suggest fix, skip re-explaining the project.
-
-## Session Context
-
-[Fill in each session — e.g. "working on Feature C, verify failing with X error"]
-```
-
-## 2. `REQUIREMENTS.md` — Project Overview
-
-> Created with: **Claude chat**
-
-```md
-# [Project Name]
-
-## Problem
-
-[One paragraph: what problem this solves and for who]
-
-## Goals
-
-- [Goal 1]
-- [Goal 2]
-
-## Non-Goals
-
-- [What this explicitly does NOT do]
-
-## MVP Features (must have)
-
-- [ ] Feature A
-- [ ] Feature B
-- [ ] Feature C
-
-## Nice to Have (post-MVP)
-
-- [ ] Feature D
-- [ ] Feature E
-
-## Tech Stack
-
-- [Frontend / Extension / CLI / etc]
-- [Language, framework]
-- [Key libs]
-
-## Constraints
-
-- [e.g. no backend, local storage only, must work on X]
-```
-
-## 3. `ARCHITECTURE.md` — Technical Design
-
-> Created with: **Claude chat**. One-time spike before writing any code.
-
-```md
-# Architecture: [Project Name]
-
-## Overview
-
-[One paragraph describing the system]
-
-## Structure
-
-[Folder/module breakdown]
-src/
-├── [module-a]/ ← [what it does]
-├── [module-b]/ ← [what it does]
-└── [entry]
-
-## Key Technical Decisions
-
-- **[Decision 1]:** [chosen approach] — because [reason]
-- **[Decision 2]:** [chosen approach] — because [reason]
-
-## Risks / Open Questions
-
-- [ ] [Risk or unknown that needs validation]
-- [ ] [Tricky integration to prototype early]
-```
-
-## 4. `TASKS.md` — Persistent Task Tracker
-
-> Created with: **Claude chat**, updated manually or via Claude each session. Source of truth for what's done, in progress, and blocked.
-
-```md
-# Tasks: [Project Name]
-
-## In Progress
-
-- [ ] Feature B — [brief note on current status]
-
-## Up Next
-
-- [ ] Feature C
-- [ ] Feature D
-
-## Done
-
-- [x] Feature A
-- [x] Project setup
-
-## Blocked
-
-- [ ] Feature E — waiting on [reason]
-```
-
-## 5. The Core Implementation Loop
+## Core Implementation Loop
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -201,77 +79,50 @@ src/
           │ FAIL                    │ PASS
           ▼                         ▼
 ┌──────────────────┐    ┌──────────────────────────────┐
-│ Paste error back │    │ Mark todos done in TASKS.md   │
-│ into Gemini chat │    │ Update TASKS.md               │
-│ (same session,   │    │ → /git:commit                 │
-│ it has context)  │    │ → /git:pr                     │
-│                  │    │ Next feature                  │
-│ If design issue  │    └──────────────────────────────┘
-│ escalate to      │
-│ Claude chat      │
-└──────────────────┘
+│ Paste error back │    │         REVIEW                │
+│ into Gemini chat │    │  Fresh chat + REVIEW.md       │
+│ (same session,   │    │  template + task, plan, code  │
+│ it has context)  │    │  → findings report            │
+│                  │    │  → paste critical/should-fix  │
+│ If design issue  │    │    back to Gemini chat         │
+│ escalate to      │    │  → re-run bun run check       │
+│ Claude chat      │    └──────────────┬───────────────┘
+└──────────────────┘                   │
+                                       ▼
+                        ┌──────────────────────────────┐
+                        │  COMMIT                       │
+                        │  Mark todos done in TASKS.md  │
+                        │  → /git:commit                │
+                        │  → /git:pr                    │
+                        │  Next feature                 │
+                        └──────────────────────────────┘
 
 Feedback routing rule:
   verify fails  → Gemini chat (code problem, it has context)
   design fails  → Claude chat (planning problem)
+  review finds  → Gemini chat (same implementation session)
 
 Note: Gemini CLI is a file writer only via /dev:apply.
       All planning stays in Claude chat.
       All code generation stays in Gemini pro chat.
 ```
 
-## 6. `CHANGELOG.md` — Release Notes
-
-> Generated with: **/release:changelog** Gemini command
-
-```md
-# Changelog
-
-## [version] — YYYY-MM-DD
-
-### Added
-
-- [Feature A]
-
-### Fixed
-
-- [Bug fix]
-
-### Changed
-
-- [Behavior change]
-```
-
-## Document Creation Order
-
-```
-0. SESSION.md            ← Claude chat, once per project, paste first always
-1. REQUIREMENTS.md       ← Claude chat, before anything
-2. ARCHITECTURE.md       ← Claude chat, before any code
-3. TASKS.md              ← Claude chat, derived from requirements
-4. PROJECT.md            ← bun run snapshot, ASCII tree only, regenerate when structure changes
-5. Implementation loop   ← Gemini chat generates, /dev:apply writes files only
-6. CHANGELOG.md          ← /release:changelog after features done
-```
-
 ## Tool Mapping Summary
 
-| Stage                   | Tool                 | Gov rules? | Command / Note                                      |
-| ----------------------- | -------------------- | ---------- | --------------------------------------------------- |
-| Scaffold .claude/       | gdev                 | —          | `gdev claude init`                                  |
-| Project snapshot        | bun script           | —          | `bun run snapshot` — ASCII tree only, gitignored    |
-| Session orientation     | Claude chat          | No         | Paste SESSION.md first, every session               |
-| Requirements & planning | Claude chat          | No         | —                                                   |
-| Architecture design     | Claude chat          | No         | —                                                   |
-| Task tracking           | Claude chat + manual | No         | Paste TASKS.md every session after SESSION.md       |
-| Feature planning        | Claude chat          | No         | New feature: also paste REQUIREMENTS + ARCHITECTURE |
-| Code generation         | Gemini pro chat      | Yes        | Master prompt via `gdev prompt`                     |
-| Apply file changes      | Gemini CLI           | No         | `/dev:apply` — file writer only, no planning        |
-| Lint / format / tests   | bun scripts          | —          | `bun run check`                                     |
-| Fix failures            | Gemini chat          | Yes        | Paste error in same session                         |
-| Escalate design issues  | Claude chat          | No         | Paste error + relevant plan context                 |
-| Commit message          | Gemini CLI command   | —          | `/git:commit`                                       |
-| PR description          | Gemini CLI command   | —          | `/git:pr`                                           |
-| Changelog               | Gemini CLI command   | —          | `/release:changelog`                                |
-| Prompt generation       | gdev                 | —          | `gdev prompt`                                       |
-| Gov sync to project     | gdev                 | —          | `gdev gov sync [path]`                              |
+| Stage                  | Tool            | Command / Note                                                           |
+| ---------------------- | --------------- | ------------------------------------------------------------------------ |
+| Scaffold .claude/      | gdev            | `gdev claude init`                                                       |
+| Planning (all docs)    | Claude chat     | Paste SESSION.md first; add REQUIREMENTS + ARCHITECTURE for new features |
+| Code generation        | Gemini pro chat | Master prompt via `gdev prompt`                                          |
+| Apply file changes     | Gemini CLI      | `/dev:apply` — file writer only, no planning                             |
+| Lint / format / tests  | bun scripts     | `bun run check`                                                          |
+| Fix failures           | Gemini chat     | Paste error in same session                                              |
+| Feature review         | Fresh chat      | Copy REVIEW.md template, paste task + plan + code                        |
+| Escalate design issues | Claude chat     | Paste error + relevant plan context                                      |
+| Commit message         | Gemini CLI      | `/git:commit`                                                            |
+| PR description         | Gemini CLI      | `/git:pr`                                                                |
+| Changelog              | Gemini CLI      | `/release:changelog`                                                     |
+| Prompt generation      | gdev            | `gdev prompt`                                                            |
+| Gov sync to project    | gdev            | `gdev gov sync [path]`                                                   |
+
+> Gov rules apply to code generation and fix failures only.

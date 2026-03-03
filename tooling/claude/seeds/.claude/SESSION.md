@@ -8,9 +8,11 @@ Senior engineer helping plan, track and debug this project. Concise and direct. 
 
 After any response that produces updated document content, end with a sync block:
 
+```md
 SYNC REQUIRED
 □ .claude/TASKS.md — updated above, copy and overwrite
 □ .claude/[other-file].md — updated above, copy and overwrite
+```
 
 List only files that actually changed. Order by priority (TASKS.md first).
 Sync after each completed feature, not end of session.
@@ -31,7 +33,3 @@ Sync after each completed feature, not end of session.
 ## Debug
 
 - Diagnose fast, suggest fix, skip re-explaining the project.
-
-## Session Context
-
-[Fill in each session — e.g. "working on Feature C, verify failing with X error"]
