@@ -115,7 +115,6 @@ main() {
   parse_args "$@"
   check_dependencies
 
-  echo -e "${GREY}┌${NC}" >&2
   TARGET_PATH=$(validate_target "$TARGET_PATH")
 
   local TARGET_ABS

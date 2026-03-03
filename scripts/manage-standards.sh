@@ -177,8 +177,6 @@ main() {
     show_help
   fi
 
-  echo -e "${GREY}┌${NC}"
-
   local command="$1"
 
   if [ -z "$command" ]; then
