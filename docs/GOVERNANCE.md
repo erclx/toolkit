@@ -52,9 +52,10 @@ Standards cover developer workflow conventions, not code style. Current standard
 | --------------------------------- | ------------------------------------------------------- |
 | `gdev gov install [stack] [path]` | Bootstrap rules for a stack into a target project       |
 | `gdev gov sync [path]`            | Update rules already present in target (never adds new) |
-| `gdev standards sync [path]`      | Sync standards to a target project                      |
+| `gdev standards install [path]`   | Copy all standards into a target project (overwrites)   |
+| `gdev standards sync [path]`      | Update standards already present in target              |
 
-`gdev gov` with no args shows a picker: `install` or `sync`.
+`gdev gov` with no args shows a picker: `install` or `sync`. Same for `gdev standards`.
 
 ## Workflow
 
@@ -64,7 +65,7 @@ To set up a new project:
 gdev gov install react ../my-app
 # resolves react → node → base, copies all matching rules
 
-gdev standards sync ../my-app
+gdev standards install ../my-app
 # copies all standards into ../my-app/standards/
 ```
 
@@ -93,10 +94,11 @@ rules = ["200-react", "250-tailwind"]
 
 ## Adding a Standard
 
-Create a `.md` file in `standards/`. No build step needed. Standards sync directly via `gdev standards sync`.
+Create a `.md` file in `standards/`. No build step needed. Run `gdev standards install` to push to a new project or `gdev standards sync` to update an existing one.
 
 ## Notes
 
 - `gdev gov sync` diffs before applying and requires confirmation, so it is safe to run repeatedly.
-- `gdev standards sync` also diffs before applying and proposes new files not yet in the target.
+- `gdev standards install` overwrites all standards intentionally, mirroring `gdev gov install`.
+- `gdev standards sync` only updates files already present — never adds new ones.
 - Install overwrites existing rules intentionally. Delete rules you don't need after install rather than creating optional/addon complexity in stack definitions.
