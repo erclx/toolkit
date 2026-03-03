@@ -5,7 +5,7 @@ runtime = ""
 scaffold = ""
 
 [sync]
-source = "configs"
+source = "seeds"
 
 [gitignore]
-"# Gemini" = [".gemini/.tmp/"]
+"# Gemini" = [".gemini/.tmp/", ".gemini/settings.json"]
