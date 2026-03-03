@@ -11,24 +11,24 @@ source "$PROJECT_ROOT/scripts/lib/ui.sh"
 
 show_help() {
   echo -e "${GREY}┌${NC}"
-  log_step "Core Toolkit Orchestrator Help"
-  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC}"
-  echo -e "${GREY}│${NC}    aitk                  ${GREY}# Open interactive picker to generate a scenario${NC}"
-  echo -e "${GREY}│${NC}    aitk <cat>:<cmd>      ${GREY}# Generate a specific scenario${NC}"
-  echo -e "${GREY}│${NC}    aitk gov [command]    ${GREY}# Governance commands (install, sync)${NC}"
-  echo -e "${GREY}│${NC}    aitk standards [cmd]  ${GREY}# Standards commands (sync)${NC}"
-  echo -e "${GREY}│${NC}    aitk tooling <cmd>    ${GREY}# Manage tooling stacks and configs${NC}"
-  echo -e "${GREY}│${NC}    aitk reset            ${GREY}# Reset sandbox to initial state${NC}"
-  echo -e "${GREY}│${NC}    aitk clean            ${GREY}# Wipe the sandbox${NC}"
-  echo -e "${GREY}│${NC}    aitk cursor           ${GREY}# Setup cursor specific sandbox${NC}"
+  log_step "Sandbox"
+  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} aitk sandbox [cat:cmd]"
+  echo -e "${GREY}│${NC}"
+  echo -e "${GREY}│${NC}  ${WHITE}Arguments:${NC}"
+  echo -e "${GREY}│${NC}    cat:cmd   ${GREY}# Scenario to provision (e.g. git:commit)${NC}"
+  echo -e "${GREY}│${NC}"
+  echo -e "${GREY}│${NC}  ${WHITE}Commands:${NC}"
+  echo -e "${GREY}│${NC}    reset     ${GREY}# Reset sandbox to baseline${NC}"
+  echo -e "${GREY}│${NC}    clean     ${GREY}# Wipe the sandbox${NC}"
+  echo -e "${GREY}│${NC}"
+  echo -e "${GREY}│${NC}  ${WHITE}Options:${NC}"
+  echo -e "${GREY}│${NC}    -h, --help    ${GREY}# Show this help message${NC}"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Examples:${NC}"
-  echo -e "${GREY}│${NC}    aitk git:commit"
-  echo -e "${GREY}│${NC}    aitk gov install react"
-  echo -e "${GREY}│${NC}    aitk gov sync ../my-app"
-  echo -e "${GREY}│${NC}    aitk standards sync ../my-app"
-  echo -e "${GREY}│${NC}    aitk tooling sync base"
-  echo -e "${GREY}│${NC}    aitk reset"
+  echo -e "${GREY}│${NC}    aitk sandbox"
+  echo -e "${GREY}│${NC}    aitk sandbox git:commit"
+  echo -e "${GREY}│${NC}    aitk sandbox reset"
+  echo -e "${GREY}│${NC}    aitk sandbox clean"
   echo -e "${GREY}└${NC}"
   exit 0
 }
@@ -109,7 +109,7 @@ parse_command_argument() {
     _COMMAND="cursor"
   else
     if [[ "$input_arg" != *":"* ]]; then
-      log_error "Invalid format. Use <category>:<command>, 'gov', 'standards', 'clean', 'reset', 'cursor', 'tooling', or --help"
+      log_error "Invalid format. Use <category>:<command>, 'reset', 'clean', or --help"
     fi
     IFS=':' read -r _CATEGORY _COMMAND <<<"$input_arg"
   fi
@@ -290,7 +290,7 @@ reset_sandbox() {
   echo -e "${GREY}┌${NC}"
 
   if [ ! -d "$SANDBOX/.git" ]; then
-    log_error "No sandbox found. Run aitk first."
+    log_error "No sandbox found. Run aitk sandbox first."
   fi
 
   log_step "Checking Sandbox State"
@@ -299,7 +299,7 @@ reset_sandbox() {
   (cd "$SANDBOX" && git rev-parse sandbox-baseline >/dev/null 2>&1) && has_baseline=1
 
   if [ "$has_baseline" -eq 0 ]; then
-    log_error "No baseline found. Re-provision with aitk <cat>:<cmd>."
+    log_error "No baseline found. Re-provision with aitk sandbox <cat>:<cmd>."
   fi
 
   local is_dirty=0
@@ -356,31 +356,6 @@ reset_sandbox() {
 main() {
   if [[ "$1" == "-h" || "$1" == "--help" ]]; then
     show_help
-  fi
-
-  if [[ "$1" == "gov" ]]; then
-    shift
-    exec "$PROJECT_ROOT/scripts/manage-gov.sh" "$@"
-  fi
-
-  if [[ "$1" == "standards" ]]; then
-    shift
-    exec "$PROJECT_ROOT/scripts/manage-standards.sh" "$@"
-  fi
-
-  if [[ "$1" == "tooling" ]]; then
-    shift
-    exec "$PROJECT_ROOT/scripts/manage-tooling.sh" "$@"
-  fi
-
-  if [[ "$1" == "prompt" ]]; then
-    shift
-    exec "$PROJECT_ROOT/scripts/manage-prompts.sh" "$@"
-  fi
-
-  if [[ "$1" == "claude" ]]; then
-    shift
-    exec "$PROJECT_ROOT/scripts/manage-claude.sh" "$@"
   fi
 
   if [[ "$PWD" != "$PROJECT_ROOT"* ]]; then
