@@ -73,7 +73,7 @@ gdev gov sync ../my-app
 
 ## Adding a New Rule
 
-Create a `.mdc` file anywhere under `.cursor/rules/` using the numbering convention above, then run `gdev gov build`. It is auto-discovered with no other changes needed. To include it in a stack, add it to the `rules` array in the relevant `.cursor/stacks/*.toml` file.
+Create a `.mdc` file anywhere under `.cursor/rules/` using the numbering convention above. It is auto-discovered with no other changes needed. To include it in a stack, add it to the `rules` array in the relevant `.cursor/stacks/*.toml` file.
 
 ## Adding a Stack
 
