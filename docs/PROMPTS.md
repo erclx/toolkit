@@ -46,7 +46,7 @@ Output is ephemeral. `.gemini/.tmp/` and `.gemini/settings.json` are gitignored.
 Typical session setup:
 
 ```bash
-gdev gov sync ../my-app   # sync rules and standards to project
+gdev gov sync ../my-app   # sync rules to project
 gdev prompt               # confirm, generate
 ```
 

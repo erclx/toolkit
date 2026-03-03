@@ -25,9 +25,10 @@ Run `gdev` from the repo root.
 
 ### Standards
 
-| Command                      | Description                 |
-| ---------------------------- | --------------------------- |
-| `gdev standards sync [path]` | Sync standards to a project |
+| Command                         | Description                    |
+| ------------------------------- | ------------------------------ |
+| `gdev standards install [path]` | Install standards to a project |
+| `gdev standards sync [path]`    | Sync standards to a project    |
 
 ### Tooling
 
