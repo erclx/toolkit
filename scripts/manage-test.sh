@@ -13,22 +13,22 @@ show_help() {
   echo -e "${GREY}┌${NC}"
   log_step "Core Toolkit Orchestrator Help"
   echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC}"
-  echo -e "${GREY}│${NC}    gdev                  ${GREY}# Open interactive picker to generate a scenario${NC}"
-  echo -e "${GREY}│${NC}    gdev <cat>:<cmd>      ${GREY}# Generate a specific scenario${NC}"
-  echo -e "${GREY}│${NC}    gdev gov [command]    ${GREY}# Governance commands (install, sync)${NC}"
-  echo -e "${GREY}│${NC}    gdev standards [cmd]  ${GREY}# Standards commands (sync)${NC}"
-  echo -e "${GREY}│${NC}    gdev tooling <cmd>    ${GREY}# Manage tooling stacks and configs${NC}"
-  echo -e "${GREY}│${NC}    gdev reset            ${GREY}# Reset sandbox to initial state${NC}"
-  echo -e "${GREY}│${NC}    gdev clean            ${GREY}# Wipe the sandbox${NC}"
-  echo -e "${GREY}│${NC}    gdev cursor           ${GREY}# Setup cursor specific sandbox${NC}"
+  echo -e "${GREY}│${NC}    aitk                  ${GREY}# Open interactive picker to generate a scenario${NC}"
+  echo -e "${GREY}│${NC}    aitk <cat>:<cmd>      ${GREY}# Generate a specific scenario${NC}"
+  echo -e "${GREY}│${NC}    aitk gov [command]    ${GREY}# Governance commands (install, sync)${NC}"
+  echo -e "${GREY}│${NC}    aitk standards [cmd]  ${GREY}# Standards commands (sync)${NC}"
+  echo -e "${GREY}│${NC}    aitk tooling <cmd>    ${GREY}# Manage tooling stacks and configs${NC}"
+  echo -e "${GREY}│${NC}    aitk reset            ${GREY}# Reset sandbox to initial state${NC}"
+  echo -e "${GREY}│${NC}    aitk clean            ${GREY}# Wipe the sandbox${NC}"
+  echo -e "${GREY}│${NC}    aitk cursor           ${GREY}# Setup cursor specific sandbox${NC}"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Examples:${NC}"
-  echo -e "${GREY}│${NC}    gdev git:commit"
-  echo -e "${GREY}│${NC}    gdev gov install react"
-  echo -e "${GREY}│${NC}    gdev gov sync ../my-app"
-  echo -e "${GREY}│${NC}    gdev standards sync ../my-app"
-  echo -e "${GREY}│${NC}    gdev tooling sync base"
-  echo -e "${GREY}│${NC}    gdev reset"
+  echo -e "${GREY}│${NC}    aitk git:commit"
+  echo -e "${GREY}│${NC}    aitk gov install react"
+  echo -e "${GREY}│${NC}    aitk gov sync ../my-app"
+  echo -e "${GREY}│${NC}    aitk standards sync ../my-app"
+  echo -e "${GREY}│${NC}    aitk tooling sync base"
+  echo -e "${GREY}│${NC}    aitk reset"
   echo -e "${GREY}└${NC}"
   exit 0
 }
@@ -290,7 +290,7 @@ reset_sandbox() {
   echo -e "${GREY}┌${NC}"
 
   if [ ! -d "$SANDBOX/.git" ]; then
-    log_error "No sandbox found. Run gdev first."
+    log_error "No sandbox found. Run aitk first."
   fi
 
   log_step "Checking Sandbox State"
@@ -299,7 +299,7 @@ reset_sandbox() {
   (cd "$SANDBOX" && git rev-parse sandbox-baseline >/dev/null 2>&1) && has_baseline=1
 
   if [ "$has_baseline" -eq 0 ]; then
-    log_error "No baseline found. Re-provision with gdev <cat>:<cmd>."
+    log_error "No baseline found. Re-provision with aitk <cat>:<cmd>."
   fi
 
   local is_dirty=0

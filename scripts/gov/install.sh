@@ -13,7 +13,7 @@ RULES_SOURCE_DIR="$PROJECT_ROOT/.cursor/rules"
 show_help() {
   echo -e "${GREY}┌${NC}"
   log_step "Governance Install"
-  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} gdev gov install [stack] [target-path]"
+  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} aitk gov install [stack] [target-path]"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Arguments:${NC}"
   echo -e "${GREY}│${NC}    stack         Name of the stack to install (e.g., base, node, react)"
@@ -23,8 +23,8 @@ show_help() {
   echo -e "${GREY}│${NC}    -h, --help    ${GREY}# Show this help message${NC}"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Examples:${NC}"
-  echo -e "${GREY}│${NC}    gdev gov install react"
-  echo -e "${GREY}│${NC}    gdev gov install node ../my-app"
+  echo -e "${GREY}│${NC}    aitk gov install react"
+  echo -e "${GREY}│${NC}    aitk gov install node ../my-app"
   echo -e "${GREY}└${NC}"
   exit 0
 }

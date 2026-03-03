@@ -48,5 +48,5 @@ stage_setup() {
   log_step "SCENARIO READY: $selected scaffold"
   log_info "Location: .sandbox/sandbox-scaffold/"
   log_info "Raw upstream template — no golden configs applied"
-  log_info "Run 'gdev clean' to wipe when done"
+  log_info "Run 'aitk clean' to wipe when done"
 }

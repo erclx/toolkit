@@ -14,50 +14,50 @@ gemini extensions link ./gemini
 
 ## CLI
 
-Run `gdev` from the repo root.
+Run `aitk` from the repo root.
 
 ### Governance
 
 | Command                           | Description                                |
 | --------------------------------- | ------------------------------------------ |
-| `gdev gov install [stack] [path]` | Bootstrap rules for a stack into a project |
-| `gdev gov sync [path]`            | Update existing rules in a project         |
+| `aitk gov install [stack] [path]` | Bootstrap rules for a stack into a project |
+| `aitk gov sync [path]`            | Update existing rules in a project         |
 
 ### Standards
 
 | Command                         | Description                    |
 | ------------------------------- | ------------------------------ |
-| `gdev standards install [path]` | Install standards to a project |
-| `gdev standards sync [path]`    | Sync standards to a project    |
+| `aitk standards install [path]` | Install standards to a project |
+| `aitk standards sync [path]`    | Sync standards to a project    |
 
 ### Tooling
 
 | Command                           | Description                                                        |
 | --------------------------------- | ------------------------------------------------------------------ |
-| `gdev tooling [stack] [path]`     | Sync golden configs, seeds, deps, and .gitignore                   |
-| `gdev tooling ref [stack] [path]` | Sync reference docs for a stack and its parents                    |
-| `gdev tooling scaffold`           | Scaffold a new stack with stub manifest, reference, configs, seeds |
+| `aitk tooling [stack] [path]`     | Sync golden configs, seeds, deps, and .gitignore                   |
+| `aitk tooling ref [stack] [path]` | Sync reference docs for a stack and its parents                    |
+| `aitk tooling scaffold`           | Scaffold a new stack with stub manifest, reference, configs, seeds |
 
 ### Prompts
 
 | Command       | Description                                        |
 | ------------- | -------------------------------------------------- |
-| `gdev prompt` | Generate a chat master prompt from installed rules |
+| `aitk prompt` | Generate a chat master prompt from installed rules |
 
 ### Claude
 
 | Command              | Description                                                   |
 | -------------------- | ------------------------------------------------------------- |
-| `gdev claude init`   | Interactively seed .claude/ workflow docs and sync .gitignore |
-| `gdev claude update` | Diff SESSION.md against seed and offer to apply               |
+| `aitk claude init`   | Interactively seed .claude/ workflow docs and sync .gitignore |
+| `aitk claude update` | Diff SESSION.md against seed and offer to apply               |
 
 ### Sandbox
 
 | Command      | Description                                      |
 | ------------ | ------------------------------------------------ |
-| `gdev`       | Interactive sandbox picker for testing scenarios |
-| `gdev reset` | Restore sandbox to baseline                      |
-| `gdev clean` | Wipe sandbox                                     |
+| `aitk`       | Interactive sandbox picker for testing scenarios |
+| `aitk reset` | Restore sandbox to baseline                      |
+| `aitk clean` | Wipe sandbox                                     |
 
 ## Agent Commands
 

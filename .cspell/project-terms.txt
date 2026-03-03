@@ -1,7 +1,8 @@
 agentic
+aitk
 arch
-bradlc
 behaviour
+bradlc
 bunx
 changelog
 codenames

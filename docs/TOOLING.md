@@ -38,7 +38,7 @@ Configs are golden files and the source of truth. On sync they always overwrite 
 
 Seeds are user-owned files that grow with the project. Dictionary files (`.cspell/`) accumulate project-specific terms over time. Workflow docs (`.claude/`) are seeded once and never touched by tooling again. Sync appends only what's missing and never overwrites. Stacks ship seeds pre-populated with terms they introduce, such as `shellcheck` and `vitest`.
 
-References are `reference.md` files synced to `tooling/<stack>.md` in target projects. They are AI audit context. Sync them with `gdev tooling ref`, which respects the extends chain.
+References are `reference.md` files synced to `tooling/<stack>.md` in target projects. They are AI audit context. Sync them with `aitk tooling ref`, which respects the extends chain.
 
 Gitignore entries are declared in `manifest.toml` under `[gitignore]` as named groups. They merge automatically on sync. The process is additive only; existing entries are never touched.
 
@@ -52,36 +52,36 @@ Dependencies and scripts declared in `manifest.toml` under `[dependencies.dev]` 
 
 | Command                           | What it does                                                 |
 | --------------------------------- | ------------------------------------------------------------ |
-| `gdev gov install [stack] [path]` | Bootstrap rules for a stack into a project                   |
-| `gdev gov sync [path]`            | Update rules already present in target (never adds new)      |
-| `gdev standards install [path]`   | Copy all standards into a target project (overwrites)        |
-| `gdev standards sync [path]`      | Update standards already present in target                   |
-| `gdev tooling [stack] [path]`     | Full sync: configs, seeds, deps, gitignore                   |
-| `gdev tooling ref [stack] [path]` | Sync reference docs for a stack and its parents              |
-| `gdev tooling scaffold`           | Scaffold a new stack folder with stub manifest and reference |
-| `gdev claude init [path]`         | Seed `.claude/` workflow docs and sync .gitignore            |
-| `gdev claude update [path]`       | Diff `SESSION.md` against seed, offer to apply               |
-| `gdev`                            | Sandbox picker: provision and test scenarios                 |
+| `aitk gov install [stack] [path]` | Bootstrap rules for a stack into a project                   |
+| `aitk gov sync [path]`            | Update rules already present in target (never adds new)      |
+| `aitk standards install [path]`   | Copy all standards into a target project (overwrites)        |
+| `aitk standards sync [path]`      | Update standards already present in target                   |
+| `aitk tooling [stack] [path]`     | Full sync: configs, seeds, deps, gitignore                   |
+| `aitk tooling ref [stack] [path]` | Sync reference docs for a stack and its parents              |
+| `aitk tooling scaffold`           | Scaffold a new stack folder with stub manifest and reference |
+| `aitk claude init [path]`         | Seed `.claude/` workflow docs and sync .gitignore            |
+| `aitk claude update [path]`       | Diff `SESSION.md` against seed, offer to apply               |
+| `aitk`                            | Sandbox picker: provision and test scenarios                 |
 
 ## Common Workflows
 
-Sync to a fresh project: `gdev tooling` → sync → pick stack → enter path.
+Sync to a fresh project: `aitk tooling` → sync → pick stack → enter path.
 
-Scaffold a new stack: `gdev tooling scaffold` → enter name → stub structure created in `tooling/<name>/`.
+Scaffold a new stack: `aitk tooling scaffold` → enter name → stub structure created in `tooling/<name>/`.
 
 ## Testing
 
-Each stack has a sandbox at `scripts/sandbox/tooling/<stack>.sh`. Run via `gdev` → tooling → pick scenario. The sandbox provisions a project, injects configs and seeds, installs deps, and runs the full `verify.sh` pipeline. It catches config typos, version incompatibilities, and missing dictionary terms.
+Each stack has a sandbox at `scripts/sandbox/tooling/<stack>.sh`. Run via `aitk` → tooling → pick scenario. The sandbox provisions a project, injects configs and seeds, installs deps, and runs the full `verify.sh` pipeline. It catches config typos, version incompatibilities, and missing dictionary terms.
 
 ## Adding a New Stack
 
-1. Run `gdev tooling scaffold` to generate the stub structure
+1. Run `aitk tooling scaffold` to generate the stub structure
 2. Add golden config files to `tooling/<n>/configs/`
 3. Add pre-populated seed files to `tooling/<n>/seeds/`
 4. Fill in `manifest.toml` with `extends`, deps, scripts, and optionally `[gitignore]`
 5. Fill in `reference.md` with prose documentation
 6. Create `scripts/sandbox/tooling/<n>.sh`: inject configs, seeds, manifest, run verify
-7. Test via `gdev` → tooling → `<n>`
+7. Test via `aitk` → tooling → `<n>`
 
 Sync auto-discovers the new stack.
 

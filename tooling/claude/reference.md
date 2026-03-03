@@ -26,5 +26,5 @@ The claude stack seeds the `.claude/` workflow directory into a project.
 
 | Command              | What it does                                             |
 | -------------------- | -------------------------------------------------------- |
-| `gdev claude init`   | Seeds `.claude/` workflow docs, updates `.gitignore`     |
-| `gdev claude update` | Diffs `SESSION.md` against seed, offers to apply changes |
+| `aitk claude init`   | Seeds `.claude/` workflow docs, updates `.gitignore`     |
+| `aitk claude update` | Diffs `SESSION.md` against seed, offers to apply changes |

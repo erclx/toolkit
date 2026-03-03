@@ -8,7 +8,7 @@ The prompt system generates master prompts by injecting installed governance rul
 
 ````
 scripts/
-├── manage-prompts.sh               ← entry point (gdev prompt)
+├── manage-prompts.sh               ← entry point (aitk prompt)
 └── templates/
     └── master-prompt-chat.template ← for chat interface sessions
 ```
@@ -24,11 +24,11 @@ Output writes to the target project at runtime:
 
 ## Key Decisions
 
-Rules come from the target project, not the toolkit. `gdev prompt` reads `.cursor/rules/` in the current working directory. Run `gdev gov sync` in the target project first to install the relevant rule set before generating a prompt.
+Rules come from the target project, not the toolkit. `aitk prompt` reads `.cursor/rules/` in the current working directory. Run `aitk gov sync` in the target project first to install the relevant rule set before generating a prompt.
 
 A single template serves the chat workflow. `master-prompt-chat.template` assumes a human is the executor, structuring output as `# FILES / # VERIFY` blocks intended to be pasted into `apply.toml` for file application.
 
-Prompts inject rules only. Standards sync separately via `gdev standards sync` and are not included in generated prompts. Frontmatter is stripped from each `.mdc` file, rules are concatenated with separators, and the payload replaces `{{GOVERNANCE_RULES}}`.
+Prompts inject rules only. Standards sync separately via `aitk standards sync` and are not included in generated prompts. Frontmatter is stripped from each `.mdc` file, rules are concatenated with separators, and the payload replaces `{{GOVERNANCE_RULES}}`.
 
 Output is ephemeral. `.gemini/.tmp/` and `.gemini/settings.json` are gitignored. The master prompt is regenerated per session, reflects whatever rules are currently installed, and can be edited mid-session without affecting the source rules.
 
@@ -36,18 +36,18 @@ Output is ephemeral. `.gemini/.tmp/` and `.gemini/settings.json` are gitignored.
 
 | Command                | What it does                                     |
 | ---------------------- | ------------------------------------------------ |
-| `gdev prompt`          | Generate a master prompt using the chat template |
-| `gdev prompt generate` | Same as `gdev prompt`                            |
+| `aitk prompt`          | Generate a master prompt using the chat template |
+| `aitk prompt generate` | Same as `aitk prompt`                            |
 
-`gdev prompt` lists installed rules, then asks for confirmation before generating.
+`aitk prompt` lists installed rules, then asks for confirmation before generating.
 
 ## Workflow
 
 Typical session setup:
 
 ```bash
-gdev gov sync ../my-app   # sync rules to project
-gdev prompt               # confirm, generate
+aitk gov sync ../my-app   # sync rules to project
+aitk prompt               # confirm, generate
 ```
 
 For chat sessions, copy `.gemini/.tmp/master-prompt.md` as the system prompt in your chat interface. After the model responds with `# FILES / # VERIFY` blocks, apply the output with:
@@ -62,7 +62,7 @@ Templates live in `scripts/templates/`. Each must contain the `{{GOVERNANCE_RULE
 
 ## Notes
 
-- Run `gdev gov sync` before `gdev prompt` when switching projects or stacks.
+- Run `aitk gov sync` before `aitk prompt` when switching projects or stacks.
 - The generated prompt includes raw rule content, so review it before a sensitive session.
 - Add `.gemini/.tmp/` and `.gemini/settings.json` to `.gitignore` if missing.
 ````

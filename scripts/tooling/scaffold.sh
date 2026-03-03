@@ -10,7 +10,7 @@ source "$PROJECT_ROOT/scripts/lib/ui.sh"
 show_help() {
   echo -e "${GREY}┌${NC}"
   log_step "Tooling Scaffold Usage"
-  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} gdev tooling scaffold [stack]"
+  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} aitk tooling scaffold [stack]"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  Scaffolds a new stack with stub manifest, reference, configs, and seeds."
   echo -e "${GREY}│${NC}"

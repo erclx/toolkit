@@ -18,7 +18,7 @@ declare -A CONFIG_SOURCE_STACK
 show_help() {
   echo -e "${GREY}┌${NC}"
   log_step "Tooling Sync Usage"
-  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} gdev tooling sync [stack] [target-path]"
+  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} aitk tooling sync [stack] [target-path]"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  Syncs configs, seeds, deps, scripts, and gitignore entries."
   echo -e "${GREY}│${NC}"

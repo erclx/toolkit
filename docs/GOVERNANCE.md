@@ -14,8 +14,8 @@ scripts/
 ├── gov/
 │   ├── install.sh      ← bootstraps rules for a stack into a target project
 │   └── sync.sh         ← syncs existing rules to external projects
-├── manage-gov.sh       ← entry point (gdev gov)
-└── manage-standards.sh ← entry point (gdev standards)
+├── manage-gov.sh       ← entry point (aitk gov)
+└── manage-standards.sh ← entry point (aitk standards)
 ```
 
 ## Key Decisions
@@ -32,7 +32,7 @@ Rules follow a numbering scheme by domain. When adding a rule, pick a number in 
 | `300–399` | lib (testing libs, Zod, TanStack, security, etc.)  |
 | `900+`    | workflow (Node, tooling, etc.)                     |
 
-**Install vs sync** are separate concerns. `gdev gov install` bootstraps a project with all rules for a given stack — it overwrites. `gdev gov sync` updates rules already present in the target — it never adds new files. Use install once to set up, use sync to keep up to date.
+**Install vs sync** are separate concerns. `aitk gov install` bootstraps a project with all rules for a given stack — it overwrites. `aitk gov sync` updates rules already present in the target — it never adds new files. Use install once to set up, use sync to keep up to date.
 
 Stacks live in `.cursor/stacks/` as toml files. Each stack declares an optional `extends` chain and a flat `rules` list. The extends chain resolves recursively, so `react` → `node` → `base` and the full deduplicated rule set is installed. This mirrors the same pattern used by tooling manifests.
 
@@ -51,32 +51,32 @@ Standards cover developer workflow conventions, not code style. Current standard
 
 | Command                           | What it does                                            |
 | --------------------------------- | ------------------------------------------------------- |
-| `gdev gov install [stack] [path]` | Bootstrap rules for a stack into a target project       |
-| `gdev gov sync [path]`            | Update rules already present in target (never adds new) |
-| `gdev standards install [path]`   | Copy all standards into a target project (overwrites)   |
-| `gdev standards sync [path]`      | Update standards already present in target              |
+| `aitk gov install [stack] [path]` | Bootstrap rules for a stack into a target project       |
+| `aitk gov sync [path]`            | Update rules already present in target (never adds new) |
+| `aitk standards install [path]`   | Copy all standards into a target project (overwrites)   |
+| `aitk standards sync [path]`      | Update standards already present in target              |
 
-`gdev gov` with no args shows a picker: `install` or `sync`. Same for `gdev standards`.
+`aitk gov` with no args shows a picker: `install` or `sync`. Same for `aitk standards`.
 
 ## Workflow
 
 To set up a new project:
 
 ```bash
-gdev gov install react ../my-app
+aitk gov install react ../my-app
 # resolves react → node → base, copies all matching rules
 
-gdev standards install ../my-app
+aitk standards install ../my-app
 # copies all standards into ../my-app/standards/
 ```
 
 To sync updates to an existing project:
 
 ```bash
-gdev gov sync ../my-app
+aitk gov sync ../my-app
 # only diffs rules already present — never adds new files
 
-gdev standards sync ../my-app
+aitk standards sync ../my-app
 # diffs standards already present, proposes new ones too
 ```
 
@@ -95,11 +95,11 @@ rules = ["200-react", "250-tailwind"]
 
 ## Adding a Standard
 
-Create a `.md` file in `standards/`. No build step needed. Run `gdev standards install` to push to a new project or `gdev standards sync` to update an existing one.
+Create a `.md` file in `standards/`. No build step needed. Run `aitk standards install` to push to a new project or `aitk standards sync` to update an existing one.
 
 ## Notes
 
-- `gdev gov sync` diffs before applying and requires confirmation, so it is safe to run repeatedly.
-- `gdev standards install` overwrites all standards intentionally, mirroring `gdev gov install`.
-- `gdev standards sync` only updates files already present — never adds new ones.
+- `aitk gov sync` diffs before applying and requires confirmation, so it is safe to run repeatedly.
+- `aitk standards install` overwrites all standards intentionally, mirroring `aitk gov install`.
+- `aitk standards sync` only updates files already present — never adds new ones.
 - Install overwrites existing rules intentionally. Delete rules you don't need after install rather than creating optional/addon complexity in stack definitions.
