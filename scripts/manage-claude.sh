@@ -44,11 +44,10 @@ validate_target() {
   fi
 }
 
-seed_claude_docs() {
+collect_seeds() {
   local target="$1"
+  local -n _pending=$2
   local dest_dir="$target/.claude"
-
-  mkdir -p "$dest_dir"
 
   while IFS= read -r file; do
     local name
@@ -56,12 +55,28 @@ seed_claude_docs() {
     local dest="$dest_dir/$name"
 
     if [ -f "$dest" ]; then
-      log_info "${GREY}Exists:  .claude/$name${NC}"
+      log_info "$name"
     else
-      cp "$file" "$dest"
-      log_add ".claude/$name"
+      log_add "$name"
+      _pending+=("$file")
     fi
   done < <(find "$CLAUDE_SEEDS_DIR" -maxdepth 1 -type f | sort)
+}
+
+apply_seeds() {
+  local target="$1"
+  shift
+  local files=("$@")
+  local dest_dir="$target/.claude"
+
+  mkdir -p "$dest_dir"
+
+  for file in "${files[@]}"; do
+    local name
+    name=$(basename "$file")
+    cp "$file" "$dest_dir/$name"
+    log_add ".claude/$name"
+  done
 }
 
 cmd_init() {
@@ -69,8 +84,30 @@ cmd_init() {
 
   validate_target "$target"
 
-  log_step "Seeding .claude/"
-  seed_claude_docs "$target"
+  local pending=()
+
+  log_step "Scanning .claude/"
+  collect_seeds "$target" pending
+
+  if [ "${#pending[@]}" -eq 0 ]; then
+    echo -e "${GREY}│${NC}" >&2
+    log_step "Updating .gitignore"
+    merge_gitignore "claude" "$target"
+    echo -e "${GREY}└${NC}\n"
+    echo -e "${GREEN}✓ Claude workflow ready${NC}"
+    return
+  fi
+
+  select_option "Seed ${#pending[@]} file(s) to .claude/?" "Yes" "No"
+
+  if [ "$SELECTED_OPTION" = "No" ]; then
+    log_warn "Cancelled"
+    echo -e "${GREY}└${NC}"
+    exit 0
+  fi
+
+  log_step "Applying Changes"
+  apply_seeds "$target" "${pending[@]}"
 
   log_step "Updating .gitignore"
   merge_gitignore "claude" "$target"
