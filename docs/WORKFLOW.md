@@ -35,6 +35,15 @@ All planning docs live in `.claude/` at the project root. Git tracked, part of t
 
 **`REVIEW.md`** — Prompt template for per-feature code review. Copy the template, paste the full Gemini response into the single placeholder, send to a fresh chat.
 
+## Prompt Generation
+
+`aitk claude prompt` generates the master implementation prompt for code generation.
+
+- Reads `.claude/IMPLEMENTER.md` as the template
+- Injects all `.mdc` files from `.cursor/rules/` into `{{GOVERNANCE_RULES}}`
+- Writes output to `.claude/.tmp/IMPLEMENTER.md` — paste into Gemini chat to start a session
+- Run `aitk gov sync` first when switching stacks
+
 ## Core Implementation Loop
 
 ```
@@ -123,14 +132,5 @@ Note: Gemini CLI is a file writer only via /dev:apply.
 | Sync gov rules         | aitk              | `aitk gov sync [path]`                                                              |
 | Install standards      | aitk              | `aitk standards install [path]`                                                     |
 | Sync standards         | aitk              | `aitk standards sync [path]`                                                        |
-
-## Prompt Generation
-
-The `aitk claude prompt` command generates the master implementation prompt for code generation. It combines a template with the full set of installed governance rules.
-
-- **Command**: `aitk claude prompt`
-- **Template**: Reads from `.claude/IMPLEMENTER.md`, which contains the static system prompt instructions.
-- **Rules**: Injects all `.mdc` files from `.cursor/rules/` into the `{{GOVERNANCE_RULES}}` placeholder in the template.
-- **Output**: Writes the final combined prompt to `.claude/.tmp/IMPLEMENTER.md`, ready to be pasted into a Gemini chat.
 
 > Gov rules apply to code generation and fix failures only.
