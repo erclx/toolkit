@@ -35,8 +35,6 @@ All planning docs live in `.claude/` at the project root. Git tracked, part of t
 
 **`REVIEW.md`** — Prompt template for per-feature code review. Copy the template, paste the full Gemini response into the single placeholder, send to a fresh chat.
 
-**`CHANGELOG.md`** — Release notes. Generated with `/release:changelog` after features are done.
-
 ## Core Implementation Loop
 
 ```
