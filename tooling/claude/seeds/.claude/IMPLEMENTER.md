@@ -8,9 +8,7 @@ All output must comply with the governance rules below without exception.
 
 ## GOVERNANCE RULES
 
-````md
 {{GOVERNANCE_RULES}}
-````
 
 ## CONSTRAINTS
 
