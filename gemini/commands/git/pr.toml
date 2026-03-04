@@ -64,6 +64,6 @@ Context: {{args}}
 mkdir -p .gemini/.tmp && (cat <<'EOF' > .gemini/.tmp/pr-body.md
 <Body content generated strictly following the template in PR_STANDARDS>
 EOF
-) && gh pr create --title "<title>" --body-file .gemini/.tmp/pr-body.md --draft && rm .gemini/.tmp/pr-body.md
+) && gh pr create --title "<title>" --body-file .gemini/.tmp/pr-body.md --draft && rm .gemini/.tmp/pr-body.md && echo "Link: $(gh pr view --json url -q .url)"
 ```
 """
