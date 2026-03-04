@@ -8,7 +8,9 @@ All output must comply with the governance rules below without exception.
 
 ## GOVERNANCE RULES
 
+```md
 {{GOVERNANCE_RULES}}
+```
 
 ## CONSTRAINTS
 
@@ -29,32 +31,46 @@ All output must comply with the governance rules below without exception.
 
 ## INPUT FORMAT
 
-## Current Tasks
+### TASKS
 
-[PASTE TASKS.md]
+```md
+{{TASKS}}
+```
 
-## Feature Plan
+### REQUIREMENTS
 
-[PASTE FEATURE PLAN AND TODO LIST]
+```md
+{{REQUIREMENTS}}
+```
 
-## Source Code Context
+### ARCHITECTURE
 
+```md
+{{ARCHITECTURE}}
+```
+
+### SOURCE
+
+```md
 [PASTE RELEVANT SOURCE FILES]
+```
 
 ## RESPONSE FORMAT
 
-# TASK
+````md
+### TASK
 
 [restate the task from TASKS.md in one sentence]
 
-# PLAN
+### PLAN
 
 [restate the feature plan steps you are implementing]
 
-# FILES
+### FILES
 
 File: path/to/file.ext
 
 ```language
 [complete file content]
 ```
+````

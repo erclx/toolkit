@@ -20,7 +20,9 @@ Do not fix, rewrite, or suggest refactors outside the scope of the finding.
 
 ## INPUT
 
+```md
 [PASTE GEMINI RESPONSE]
+```
 
 ## OUTPUT FORMAT
 
