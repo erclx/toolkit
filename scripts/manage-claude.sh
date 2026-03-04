@@ -173,7 +173,7 @@ cmd_update() {
 
   validate_target "$target"
 
-  local managed=("SESSION.md" "REVIEW.md" "IMPLEMENTER.md")
+  local managed=("SESSION.md" "REVIEWER.md" "IMPLEMENTER.md")
   local seeded=("ARCHITECTURE.md" "REQUIREMENTS.md" "TASKS.md" "DESIGN.md")
   local drifted=()
 

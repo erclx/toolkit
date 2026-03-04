@@ -17,7 +17,7 @@ All planning docs live in `.claude/` at the project root. Git tracked, part of t
 ├── ARCHITECTURE.md      ← technical design decisions and open questions
 ├── DESIGN.md            ← color, typography, spacing, and motion decisions (UI projects only)
 ├── TASKS.md             ← persistent task tracker, source of truth for progress
-├── REVIEW.md            ← review prompt template, copy-paste into fresh chat
+├── REVIEWER.md          ← review prompt template, copy-paste into fresh chat
 └── IMPLEMENTER.md       ← master prompt template, read by aitk claude prompt
 ```
 
@@ -33,7 +33,7 @@ All planning docs live in `.claude/` at the project root. Git tracked, part of t
 
 **`TASKS.md`** — Persistent task tracker. Source of truth for what is in progress, up next, done, and blocked. Updated every session.
 
-**`REVIEW.md`** — Prompt template for per-feature code review. Copy the template, paste the full Gemini response into `[PASTE GEMINI RESPONSE]`, send to a fresh chat. Managed by `aitk`; use `aitk claude update` to sync.
+**`REVIEWER.md`** — Prompt template for per-feature code review. Copy the template, paste the full Gemini response into `[PASTE GEMINI RESPONSE]`, send to a fresh chat. Managed by `aitk`; use `aitk claude update` to sync.
 
 ## Prompt Generation
 
@@ -44,7 +44,7 @@ All planning docs live in `.claude/` at the project root. Git tracked, part of t
 - Auto-injects current content of `TASKS.md`, `REQUIREMENTS.md`, and `ARCHITECTURE.md` from `.claude/`
 - Leaves `## Source Code Context` as `[PASTE RELEVANT SOURCE FILES]` — fill manually using your editor extension
 - Writes output to `.claude/.tmp/IMPLEMENTER.md` — paste into Gemini chat to start a session
-- Copies `REVIEW.md` to `.claude/.tmp/REVIEW.md` — scratch copy for pasting Gemini responses
+- Copies `REVIEWER.md` to `.claude/.tmp/REVIEWER.md` — scratch copy for pasting Gemini responses
 - Run `aitk gov sync` first when switching stacks
 
 ## Core Implementation Loop
@@ -81,7 +81,7 @@ All planning docs live in `.claude/` at the project root. Git tracked, part of t
 ┌─────────────────────────────────────────────────────┐
 │  REVIEW                                              │
 │  Copy full Gemini response                           │
-│  Open REVIEW.md → paste response into               │
+│  Open REVIEWER.md → paste response into               │
 │  [PASTE GEMINI RESPONSE]                             │
 │  Paste into fresh Gemini chat                        │
 │  → findings report (critical / should-fix / minor)  │
@@ -127,7 +127,7 @@ Note: Gemini CLI is a file writer only via /dev:apply.
 | Generate master prompt | aitk claude       | `aitk claude prompt` — injects rules + auto-injects TASKS, REQUIREMENTS, ARCHITECTURE; paste source context manually |
 | Code generation        | Gemini pro chat   | Paste .tmp/IMPLEMENTER.md, fill SOURCE with relevant files                                                           |
 | Apply file changes     | Gemini CLI        | `/dev:apply` — file writer only, no planning                                                                         |
-| Feature review         | Fresh Gemini chat | Copy REVIEW.md template, paste full Gemini response into [PASTE GEMINI RESPONSE]                                     |
+| Feature review         | Fresh Gemini chat | Copy REVIEWER.md template, paste full Gemini response into [PASTE GEMINI RESPONSE]                                   |
 | Fix findings           | Gemini chat       | Paste critical/should-fix back into original session                                                                 |
 | Lint / format / tests  | bun scripts       | `bun run check`                                                                                                      |
 | Escalate design issues | Claude chat       | Paste error + relevant plan context                                                                                  |
