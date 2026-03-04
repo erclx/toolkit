@@ -140,7 +140,6 @@ cmd_init() {
   local total=$((${#pending[@]} + ${#gi_pending[@]}))
 
   if [ "$total" -eq 0 ]; then
-    log_info "Everything up to date"
     return
   fi
 
