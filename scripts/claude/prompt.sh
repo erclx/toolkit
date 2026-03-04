@@ -11,8 +11,6 @@ RULES_DIR="$PWD/.cursor/rules"
 TEMPLATE_FILE="$PWD/.claude/IMPLEMENTER.md"
 OUTPUT_DIR="$PWD/.claude/.tmp"
 OUTPUT_FILE="$OUTPUT_DIR/IMPLEMENTER.md"
-PLACEHOLDER="{{GOVERNANCE_RULES}}"
-SOURCE_PLACEHOLDER="[PASTE RELEVANT SOURCE FILES]"
 CLAUDE_DIR="$PWD/.claude"
 
 show_help() {
@@ -22,7 +20,7 @@ show_help() {
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  Generates master prompt from installed cursor rules."
   echo -e "${GREY}│${NC}  Reads template from .claude/IMPLEMENTER.md in cwd."
-  echo -e "${GREY}│${NC}  Writes output to .claude/.tmp/master-prompt.md."
+  echo -e "${GREY}│${NC}  Writes output to .claude/.tmp/IMPLEMENTER.md."
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Prerequisites:${NC}"
   echo -e "${GREY}│${NC}    Run 'aitk claude init' to seed IMPLEMENTER.md"
@@ -92,60 +90,50 @@ build_rules_payload() {
   echo "$payload_file"
 }
 
-inject_into_template() {
-  local payload_file="$1"
-
-  local split_line
-  split_line=$(grep -n -F "$PLACEHOLDER" "$TEMPLATE_FILE" | cut -d: -f1)
-
-  if [ -z "$split_line" ]; then
-    log_error "Placeholder $PLACEHOLDER not found in .claude/IMPLEMENTER.md."
-  fi
-
-  local head_lines=$((split_line - 1))
-
-  mkdir -p "$OUTPUT_DIR"
-
-  head -n "$head_lines" "$TEMPLATE_FILE" >"$OUTPUT_FILE"
-  cat "$payload_file" >>"$OUTPUT_FILE"
-  echo "" >>"$OUTPUT_FILE"
-  tail -n +$((split_line + 1)) "$TEMPLATE_FILE" >>"$OUTPUT_FILE"
-}
-
-inject_context_files() {
-  local context_files=("TASKS.md" "REQUIREMENTS.md" "ARCHITECTURE.md")
-  local source_line
-
-  source_line=$(grep -n -F "$SOURCE_PLACEHOLDER" "$OUTPUT_FILE" | cut -d: -f1)
-
-  if [ -z "$source_line" ]; then
-    return
-  fi
-
+substitute_placeholder() {
+  local placeholder="$1"
+  local content_file="$2"
   local tmp_file
   tmp_file=$(mktemp)
 
-  head -n $((source_line - 1)) "$OUTPUT_FILE" >"$tmp_file"
+  local split_line
+  split_line=$(grep -n -F "$placeholder" "$OUTPUT_FILE" | cut -d: -f1)
 
-  for name in "${context_files[@]}"; do
-    local src="$CLAUDE_DIR/$name"
-    local section="${name%.md}"
+  if [ -z "$split_line" ]; then
+    rm "$tmp_file"
+    return
+  fi
 
-    if [ ! -f "$src" ]; then
-      log_warn "$name not found — skipping"
-      continue
-    fi
-
-    echo "" >>"$tmp_file"
-    echo "## $section" >>"$tmp_file"
-    echo "" >>"$tmp_file"
-    cat "$src" >>"$tmp_file"
-    echo "" >>"$tmp_file"
-    log_info "$name"
-  done
-
-  tail -n +"$source_line" "$OUTPUT_FILE" >>"$tmp_file"
+  head -n $((split_line - 1)) "$OUTPUT_FILE" >"$tmp_file"
+  cat "$content_file" >>"$tmp_file"
+  echo "" >>"$tmp_file"
+  tail -n +$((split_line + 1)) "$OUTPUT_FILE" >>"$tmp_file"
   mv "$tmp_file" "$OUTPUT_FILE"
+}
+
+inject_placeholder_file() {
+  local name="$1"
+  local placeholder="$2"
+  local src="$CLAUDE_DIR/$name"
+
+  if [ ! -f "$src" ]; then
+    log_warn "$name not found — skipping"
+    return
+  fi
+
+  substitute_placeholder "$placeholder" "$src"
+  log_info "$name"
+}
+
+build_output() {
+  local payload_file
+  payload_file=$(build_rules_payload)
+
+  mkdir -p "$OUTPUT_DIR"
+  cp "$TEMPLATE_FILE" "$OUTPUT_FILE"
+
+  substitute_placeholder "{{GOVERNANCE_RULES}}" "$payload_file"
+  rm "$payload_file"
 }
 
 main() {
@@ -172,15 +160,12 @@ main() {
     exit 0
   fi
 
-  local payload_file
-  payload_file=$(build_rules_payload)
-
-  inject_into_template "$payload_file"
-  rm "$payload_file"
+  build_output
 
   log_step "Injecting Context"
-
-  inject_context_files
+  inject_placeholder_file "TASKS.md" "{{TASKS}}"
+  inject_placeholder_file "REQUIREMENTS.md" "{{REQUIREMENTS}}"
+  inject_placeholder_file "ARCHITECTURE.md" "{{ARCHITECTURE}}"
 
   log_step "Output"
   log_info ".claude/.tmp/IMPLEMENTER.md"
