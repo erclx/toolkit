@@ -9,7 +9,6 @@ source "$PROJECT_ROOT/scripts/lib/ui.sh"
 source "$PROJECT_ROOT/scripts/lib/inject.sh"
 
 CLAUDE_SEEDS_DIR="$PROJECT_ROOT/tooling/claude/seeds/.claude"
-CLAUDE_SEED="$CLAUDE_SEEDS_DIR/SESSION.md"
 CLAUDE_MANIFEST="$PROJECT_ROOT/tooling/claude/manifest.toml"
 
 show_help() {
@@ -174,32 +173,60 @@ cmd_update() {
 
   validate_target "$target"
 
-  local dest="$target/.claude/SESSION.md"
+  local drifted=()
+  local current=()
 
-  if [ ! -f "$dest" ]; then
-    log_error "SESSION.md not found at $target/.claude/. Run \`aitk claude init\` first."
-  fi
+  while IFS= read -r file; do
+    local name
+    name=$(basename "$file")
+    local dest="$target/.claude/$name"
 
-  if diff -q "$CLAUDE_SEED" "$dest" >/dev/null 2>&1; then
-    log_info "SESSION.md"
+    if [ ! -f "$dest" ]; then
+      log_warn "$name not found in target — run \`aitk claude init\` first"
+      continue
+    fi
+
+    if diff -q "$file" "$dest" >/dev/null 2>&1; then
+      log_info "$name"
+      current+=("$name")
+    else
+      log_warn "$name"
+      drifted+=("$name")
+    fi
+  done < <(find "$CLAUDE_SEEDS_DIR" -maxdepth 1 -type f | sort)
+
+  if [ "${#drifted[@]}" -eq 0 ]; then
     echo -e "${GREY}└${NC}"
-    echo -e "${GREEN}✓ Claude up to date${NC}"
+    echo -e "${GREEN}✓ Claude workflow up to date${NC}"
     exit 0
   fi
 
-  log_step "Reviewing Changes"
-  code --diff "$CLAUDE_SEED" "$dest"
+  select_option "Apply ${#drifted[@]} update(s)?" "Review diffs" "Apply all" "Cancel"
 
-  select_option "Apply updated SESSION.md?" "Yes" "No"
-
-  if [ "$SELECTED_OPTION" = "No" ]; then
-    log_warn "Update cancelled"
+  case "$SELECTED_OPTION" in
+  "Review diffs")
+    for file in "${drifted[@]}"; do
+      code --diff "$CLAUDE_SEEDS_DIR/$file" "$target/.claude/$file"
+    done
+    select_option "Apply ${#drifted[@]} update(s)?" "Apply all" "Cancel"
+    [ "$SELECTED_OPTION" = "Cancel" ] && {
+      log_warn "Cancelled"
+      echo -e "${GREY}└${NC}"
+      exit 0
+    }
+    ;;
+  "Cancel")
+    log_warn "Cancelled"
     echo -e "${GREY}└${NC}"
     exit 0
-  fi
+    ;;
+  esac
 
-  cp "$CLAUDE_SEED" "$dest"
-  log_add "SESSION.md"
+  log_step "Applying Changes"
+  for file in "${drifted[@]}"; do
+    cp "$CLAUDE_SEEDS_DIR/$file" "$target/.claude/$file"
+    log_add ".claude/$file"
+  done
 }
 
 main() {
@@ -227,7 +254,7 @@ main() {
   update)
     cmd_update "$@"
     echo -e "${GREY}└${NC}\n"
-    echo -e "${GREEN}✓ Claude updated${NC}"
+    echo -e "${GREEN}✓ Claude workflow updated${NC}"
     ;;
   prompt)
     exec "$PROJECT_ROOT/scripts/claude/prompt.sh" "$@"
