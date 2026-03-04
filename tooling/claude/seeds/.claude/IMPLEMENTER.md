@@ -29,25 +29,17 @@ All output must comply with the governance rules below without exception.
 
 ## CONTEXT
 
-### TASKS
-
 <tasks>
 {{TASKS}}
 </tasks>
-
-### REQUIREMENTS
 
 <requirements>
 {{REQUIREMENTS}}
 </requirements>
 
-### ARCHITECTURE
-
 <architecture>
 {{ARCHITECTURE}}
 </architecture>
-
-### SOURCE
 
 <source>
 [PASTE RELEVANT SOURCE FILES]
@@ -75,9 +67,4 @@ File: path/to/file.ext
 ### COMMANDS
 
 [optional — list install or setup commands to run manually]
-
-```bash
-[package-manager] [install-command]
-[setup-command]
-```
 ````
