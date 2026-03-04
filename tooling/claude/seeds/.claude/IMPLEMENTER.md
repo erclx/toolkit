@@ -27,31 +27,31 @@ All output must comply with the governance rules below without exception.
 - Do not return partial files or placeholder comments.
 - Do not add functionality not requested.
 
-## INPUT FORMAT
+## CONTEXT
 
 ### TASKS
 
-````md
+```md
 {{TASKS}}
-````
+```
 
 ### REQUIREMENTS
 
-````md
+```md
 {{REQUIREMENTS}}
-````
+```
 
 ### ARCHITECTURE
 
-````md
+```md
 {{ARCHITECTURE}}
-````
+```
 
 ### SOURCE
 
-````md
+```md
 [PASTE RELEVANT SOURCE FILES]
-````
+```
 
 ## RESPONSE FORMAT
 
