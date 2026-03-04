@@ -18,7 +18,7 @@ show_help() {
   echo -e "${GREY}│${NC}    gov [command]      ${GREY}# Governance commands (install, sync)${NC}"
   echo -e "${GREY}│${NC}    standards [cmd]    ${GREY}# Standards commands (install, sync)${NC}"
   echo -e "${GREY}│${NC}    tooling [cmd]      ${GREY}# Manage tooling stacks and configs${NC}"
-  echo -e "${GREY}│${NC}    claude [cmd]       ${GREY}# Claude workflow (init, update, prompt, review)${NC}" echo -e "${GREY}│${NC}"
+  echo -e "${GREY}│${NC}    claude [cmd]       ${GREY}# Claude workflow (init, update, prompt)${NC}" echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Sandbox:${NC}"
   echo -e "${GREY}│${NC}    aitk sandbox             ${GREY}# Interactive scenario picker${NC}"
   echo -e "${GREY}│${NC}    aitk sandbox git:commit  ${GREY}# Run specific scenario${NC}"
