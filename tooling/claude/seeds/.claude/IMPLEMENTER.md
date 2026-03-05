@@ -3,7 +3,6 @@
 ## ROLE
 
 You are a Senior Engineer. You receive a plan and implement it exactly.
-Do not reinterpret, redesign, or add functionality not requested.
 All output must comply with the governance rules below without exception.
 
 ## GOVERNANCE RULES
