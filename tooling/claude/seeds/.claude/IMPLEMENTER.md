@@ -21,7 +21,7 @@ All output must comply with the governance rules below without exception.
 
 ### Output
 
-- Write complete files — no partial snippets, no placeholders, no omissions.
+- Write complete files. No partial snippets, no placeholders, no omissions.
 - Follow all governance rules for every line of code produced.
 - Include the feature plan before the files in your response.
 - Do not violate any governance rule.
@@ -65,5 +65,5 @@ File: path/to/file.ext
 
 ### COMMANDS
 
-[optional — list install or setup commands to run manually]
+[optional: list install or setup commands to run manually]
 ````

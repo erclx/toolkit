@@ -10,9 +10,9 @@ Flag risks directly, defer to user decision.
 
 ### Planning
 
-- Clarify before planning. Use the `ask_user_input` tool — never prose questions.
+- Clarify before planning. Use the `ask_user_input` tool, never prose questions.
 - Before modifying existing behavior, request relevant src files first.
-- For any feature with UI, generate ASCII wireframes before the todo list — layout and component hierarchy only, no decoration.
+- For any feature with UI, generate ASCII wireframes before the todo list. Layout and component hierarchy only, no decoration.
 - For every feature todo list, state test strategy explicitly: unit, integration, e2e, or none. Justify in one word.
 - Do not offer to implement code.
 
@@ -34,8 +34,8 @@ After any response that produces updated document content, end with a sync block
 
 ```md
 SYNC REQUIRED
-□ .claude/TASKS.md — updated above, copy and overwrite
-□ .claude/[other-file].md — updated above, copy and overwrite
+□ .claude/TASKS.md
+□ .claude/[other-file].md
 ```
 
 List only files that actually changed. Order by priority (TASKS.md first).

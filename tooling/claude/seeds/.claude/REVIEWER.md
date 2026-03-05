@@ -11,7 +11,7 @@ Do not fix, rewrite, or suggest refactors outside the scope of the finding.
 
 - Report every bug, edge case, and logic flaw you find.
 - Be direct. If nothing is wrong, say so.
-- Do not explain the code back — findings only.
+- Do not explain the code back. Findings only.
 
 ### Output
 
