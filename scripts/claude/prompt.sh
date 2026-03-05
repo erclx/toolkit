@@ -8,9 +8,9 @@ PROJECT_ROOT="${PROJECT_ROOT:-$(dirname "$(dirname "$SCRIPT_DIR")")}"
 source "$PROJECT_ROOT/scripts/lib/ui.sh"
 
 RULES_DIR="$PWD/.cursor/rules"
-TEMPLATE_FILE="$PWD/.claude/IMPLEMENTER.md"
+IMPLEMENTER_TEMPLATE="$PWD/.claude/IMPLEMENTER.md"
+PLANNER_TEMPLATE="$PWD/.claude/PLANNER.md"
 OUTPUT_DIR="$PWD/.claude/.tmp"
-OUTPUT_FILE="$OUTPUT_DIR/IMPLEMENTER.md"
 CLAUDE_DIR="$PWD/.claude"
 
 show_help() {
@@ -18,13 +18,13 @@ show_help() {
   log_step "Claude Prompt"
   echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} aitk claude prompt"
   echo -e "${GREY}│${NC}"
-  echo -e "${GREY}│${NC}  Generates master prompt from installed cursor rules."
-  echo -e "${GREY}│${NC}  Reads template from .claude/IMPLEMENTER.md in cwd."
-  echo -e "${GREY}│${NC}  Writes output to .claude/.tmp/IMPLEMENTER.md."
+  echo -e "${GREY}│${NC}  Generates master prompts from installed cursor rules."
+  echo -e "${GREY}│${NC}  Reads templates from .claude/PLANNER.md and .claude/IMPLEMENTER.md."
+  echo -e "${GREY}│${NC}  Writes output to .claude/.tmp/."
   echo -e "${GREY}│${NC}  Copies REVIEWER.md to .claude/.tmp/REVIEWER.md."
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Prerequisites:${NC}"
-  echo -e "${GREY}│${NC}    Run 'aitk claude init' to seed IMPLEMENTER.md"
+  echo -e "${GREY}│${NC}    Run 'aitk claude init' to seed PLANNER.md and IMPLEMENTER.md"
   echo -e "${GREY}│${NC}    Run 'aitk gov sync' to install rules for your stack"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Options:${NC}"
@@ -38,8 +38,12 @@ check_dependencies() {
     log_error "No rules found at .cursor/rules/. Run \`aitk gov install\` first."
   fi
 
-  if [ ! -f "$TEMPLATE_FILE" ]; then
+  if [ ! -f "$IMPLEMENTER_TEMPLATE" ]; then
     log_error "IMPLEMENTER.md not found at .claude/IMPLEMENTER.md. Run \`aitk claude init\` first."
+  fi
+
+  if [ ! -f "$PLANNER_TEMPLATE" ]; then
+    log_error "PLANNER.md not found at .claude/PLANNER.md. Run \`aitk claude init\` first."
   fi
 }
 
@@ -97,50 +101,64 @@ build_rules_payload() {
 substitute_placeholder() {
   local placeholder="$1"
   local content_file="$2"
+  local target_file="$3"
   local tmp_file
   tmp_file=$(mktemp)
 
   local split_line
-  split_line=$(grep -n -F "$placeholder" "$OUTPUT_FILE" | cut -d: -f1)
+  split_line=$(grep -n -F "$placeholder" "$target_file" | cut -d: -f1)
 
   if [ -z "$split_line" ]; then
     rm "$tmp_file"
     return
   fi
 
-  head -n $((split_line - 1)) "$OUTPUT_FILE" >"$tmp_file"
+  head -n $((split_line - 1)) "$target_file" >"$tmp_file"
   cat "$content_file" >>"$tmp_file"
-  tail -n +$((split_line + 1)) "$OUTPUT_FILE" >>"$tmp_file"
-  mv "$tmp_file" "$OUTPUT_FILE"
+  tail -n +$((split_line + 1)) "$target_file" >>"$tmp_file"
+  mv "$tmp_file" "$target_file"
 }
 
 inject_placeholder_file() {
   local name="$1"
   local placeholder="$2"
+  local target_file="$3"
   local src="$CLAUDE_DIR/$name"
 
   if [ ! -f "$src" ]; then
-    log_warn "$name not found — skipping"
+    log_warn "$name not found, skipping"
     return
   fi
 
-  substitute_placeholder "$placeholder" "$src"
+  substitute_placeholder "$placeholder" "$src" "$target_file"
   log_info "$name"
 }
 
-build_output() {
+build_implementer() {
   local payload_file
   payload_file=$(build_rules_payload)
 
-  mkdir -p "$OUTPUT_DIR"
-  cp "$TEMPLATE_FILE" "$OUTPUT_FILE"
+  local output_file="$OUTPUT_DIR/IMPLEMENTER.md"
+  cp "$IMPLEMENTER_TEMPLATE" "$output_file"
 
-  substitute_placeholder "{{GOVERNANCE_RULES}}" "$payload_file"
+  substitute_placeholder "{{GOVERNANCE_RULES}}" "$payload_file" "$output_file"
   rm "$payload_file"
 
-  if [ -f "$CLAUDE_DIR/REVIEWER.md" ]; then
-    cp "$CLAUDE_DIR/REVIEWER.md" "$OUTPUT_DIR/REVIEWER.md"
-  fi
+  log_step "Injecting Implementer Context"
+  inject_placeholder_file "TASKS.md" "{{TASKS}}" "$output_file"
+  inject_placeholder_file "REQUIREMENTS.md" "{{REQUIREMENTS}}" "$output_file"
+  inject_placeholder_file "ARCHITECTURE.md" "{{ARCHITECTURE}}" "$output_file"
+}
+
+build_planner() {
+  local output_file="$OUTPUT_DIR/PLANNER.md"
+  cp "$PLANNER_TEMPLATE" "$output_file"
+
+  log_step "Injecting Planner Context"
+  inject_placeholder_file "TASKS.md" "{{TASKS}}" "$output_file"
+  inject_placeholder_file "REQUIREMENTS.md" "{{REQUIREMENTS}}" "$output_file"
+  inject_placeholder_file "ARCHITECTURE.md" "{{ARCHITECTURE}}" "$output_file"
+  inject_placeholder_file "DESIGN.md" "{{DESIGN}}" "$output_file"
 }
 
 main() {
@@ -159,7 +177,7 @@ main() {
     log_info "$(basename "$file")"
   done < <(find "$RULES_DIR" -type f -name "*.mdc" | sort)
 
-  select_option "Generate master prompt from $count rules?" "Yes" "No"
+  select_option "Generate master prompts from $count rules?" "Yes" "No"
 
   if [ "$SELECTED_OPTION" = "No" ]; then
     log_warn "Cancelled"
@@ -167,14 +185,17 @@ main() {
     exit 0
   fi
 
-  build_output
+  mkdir -p "$OUTPUT_DIR"
 
-  log_step "Injecting Context"
-  inject_placeholder_file "TASKS.md" "{{TASKS}}"
-  inject_placeholder_file "REQUIREMENTS.md" "{{REQUIREMENTS}}"
-  inject_placeholder_file "ARCHITECTURE.md" "{{ARCHITECTURE}}"
+  build_planner
+  build_implementer
+
+  if [ -f "$CLAUDE_DIR/REVIEWER.md" ]; then
+    cp "$CLAUDE_DIR/REVIEWER.md" "$OUTPUT_DIR/REVIEWER.md"
+  fi
 
   log_step "Output"
+  log_info ".claude/.tmp/PLANNER.md"
   log_info ".claude/.tmp/IMPLEMENTER.md"
   log_info ".claude/.tmp/REVIEWER.md"
 
