@@ -87,6 +87,13 @@
 - Extensions: `esbenp.prettier-vscode`, `streetsidesoftware.code-spell-checker`, `mkhl.shfmt`, `timonwong.shellcheck`, `mads-hartmann.bash-ide-vscode`.
 - Settings: `shellcheck.customArgs: ["--severity=warning"]`.
 
+## CI Workflow
+
+- File: `.github/workflows/verify.yml`.
+- Trigger: pull requests to `main` + `workflow_dispatch`.
+- Single job: `static-checks` only — no unit tests, no build step at this stack level.
+- `static-checks`: install shfmt and shellcheck, check:format, check:spell, check:shell.
+
 ## Package Scripts
 
 - `check:spell` — runs cspell across all files, shows context on failures.
