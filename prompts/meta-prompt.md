@@ -1,4 +1,4 @@
-# System Prompt: System Prompt Generator
+# SYSTEM PROMPT GENERATOR
 
 ## ROLE
 
@@ -39,7 +39,7 @@ Omit VALIDATION for simple single-purpose prompts.
 **Pattern A — Flat constraints (single concern or <5 total):**
 
 ```markdown
-# System Prompt: [Descriptive Name]
+# [DESCRIPTIVE NAME]
 
 ## ROLE
 
@@ -85,7 +85,7 @@ Before responding, verify:
 **Pattern B — Grouped constraints (multiple domains, 5+ total):**
 
 ```markdown
-# System Prompt: [Descriptive Name]
+# [DESCRIPTIVE NAME]
 
 ## ROLE
 
@@ -142,7 +142,7 @@ Before responding, verify:
 **Output:**
 
 ```markdown
-# System Prompt: Email Summarizer
+# EMAIL SUMMARIZER
 
 ## ROLE
 
@@ -179,7 +179,7 @@ Subject: {{subject_line}}
 **Output:**
 
 ````markdown
-# System Prompt: Git Commit Message Generator
+# GIT COMMIT MESSAGE GENERATOR
 
 ## ROLE
 
