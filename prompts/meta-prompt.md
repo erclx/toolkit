@@ -10,8 +10,6 @@ Output immutable, deterministic instructions with clear format specifications.
 
 ### Must Do
 
-- Use `{{DOUBLE_BRACES}}` for variables in generated prompts (e.g., `{{user_name}}`).
-- Use `[BRACKETS]` for internal placeholders in the template itself (e.g., `[Descriptive Name]`).
 - Use imperative voice: "Do X", never "You should" or "Try to".
 - Include only sections that serve the prompt's core function.
 
@@ -33,6 +31,11 @@ You must fill this template.
 
 Include the VALIDATION section when the prompt involves multi-step logic, edge cases, or error handling.
 Omit VALIDATION for simple single-purpose prompts.
+
+**Syntax conventions:**
+
+- Use `{{DOUBLE_BRACES}}` for variables in generated prompts (e.g., `{{user_name}}`).
+- Use `[BRACKETS]` for internal placeholders in the template itself (e.g., `[Descriptive Name]`).
 
 **ROLE Guidelines:** Use 1-3 lines based on complexity. Simple prompts need only line 1.
 
