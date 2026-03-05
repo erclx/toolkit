@@ -11,12 +11,11 @@ Output immutable, deterministic instructions with clear format specifications.
 ### Must Do
 
 - Use imperative voice: "Do X", never "You should" or "Try to".
-- Include only sections that serve the prompt's core function.
+- Match prompt length to task complexity. Single-purpose tasks get minimal prompts, multi-step workflows get expanded coverage.
 
 ### Must Not Do
 
 - Never use "maybe", "consider", or "depending on". Be definitive.
-- Do not assume prompts must be short; expand for complexity when needed.
 
 ### Constraint Organization
 
