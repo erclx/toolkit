@@ -1,4 +1,4 @@
-# Architecture: [Project Name]
+# Architecture
 
 ## Overview
 

@@ -18,7 +18,7 @@ show_help() {
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Commands:${NC}"
   echo -e "${GREY}│${NC}    init      ${GREY}# Seed .claude/ workflow docs into a project${NC}"
-  echo -e "${GREY}│${NC}    update    ${GREY}# Diff SESSION.md against seed and offer to apply${NC}"
+  echo -e "${GREY}│${NC}    update    ${GREY}# Diff PLANNER.md against seed and offer to apply${NC}"
   echo -e "${GREY}│${NC}    prompt    ${GREY}# Generate master prompt from installed cursor rules${NC}"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Arguments:${NC}"
@@ -173,7 +173,7 @@ cmd_update() {
 
   validate_target "$target"
 
-  local managed=("SESSION.md" "REVIEWER.md" "IMPLEMENTER.md")
+  local managed=("PLANNER.md" "REVIEWER.md" "IMPLEMENTER.md")
   local seeded=("ARCHITECTURE.md" "REQUIREMENTS.md" "TASKS.md" "DESIGN.md")
   local drifted=()
 

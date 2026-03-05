@@ -1,4 +1,4 @@
-# Design: [Project Name]
+# Design
 
 ## Personality
 

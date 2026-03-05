@@ -1,4 +1,4 @@
-# Requirements: [Project Name]
+# Requirements
 
 ## Problem
 
