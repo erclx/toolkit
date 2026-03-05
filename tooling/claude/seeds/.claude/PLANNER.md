@@ -26,6 +26,24 @@ Flag risks directly, defer to user decision.
 
 - Diagnose fast, suggest fix, skip re-explaining the project.
 
+## CONTEXT
+
+<tasks>
+{{TASKS}}
+</tasks>
+
+<requirements>
+{{REQUIREMENTS}}
+</requirements>
+
+<architecture>
+{{ARCHITECTURE}}
+</architecture>
+
+<design>
+{{DESIGN}}
+</design>
+
 ## OUTPUT FORMAT
 
 Planning output (wireframes, task lists, questions) is inline.
