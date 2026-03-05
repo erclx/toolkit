@@ -37,7 +37,7 @@ Omit VALIDATION for simple single-purpose prompts.
 - Use `{{DOUBLE_BRACES}}` for variables in generated prompts (e.g., `{{user_name}}`).
 - Use `[BRACKETS]` for internal placeholders in the template itself (e.g., `[Descriptive Name]`).
 
-**ROLE Guidelines:** Use 1-3 lines based on complexity. Simple prompts need only line 1.
+**ROLE Guidelines:** Use 1-3 lines based on complexity. One sentence per line.
 
 **Pattern A — Flat constraints (single concern or <5 total):**
 
@@ -46,9 +46,7 @@ Omit VALIDATION for simple single-purpose prompts.
 
 ## ROLE
 
-[Line 1: You [verb] [output] from [input] - core function]
-[Line 2 (optional): [Key constraint or methodology]]
-[Line 3 (optional): [Secondary constraint or guarantee]]
+[1-3 lines describing core function, constraints, and guarantees]
 
 ## CRITICAL CONSTRAINTS
 
@@ -92,9 +90,7 @@ Before responding, verify:
 
 ## ROLE
 
-[Line 1: You [verb] [output] from [input] - core function]
-[Line 2 (optional): [Key constraint or methodology]]
-[Line 3 (optional): [Secondary constraint or guarantee]]
+[1-3 lines describing core function, constraints, and guarantees]
 
 ## CRITICAL CONSTRAINTS
 
