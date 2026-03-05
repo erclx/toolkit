@@ -106,10 +106,9 @@ substitute_placeholder() {
   tmp_file=$(mktemp)
 
   local split_line
-  split_line=$(grep -n -F "$placeholder" "$target_file" | cut -d: -f1)
+  split_line=$(grep -n -F "$placeholder" "$target_file" | cut -d: -f1 || true)
 
   if [ -z "$split_line" ]; then
-    log_warn "$placeholder not found in template, run \`aitk claude sync\`"
     rm "$tmp_file"
     return
   fi
@@ -128,6 +127,11 @@ inject_placeholder_file() {
 
   if [ ! -f "$src" ]; then
     log_warn "$name not found, skipping"
+    return
+  fi
+
+  if ! grep -qF "$placeholder" "$target_file" 2>/dev/null; then
+    log_warn "$placeholder not found in template, skipping $name"
     return
   fi
 
@@ -160,6 +164,7 @@ build_planner() {
   inject_placeholder_file "REQUIREMENTS.md" "{{REQUIREMENTS}}" "$output_file"
   inject_placeholder_file "ARCHITECTURE.md" "{{ARCHITECTURE}}" "$output_file"
   inject_placeholder_file "DESIGN.md" "{{DESIGN}}" "$output_file"
+  inject_placeholder_file "WIREFRAMES.md" "{{WIREFRAMES}}" "$output_file"
 }
 
 main() {

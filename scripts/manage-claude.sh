@@ -174,7 +174,7 @@ cmd_sync() {
   validate_target "$target"
 
   local managed=("PLANNER.md" "REVIEWER.md" "IMPLEMENTER.md")
-  local seeded=("ARCHITECTURE.md" "REQUIREMENTS.md" "TASKS.md" "DESIGN.md")
+  local seeded=("ARCHITECTURE.md" "REQUIREMENTS.md" "TASKS.md" "DESIGN.md" "WIREFRAMES.md")
   local drifted=()
 
   log_step "Managed"
