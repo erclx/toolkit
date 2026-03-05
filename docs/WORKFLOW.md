@@ -16,6 +16,7 @@ All planning docs live in `.claude/` at the project root. Git tracked, part of t
 ├── REQUIREMENTS.md      ← project goals, non-goals, MVP scope
 ├── ARCHITECTURE.md      ← technical design decisions and open questions
 ├── DESIGN.md            ← color, typography, spacing, and motion decisions (UI projects only)
+├── WIREFRAMES.md        ← ASCII wireframes for planning, structure and layout only (UI projects only)
 ├── TASKS.md             ← persistent task tracker, source of truth for progress
 ├── REVIEWER.md          ← system prompt for code review, copy-paste into fresh chat
 └── IMPLEMENTER.md       ← system prompt for code generation, read by aitk claude prompt
@@ -43,17 +44,21 @@ State documents are project artifacts. They open with `# [Name]` and track proje
 
 **`DESIGN.md`** — Color tokens, typography, spacing, border, and motion decisions. Created before UI implementation with Claude chat. Seeded for all projects; delete if not needed.
 
+**`WIREFRAMES.md`** — ASCII wireframes for UI features. Structure and layout only, not final design. Created during planning with Claude chat. Seeded for all projects; delete if not needed.
+
 **`TASKS.md`** — Persistent task tracker. Source of truth for what is in progress, up next, done, and blocked. Updated every session.
 
 ## Prompt Generation
 
-`aitk claude prompt` generates master prompts for the Planner and Implementer roles.
+`aitk claude prompt` generates master prompts for planning and code generation.
 
-- Reads `.claude/PLANNER.md` and `.claude/IMPLEMENTER.md` as base templates.
-- For the Implementer prompt, it injects all governance rules from `.cursor/rules/`.
-- For both prompts, it injects project state documents (`TASKS.md`, `REQUIREMENTS.md`, etc.) where placeholders like `{{TASKS}}` are found.
-- Writes the final prompts to `.claude/.tmp/PLANNER.md` and `.claude/.tmp/IMPLEMENTER.md`.
-- Copies `.claude/REVIEWER.md` to the `.tmp/` directory for convenience.
+- Reads `.claude/PLANNER.md` and `.claude/IMPLEMENTER.md` as templates
+- Injects all `.mdc` files from `.cursor/rules/` into IMPLEMENTER's `{{GOVERNANCE_RULES}}`
+- Auto-injects TASKS, REQUIREMENTS, ARCHITECTURE into both PLANNER and IMPLEMENTER
+- Auto-injects DESIGN and WIREFRAMES into PLANNER only
+- Leaves IMPLEMENTER's source context as `[PASTE RELEVANT SOURCE FILES]` for manual fill
+- Writes `.tmp/PLANNER.md`, `.tmp/IMPLEMENTER.md`, `.tmp/REVIEWER.md`
+- Run `aitk gov sync` first when switching stacks
 
 ## Core Implementation Loop
 
