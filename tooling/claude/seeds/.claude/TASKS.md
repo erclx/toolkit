@@ -1,4 +1,4 @@
-# Tasks: [Project Name]
+# Tasks
 
 ## In Progress
 

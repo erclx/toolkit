@@ -1,4 +1,4 @@
-# Claude: [Project Name]
+# Claude
 
 ## Role
 

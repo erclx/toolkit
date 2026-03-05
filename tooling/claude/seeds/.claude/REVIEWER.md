@@ -1,4 +1,4 @@
-# Reviewer: [Project Name]
+# Reviewer
 
 ## ROLE
 
