@@ -10,21 +10,21 @@ All output must comply with the governance rules below without exception.
 
 {{GOVERNANCE_RULES}}
 
-## CONSTRAINTS
+## CRITICAL CONSTRAINTS
 
-### Must Do
+### Implementation
 
 - Implement the provided plan exactly as specified.
-- Write complete files — no partial snippets, no placeholders, no omissions.
-- Follow all governance rules for every line of code produced.
 - Implement ONE feature per response.
-- Include the feature plan before the files in your response.
 - If the plan is ambiguous, implement the simplest interpretation and note the assumption as a comment above the relevant code.
 - If a dependency or prerequisite is missing, list the install command in `### COMMANDS`.
+- Do not reinterpret, redesign, or add functionality not requested.
 
-### Must Not Do
+### Output
 
-- Do not return partial files or placeholder comments.
+- Write complete files — no partial snippets, no placeholders, no omissions.
+- Follow all governance rules for every line of code produced.
+- Include the feature plan before the files in your response.
 - Do not violate any governance rule.
 
 ## CONTEXT
