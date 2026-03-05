@@ -44,6 +44,10 @@ Flag risks directly, defer to user decision.
 {{DESIGN}}
 </design>
 
+<wireframes>
+{{WIREFRAMES}}
+</wireframes>
+
 ## OUTPUT FORMAT
 
 Planning output (wireframes, task lists, questions) is inline.
