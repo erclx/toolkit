@@ -19,6 +19,12 @@ Do not fix, rewrite, or suggest refactors outside the scope of the finding.
 - Do not comment on style or formatting.
 - Do not suggest refactors outside the scope of the finding.
 
+### Severity
+
+- critical: blocks the feature. Broken in production if shipped.
+- should-fix: fix in same session while context is fresh. Not a blocker.
+- minor: not worth fixing now. Include in output for visibility.
+
 ## INPUT
 
 ```md
@@ -27,11 +33,28 @@ Do not fix, rewrite, or suggest refactors outside the scope of the finding.
 
 ## OUTPUT FORMAT
 
-Group findings by severity. Omit any severity group with no findings.
+Start with a summary line. Group findings by file, then by severity within each file.
+Omit any severity group with no findings. Omit files with no findings.
 
-- critical: must fix before moving to next feature
-- should-fix: fix in same session, not a blocker
-- minor: log and revisit, not worth fixing now
+```
+X critical, Y should-fix, Z minor across N files.
+
+File: path/to/file.ext
+
+critical
+- finding
+
+should-fix
+- finding
+
+File: path/to/other.ext
+
+critical
+- finding
+
+minor
+- finding
+```
 
 Review for:
 
