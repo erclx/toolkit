@@ -11,15 +11,13 @@ stage_setup() {
   mkdir -p sync/.cursor/rules
 
   local src_rules="$PROJECT_ROOT/.cursor/rules"
-  local stale_file
-  stale_file=$(find "$src_rules" -type f -name "*.mdc" | sort | head -n 2)
 
   while IFS= read -r file; do
     local filename
     filename=$(basename "$file")
     cp "$file" "sync/.cursor/rules/$filename"
     echo "# stale" >>"sync/.cursor/rules/$filename"
-  done <<<"$stale_file"
+  done < <(find "$src_rules" -type f -name "*.mdc" | sort | head -n 2)
 
   git add .
   git commit -m "chore(sandbox): scaffold gov test directories" --no-verify -q

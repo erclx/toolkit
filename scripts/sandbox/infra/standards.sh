@@ -11,15 +11,13 @@ stage_setup() {
   mkdir -p sync/standards
 
   local src_standards="$PROJECT_ROOT/standards"
-  local stale_file
-  stale_file=$(find "$src_standards" -type f -name "*.md" | sort | head -n 2)
 
   while IFS= read -r file; do
     local filename
     filename=$(basename "$file")
     cp "$file" "sync/standards/$filename"
     echo "<!-- stale -->" >>"sync/standards/$filename"
-  done <<<"$stale_file"
+  done < <(find "$src_standards" -type f -name "*.md" | sort | head -n 2)
 
   git add .
   git commit -m "chore(sandbox): scaffold standards test directories" --no-verify -q
