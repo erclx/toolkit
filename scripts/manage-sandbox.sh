@@ -296,8 +296,9 @@ handle_post_execution_prompt() {
 
 cmd_clean() {
   echo -e "${GREY}┌${NC}"
+  echo -e "${GREY}├${NC} ${WHITE}Removing Sandbox${NC}"
   rm -rf "$SANDBOX"
-  log_info "Sandbox cleaned"
+  log_rem ".sandbox/"
   echo -e "${GREY}└${NC}\n"
   echo -e "${GREEN}✓ Sandbox clean${NC}"
 }
