@@ -193,6 +193,14 @@ inject_documentation() {
   fi
 }
 
+inject_gov_rules() {
+  local rules_source="$PROJECT_ROOT/.cursor/rules"
+  if [ -d "$rules_source" ]; then
+    mkdir -p "$SANDBOX/.cursor/rules"
+    find "$rules_source" -type f -name "*.mdc" -exec cp {} "$SANDBOX/.cursor/rules/" \;
+  fi
+}
+
 configure_agent_settings() {
   mkdir -p "$SANDBOX/.gemini"
   cat <<EOF >"$SANDBOX/.gemini/settings.json"
