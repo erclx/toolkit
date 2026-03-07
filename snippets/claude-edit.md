@@ -1,4 +1,4 @@
-When writing a Claude Code edit prompt, use this format:
+Write a Claude Code edit prompt using this format:
 
 ```markdown
 `<relative/path/to/file>`
