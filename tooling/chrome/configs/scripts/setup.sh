@@ -166,7 +166,7 @@ update_metadata() {
 }
 
 reset_git_history() {
-  log_step "Resetting git history"
+  log_step "Resetting Git history"
 
   if [ -d "scripts" ]; then
     chmod +x scripts/*.sh 2>/dev/null || true
