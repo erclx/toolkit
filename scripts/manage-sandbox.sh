@@ -193,6 +193,14 @@ inject_documentation() {
   fi
 }
 
+inject_gov_rules() {
+  local rules_source="$PROJECT_ROOT/.cursor/rules"
+  if [ -d "$rules_source" ]; then
+    mkdir -p "$SANDBOX/.cursor/rules"
+    find "$rules_source" -type f -name "*.mdc" -exec cp {} "$SANDBOX/.cursor/rules/" \;
+  fi
+}
+
 configure_agent_settings() {
   mkdir -p "$SANDBOX/.gemini"
   cat <<EOF >"$SANDBOX/.gemini/settings.json"
@@ -215,8 +223,9 @@ commit_environment_setup() {
 }
 
 setup_sandbox_assets() {
-  inject_documentation
-  configure_agent_settings
+  [ -n "$SANDBOX_INJECT_STANDARDS" ] && inject_documentation
+  [ -n "$SANDBOX_INJECT_GOV" ] && inject_gov_rules
+  [ -n "$SANDBOX_INJECT_GEMINI" ] && configure_agent_settings
   commit_environment_setup
 }
 
@@ -226,6 +235,7 @@ initialize_sandbox_environment() {
 
   validate_environment "$current_category" "$current_command"
   load_sandbox_script "$current_category" "$current_command"
+  [[ "$(type -t use_config)" == "function" ]] && use_config
   provision_sandbox "$current_category" "$current_command"
   setup_sandbox_assets
 }
