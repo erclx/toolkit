@@ -27,6 +27,7 @@ Enforce strict formatting with visual timeline UI and state-based interactivity.
 - Do not use global variables except exports from `ask()`.
 - Do not define unused color variables.
 - Do not include comments except the shebang line.
+- Use sentence case for all section headers passed to `log_step` and raw `echo` headers.
 - Quote variables inside parameter expansions: `"${file#"$dir"/}"` not `"${file#$dir/}"`.
 - Quote variables in test brackets: `[ "$i" -eq "$cur" ]` not `[ $i -eq $cur ]`.
 - Guard commands that return non-zero on valid empty results: `grep ... || true`, `diff ... || true`.
