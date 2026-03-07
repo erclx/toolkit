@@ -26,13 +26,13 @@ stage_setup() {
 
   log_info "install/ — clean target, no rules present"
   echo -e "${GREY}│${NC}"
-  log_info "Action:  cd .sandbox/install && aitk gov install [stack]"
+  log_info "Action:  cd install && aitk gov install [stack]"
   log_info "Expect:  .cursor/rules/ created and populated"
 
   echo -e "${GREY}│${NC}"
 
   log_info "sync/ — stale .cursor/rules/ present"
   echo -e "${GREY}│${NC}"
-  log_info "Action:  cd .sandbox/sync && aitk gov sync"
+  log_info "Action:  cd sync && aitk gov sync"
   log_info "Expect:  Drift detected, changes proposed and applied"
 }

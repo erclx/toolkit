@@ -26,13 +26,13 @@ stage_setup() {
 
   log_info "install/ — clean target, no standards present"
   echo -e "${GREY}│${NC}"
-  log_info "Action:  cd .sandbox/install && aitk standards install"
+  log_info "Action:  cd install && aitk standards install"
   log_info "Expect:  standards/ created and populated"
 
   echo -e "${GREY}│${NC}"
 
   log_info "sync/ — stale standards/ present"
   echo -e "${GREY}│${NC}"
-  log_info "Action:  cd .sandbox/sync && aitk standards sync"
+  log_info "Action:  cd sync && aitk standards sync"
   log_info "Expect:  Drift detected, changes proposed and applied"
 }
