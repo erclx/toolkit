@@ -3,7 +3,7 @@ name: aitk-governance
 description: Governance rules and stack definitions. Use when modifying .cursor/rules/, .cursor/stacks/, or working with governance install and sync.
 ---
 
-# aitk Governance
+# Governance
 
 Before editing, read:
 
