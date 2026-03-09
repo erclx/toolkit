@@ -8,6 +8,5 @@ description: Edits and creates Gemini CLI command definitions in the ai-toolkit 
 Before editing, read:
 
 - `prompts/gemini-cli.md` — conventions for Gemini CLI command structure and TOML format
-- `docs/WORKFLOW.md` — how Gemini commands fit into the implementation and commit workflow
 
 Follow them exactly.
