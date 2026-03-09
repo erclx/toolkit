@@ -1,9 +1,9 @@
 ---
-name: aitk-gemini-commands
+name: aitk-gemini
 description: Gemini CLI command definitions. Use when modifying gemini/commands/, creating new Gemini commands, or working with the TOML prompt structure.
 ---
 
-# aitk Gemini Commands
+# aitk Gemini
 
 Before editing, read:
 
