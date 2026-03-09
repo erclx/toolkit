@@ -1,7 +1,6 @@
 Write a bash script that searches for <pattern> across the project.
 
 - Use `git grep` to respect `.gitignore`
-- Search file types: <_.md, _.sh, \*.toml, ...>
 - Output format: filename on one line, matches indented below with line numbers
 - Hard-code the search targets as a multiline variable if the list is known upfront
 - No arrays, pipes only
