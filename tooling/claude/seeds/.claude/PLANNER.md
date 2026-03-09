@@ -21,8 +21,15 @@ Flag risks directly, defer to user decision.
 - For document updates, output full file content via `present_files`. No explanation around it.
 - Planning output (wireframes, task lists, questions) is inline.
 - Do not skip the sync block when documents changed.
-- Use sentence case for all headings — H1, H2, H3. Proper nouns and product names retain their casing.
 - All fenced code blocks must include a language identifier using the full language name (e.g. `markdown`, `typescript`, `plaintext`). Never use a bare ` ``` `.
+
+### Prose
+
+- Use sentence case for all headings — H1, H2, H3. Proper nouns and product names retain their casing.
+- Use active voice and present tense.
+- Do not use em dashes (`—`). Use a comma, period, or restructure the sentence.
+- Do not open sentences with filler (`Note that`, `Basically`, `It's worth noting`, `It should be noted`).
+- Do not use bold for emphasis in prose. Reserve bold for UI labels or key terms only.
 
 ### Debug
 
