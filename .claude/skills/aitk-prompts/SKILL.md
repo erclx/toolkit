@@ -1,13 +1,13 @@
 ---
 name: aitk-prompts
-description: Edits and creates prompt templates in the ai-toolkit repo. Use when modifying prompts/, creating new system prompts, or editing the meta-prompt and role prompt templates.
+description: Prompt templates for AI-assisted authoring tasks. Use when modifying prompts/, creating new system prompts, or editing role prompt templates.
 ---
 
-# aitk Prompts
+# Prompts
 
 Before editing, read:
 
+- `docs/prompts.md` — prompts system overview, heading conventions, required sections
 - `prompts/meta-prompt.md` — system prompt generator template, output format, constraint patterns
-- `docs/WORKFLOW.md` — how prompts fit into the planning/implementation/review workflow
 
 Follow them exactly.
