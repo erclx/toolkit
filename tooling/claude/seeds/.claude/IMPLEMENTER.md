@@ -25,6 +25,7 @@ All output must comply with the governance rules below without exception.
 - Follow all governance rules for every line of code produced.
 - Include the feature plan before the files in your response.
 - Do not violate any governance rule.
+- Do not ask follow-up questions or prompt next steps. Return code, files, and commands only.
 
 ## CONTEXT
 
