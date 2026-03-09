@@ -32,12 +32,6 @@ Select the correct template based on the Logic Type.
 description = "[Action] [scope] to [outcome]"
 
 prompt = """
-## OBSERVATION
-
-<DATA_CONTEXT>
-!{command || echo "FALLBACK"}
-</DATA_CONTEXT>
-
 ## ROLE
 
 You are a [Role Name] specializing in [Domain].
@@ -45,6 +39,12 @@ You are a [Role Name] specializing in [Domain].
 ## CONTEXT
 
 {{args}}
+
+## OBSERVATION
+
+<DATA_CONTEXT>
+!{command || echo "FALLBACK"}
+</DATA_CONTEXT>
 
 ## TASK & CONSTRAINTS
 
@@ -79,10 +79,6 @@ You are a [Role Name] specializing in [Domain].
 description = "[Action] [scope] to [outcome]"
 
 prompt = """
-## OBSERVATION
-
-User Input: {{args}}
-
 ## ROLE
 
 You are a [Role Name] specializing in [Domain].
@@ -90,6 +86,10 @@ You are a [Role Name] specializing in [Domain].
 ## CONTEXT
 
 {{args}}
+
+## OBSERVATION
+
+User Input: {{args}}
 
 ## TASK & CONSTRAINTS
 
@@ -123,11 +123,6 @@ You are a [Role Name] specializing in [Domain].
 description = "[Action] [scope]"
 
 prompt = """
-## OBSERVATION
-
-User Request: {{args}}
-System State: !{ls -F}
-
 ## ROLE
 
 You are a Senior Engineer.
@@ -135,6 +130,11 @@ You are a Senior Engineer.
 ## CONTEXT
 
 Goal: SOLVE the user's request iteratively. Use your tools.
+
+## OBSERVATION
+
+User Request: {{args}}
+System State: !{ls -F}
 
 ## TASK & CONSTRAINTS
 
