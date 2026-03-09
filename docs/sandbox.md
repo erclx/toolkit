@@ -26,7 +26,8 @@ scripts/sandbox/
 │   ├── branch.sh      ← branch rename scenario for testing /git:branch
 │   └── pr.sh          ← PR description scenario for testing /git:pr
 ├── dev/
-│   └── apply.sh       ← file changes scenario for testing /dev:apply
+│   ├── apply.sh       ← file changes scenario for testing /dev:apply
+│   └── review.sh      ← code findings scenario for testing /dev:review
 ├── docs/
 │   └── sync.sh        ← stale README and docs scenario for testing /docs:sync
 └── release/

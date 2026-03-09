@@ -8,7 +8,8 @@ Gemini CLI extension and command definitions for the AI Toolkit.
 gemini/
 ├── commands/
 │   ├── dev/
-│   │   └── apply.toml       ← apply file changes from a chat response
+│   │   ├── apply.toml       ← apply file changes from a chat response
+│   │   └── review.toml      ← review code for bugs and quality issues
 │   ├── docs/
 │   │   └── sync.toml        ← sync README and docs with codebase changes
 │   ├── git/
@@ -28,6 +29,7 @@ gemini/
 | `/git:branch`        | Rename current branch to match conventional format         |
 | `/git:pr`            | Generate a PR description and open a draft                 |
 | `/dev:apply`         | Apply file changes from a chat response                    |
+| `/dev:review`        | Review code for bugs and quality issues                    |
 | `/docs:sync`         | Sync README and docs with codebase changes                 |
 | `/release:changelog` | Generate a changelog entry from commit history             |
 
