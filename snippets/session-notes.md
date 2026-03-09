@@ -10,10 +10,6 @@ Write session notes for this conversation using this format:
 ## Decision: <title>
 
 <what was decided and why>
-
-## Next steps
-
-- <pending action not yet applied to files>
 ```
 
-Only include decisions not yet reflected in the actual files. Skip the next steps section if everything was applied.
+Only include decisions made in this session. Output only the markdown block, nothing else.

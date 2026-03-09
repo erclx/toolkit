@@ -22,12 +22,13 @@ docs/
 
 ## Snippets
 
-| Slug            | Purpose                                    |
-| --------------- | ------------------------------------------ |
-| `chat-mode`     | Set tool behavior for Claude chat sessions |
-| `claude-edit`   | Claude Code file edit format               |
-| `review-mode`   | Senior engineer critique and assess mode   |
-| `session-notes` | End-of-session decisions capture template  |
+| Slug            | Purpose                             |
+| --------------- | ----------------------------------- |
+| `chat-mode`     | Session opener for tool behavior    |
+| `senior-mode`   | Senior-level judgment, discuss only |
+| `claude-edit`   | Generate Claude Code edit prompt    |
+| `session-notes` | Capture session decisions           |
+| `code-search`   | Generate a git grep bash script     |
 
 ## Adding a snippet
 
