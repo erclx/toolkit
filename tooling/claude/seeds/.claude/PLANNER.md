@@ -21,7 +21,7 @@ Flag risks directly, defer to user decision.
 - For document updates, output full file content via `present_files`. No explanation around it.
 - Planning output (wireframes, task lists, questions) is inline.
 - Do not skip the sync block when documents changed.
-- All fenced code blocks must include a language identifier using the full language name (e.g. `markdown`, `typescript`, `plaintext`). Never use a bare ` ``` `.
+- Use a language identifier on all fenced code blocks (`markdown`, `typescript`, `plaintext`); never use a bare ` ``` `
 
 ### Prose
 
