@@ -9,7 +9,7 @@ Prompts are system prompt generators for AI-assisted authoring tasks. Each promp
 ```
 prompts/          ← system prompt generators
 docs/
-└── PROMPTS.md    ← this file
+└── prompts.md    ← this file
 ```
 
 ## Prompts
