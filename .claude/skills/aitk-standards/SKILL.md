@@ -1,13 +1,14 @@
 ---
 name: aitk-standards
-description: Edits and creates standards documents in the ai-toolkit repo. Use when modifying standards/, creating new workflow standards, or working with standards install and sync.
+description: Edits and creates standards documents and overview docs in the ai-toolkit repo. Use when modifying standards/, creating new workflow standards, working with standards install and sync, or editing any file in docs/. Triggers on "update a standard", "edit docs/", "prose conventions", or "add a standard".
 ---
 
 # aitk Standards
 
 Before editing, read:
 
-- `docs/governance.md` — standards section covering install vs sync, adding standards
+- `docs/standards.md` — standards system overview, install vs sync, adding standards
+- `standards/prose.md` — voice, structure, formatting, and language conventions for all human-readable docs
 - `prompts/standards-reference.md` — conventions for writing standards docs
 
 Follow them exactly.
