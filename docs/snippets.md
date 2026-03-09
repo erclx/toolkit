@@ -9,7 +9,7 @@ Snippets are small, reusable prompts invokable from Claude or Gemini chat via th
 ```
 snippets/          ← invokable prompt snippets
 docs/
-└── SNIPPETS.md    ← this file
+└── snippets.md    ← this file
 ```
 
 ## Conventions
