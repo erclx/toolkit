@@ -1,6 +1,6 @@
 ---
 name: aitk-scripts
-description: Bash scripts. Use when modifying scripts/, adding or editing sandbox scenarios, editing manage-*.sh entry points, or working with shared lib/ functions. Do NOT use for tooling stack configs, governance rules, or standards.
+description: Bash scripts for scripts/ and sandbox scenarios. Use when modifying scripts/, adding or editing sandbox scenarios, editing manage-*.sh entry points, or working with shared lib/ functions. Do NOT use for tooling stack configs, governance rules, or standards.
 ---
 
 # Scripts

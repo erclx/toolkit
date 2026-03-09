@@ -1,6 +1,6 @@
 ---
 name: aitk-standards
-description: Standards documents and overview docs. Use when modifying standards/, creating new workflow standards, working with standards install and sync, or editing any file in docs/. Triggers on "update a standard", "edit docs/", "prose conventions", "add a standard".
+description: Standards documents and overview docs. Use when modifying standards/, creating new workflow standards, working with standards install and sync, or editing any file in docs/.
 ---
 
 # Standards

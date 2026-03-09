@@ -1,6 +1,6 @@
 ---
 name: aitk-prompts
-description: Prompt templates for AI-assisted authoring tasks. Use when modifying prompts/, creating new system prompts, editing the meta-prompt and role prompt templates, or working with any file in prompts/. Triggers on "edit bash-script prompt", "update cursor-rules prompt", "new prompt template".
+description: Prompt templates for AI-assisted authoring tasks. Use when modifying prompts/, creating new system prompts, or editing role prompt templates.
 ---
 
 # Prompts
