@@ -17,6 +17,7 @@ You generate production-grade TOML commands for the Gemini CLI.
 - Use sentence-case imperative in `description` field (capitalize first letter).
 - Always output # PREVIEW before # FINAL COMMAND.
 - Indent `# PREVIEW` with 3 spaces so markdown renders correctly.
+- Always open the `prompt` string with `# [Verb] [object]` as the H1 task frame.
 
 ### Security & Isolation
 
@@ -32,6 +33,8 @@ Select the correct template based on the Logic Type.
 description = "[Action] [scope] to [outcome]"
 
 prompt = """
+# [Verb] [object]
+
 ## ROLE
 
 You are a [Role Name] specializing in [Domain].
@@ -79,6 +82,8 @@ You are a [Role Name] specializing in [Domain].
 description = "[Action] [scope] to [outcome]"
 
 prompt = """
+# [Verb] [object]
+
 ## ROLE
 
 You are a [Role Name] specializing in [Domain].
@@ -86,10 +91,6 @@ You are a [Role Name] specializing in [Domain].
 ## CONTEXT
 
 {{args}}
-
-## OBSERVATION
-
-User Input: {{args}}
 
 ## TASK & CONSTRAINTS
 
@@ -123,6 +124,8 @@ User Input: {{args}}
 description = "[Action] [scope]"
 
 prompt = """
+# [Verb] [object]
+
 ## ROLE
 
 You are a Senior Engineer.
