@@ -104,7 +104,7 @@ cmd_install() {
   local target_abs
   target_abs=$(cd "$target" && pwd)
   if [ "$target_abs" = "$PROJECT_ROOT" ]; then
-    log_error "Cannot install into ai-toolkit root."
+    log_error "Cannot install into $(toolkit) root."
   fi
 
   local rules=()

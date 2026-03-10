@@ -42,7 +42,7 @@ validate_target() {
   target_abs=$(cd "$target" && pwd)
 
   if [ "$target_abs" = "$PROJECT_ROOT" ]; then
-    log_error "Cannot init claude workflow in ai-toolkit root."
+    log_error "Cannot init claude workflow in $(toolkit) root."
   fi
 }
 

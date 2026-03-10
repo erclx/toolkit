@@ -45,7 +45,7 @@ guard_root() {
   local target_abs
   target_abs=$(cd "$target" && pwd)
   if [ "$target_abs" = "$PROJECT_ROOT" ]; then
-    log_error "Cannot write to ai-toolkit root. Files here are the source of truth."
+    log_error "Cannot write to $(toolkit) root. Files here are the source of truth."
   fi
 }
 

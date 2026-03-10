@@ -377,7 +377,7 @@ main() {
 
   if [[ "$PWD" != "$PROJECT_ROOT"* ]]; then
     echo -e "${GREY}┌${NC}"
-    log_error "Context Error: You must run this command from inside the 'ai-toolkit' repository."
+    log_error "Context Error: You must run this command from inside the $(toolkit) repository."
   fi
 
   SANDBOX="$PROJECT_ROOT/.sandbox"
