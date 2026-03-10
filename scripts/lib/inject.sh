@@ -274,6 +274,7 @@ resolve_missing_deps() {
 
     local pkg_name
     pkg_name=$(echo "$line" | tr -d '"[],' | xargs)
+    pkg_name="${pkg_name%%@*}"
     [ -z "$pkg_name" ] && continue
 
     local found
