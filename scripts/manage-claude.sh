@@ -129,7 +129,6 @@ cmd_init() {
   local pending=()
   local gi_pending=()
 
-  echo -e "${GREY}┌${NC}"
   echo -e "${GREY}├${NC} ${WHITE}Scanning .claude/${NC}"
   collect_seeds "$target" pending
 
@@ -182,7 +181,6 @@ cmd_sync() {
   local seeded=("ARCHITECTURE.md" "REQUIREMENTS.md" "TASKS.md" "DESIGN.md" "WIREFRAMES.md")
   local drifted=()
 
-  echo -e "${GREY}┌${NC}"
   echo -e "${GREY}├${NC} ${WHITE}Managed${NC}"
   for name in "${managed[@]}"; do
     local src="$CLAUDE_SEEDS_DIR/$name"
@@ -253,6 +251,9 @@ main() {
     show_help
   fi
 
+  echo -e "${GREY}┌${NC}"
+  echo -e "${GREY}│${NC} ${WHITE}aitk claude${NC}"
+
   local command="$1"
 
   if [ -z "$command" ]; then
@@ -273,7 +274,6 @@ main() {
     exec "$PROJECT_ROOT/scripts/claude/prompt.sh" "$@"
     ;;
   *)
-    echo -e "${GREY}┌${NC}"
     log_error "Unknown command: $command. Use 'init', 'sync', or 'prompt'."
     ;;
   esac

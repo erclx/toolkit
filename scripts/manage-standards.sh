@@ -76,7 +76,6 @@ cmd_install() {
   local dest_dir="$target/standards"
   mkdir -p "$dest_dir"
 
-  echo -e "${GREY}┌${NC}"
   echo -e "${GREY}├${NC} ${WHITE}Installing standards${NC}"
 
   local count=0
@@ -181,6 +180,9 @@ main() {
   if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
     show_help
   fi
+
+  echo -e "${GREY}┌${NC}"
+  echo -e "${GREY}│${NC} ${WHITE}aitk standards${NC}"
 
   local command="$1"
 
