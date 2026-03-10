@@ -1,6 +1,6 @@
 # Claude
 
-Claude Code plugin and skills for the AI Toolkit.
+Claude Code plugin and skills for the Toolkit.
 
 ## Structure
 

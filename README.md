@@ -1,4 +1,4 @@
-# AI Toolkit
+# Toolkit
 
 CLI toolkit for managing governance rules, tooling configs, and developer standards across projects.
 
