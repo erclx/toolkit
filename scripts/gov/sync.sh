@@ -123,7 +123,7 @@ main() {
   local TARGET_ABS
   TARGET_ABS=$(cd "$TARGET_PATH" && pwd)
   if [ "$TARGET_ABS" = "$PROJECT_ROOT" ]; then
-    log_error "Cannot sync to $(toolkit) root. Files here are the source of truth."
+    log_error "Cannot sync to toolkit root. Files here are the source of truth."
   fi
 
   PENDING_FILE=$(mktemp)
