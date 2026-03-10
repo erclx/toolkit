@@ -8,7 +8,7 @@
 - Separate the comment from unrelated code above with a blank line.
 - No blank line between the comment and the block it describes.
 - Lowercase, no punctuation.
-- Use either a short phrase or `subject: reason`, mix freely, whatever fits.
+- Use either a short phrase or `subject: reason` — use the `subject:` prefix when the why is tied to a specific system or constraint. Mix freely, whatever fits.
 - No JSDoc noise.
 
 ## Examples
@@ -34,9 +34,5 @@ const MAX_RETRIES = 3
 // cancels order if status allows it
 if (!CANCELLABLE_STATUSES.includes(order.status)) throw ...  // restates the constant name
 
-// loop through users and check if active
-const activeUsers = users.filter(u => u.isActive);  // restates the code exactly
-
-// send notification to user
-await notify(order.userId, { type: "order_cancelled" });  // restates the function name
+const RATE_LIMIT_MS = 60000  // no comment — non-obvious value, origin and intent unclear
 ```
