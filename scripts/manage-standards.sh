@@ -11,8 +11,7 @@ STANDARDS_SOURCE="$PROJECT_ROOT/standards"
 
 show_help() {
   echo -e "${GREY}┌${NC}"
-  log_step "Standards"
-  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} aitk standards [command] [target-path]"
+  echo -e "${GREY}├${NC} ${WHITE}Usage:${NC} aitk standards [command] [target-path]"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Commands:${NC}"
   echo -e "${GREY}│${NC}    install   ${GREY}# Copy all standards into a project (overwrites)${NC}"
@@ -77,7 +76,8 @@ cmd_install() {
   local dest_dir="$target/standards"
   mkdir -p "$dest_dir"
 
-  log_step "Installing standards"
+  echo -e "${GREY}┌${NC}"
+  echo -e "${GREY}├${NC} ${WHITE}Installing standards${NC}"
 
   local count=0
   while IFS= read -r file; do

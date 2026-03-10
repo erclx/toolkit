@@ -12,8 +12,7 @@ RULES_SOURCE_DIR="$PROJECT_ROOT/.cursor/rules"
 
 show_help() {
   echo -e "${GREY}┌${NC}"
-  log_step "Governance install"
-  echo -e "${GREY}│${NC}  ${WHITE}Usage:${NC} aitk gov install [stack] [target-path]"
+  echo -e "${GREY}├${NC} ${WHITE}Usage:${NC} aitk gov install [stack] [target-path]"
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Arguments:${NC}"
   echo -e "${GREY}│${NC}    stack         Name of the stack to install (e.g., base, node, react)"
