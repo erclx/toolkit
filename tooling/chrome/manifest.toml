@@ -16,6 +16,7 @@ packages = [
 
 [scripts]
 "setup" = "./scripts/setup.sh"
+"screenshot" = "bun run build && node --experimental-strip-types e2e/screenshot.ts"
 
 [gitignore]
 "# Chrome Extension" = ["*.crx", "*.pem"]

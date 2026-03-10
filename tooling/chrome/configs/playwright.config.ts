@@ -8,7 +8,6 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:5173',
     trace: 'on-first-retry',
   },
   projects: [
@@ -17,11 +16,4 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
-  webServer: {
-    command: 'bun run dev',
-    url: 'http://localhost:5173/src/popup/index.html',
-    reuseExistingServer: !process.env.CI,
-    stdout: 'ignore',
-    stderr: 'pipe',
-  },
 })
