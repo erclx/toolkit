@@ -1,6 +1,8 @@
 description = "Generate PR description and open PR"
 
 prompt = """
+# Generate PR description and open PR
+
 ## ROLE
 
 You generate PR descriptions from git diffs.
