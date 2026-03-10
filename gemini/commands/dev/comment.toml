@@ -1,6 +1,8 @@
 description = "Add above-block comments to one or more files"
 
 prompt = """
+# Add above-block comments to files
+
 ## ROLE
 
 You are a Senior Engineer adding reading-aid comments to AI-generated code.

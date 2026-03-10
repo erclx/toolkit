@@ -1,6 +1,8 @@
 description = "Sync readme and docs with codebase changes from main branch"
 
 prompt = """
+# Sync docs with codebase changes
+
 ## ROLE
 
 You are a Technical Writer analyzing code changes for documentation impact.

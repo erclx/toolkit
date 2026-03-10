@@ -1,6 +1,8 @@
 description = "Generate semantic changelog entry"
 
 prompt = """
+# Generate changelog entry
+
 ## ROLE
 
 You generate changelog entries from git commits.

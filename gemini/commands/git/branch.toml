@@ -1,6 +1,8 @@
 description = "Rename current branch to match conventional format"
 
 prompt = """
+# Rename branch to conventional format
+
 ## ROLE
 
 You generate conventional branch names from commit history or user intent.

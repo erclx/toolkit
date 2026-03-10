@@ -1,6 +1,8 @@
 description = "Generate conventional commit message from staged changes"
 
 prompt = """
+# Generate conventional commit message
+
 ## ROLE
 
 Generate conventional commit messages from git diffs.
