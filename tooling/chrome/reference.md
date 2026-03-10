@@ -9,7 +9,7 @@ The chrome stack layers a Chrome Extension setup using CRXJS and Vite on top of 
 ## Vite (Override)
 
 - Replace vite-react `vite.config.ts` entirely — do not merge.
-- Plugins: `@vitejs/plugin-react`, `@tailwindcss/vite`, `crx({ manifest })`, `zip({ outDir: 'release', outFileName: 'crx-<name>-<version>.zip' })`.
+- Plugins: `@vitejs/plugin-react`, `@tailwindcss/vite`, `crx({ manifest })`, `zip({ outDir: 'release', outFileName: 'crx-<n>-<version>.zip' })`.
 - Path alias: `@` → `./src` via `path`.
 - Server port: `5173`, `strictPort: true` — ensures HMR always connects on the same port.
 - Server HMR: `clientPort: 5173` — required for extension content scripts to connect back correctly.
@@ -31,11 +31,32 @@ The chrome stack layers a Chrome Extension setup using CRXJS and Vite on top of 
 - Config: `playwright.config.ts`.
 - Test directory: `e2e/`.
 - Projects: `chromium` only — firefox and webkit cannot run Chrome extensions.
-- Reporter: always `html` — no CI conditional, E2E does not run in CI.
-- `use.baseURL`: `http://localhost:5173` — used for relative `page.goto()` calls.
-- `webServer.url`: `http://localhost:5173/src/popup/index.html` — health check URL Playwright polls to confirm dev server is ready.
-- Web server: `bun run dev`, reuse existing server locally.
-- Trace: `on-first-retry`.
+- Reporter: always `html`.
+- No `baseURL` or `webServer` — tests run against the built extension, not a dev server.
+- Must use bundled `chromium` channel — Google removed sideload flags from Chrome and Edge.
+- `trace: 'on-first-retry'`.
+
+## E2E fixtures
+
+- File: `e2e/fixtures.ts` — golden config, extends Playwright base `test` with two fixtures.
+- `context`: launches a persistent browser context with the extension loaded from `dist/`.
+- `extensionId`: extracted from the service worker URL — not hardcoded, Chrome assigns a different ID per context.
+- `use` renamed to `apply` to avoid the React hooks ESLint rule treating it as a hook.
+- `{}` in the context fixture is required by Playwright's API — `eslint-disable` comment suppresses the empty destructure warning.
+- `waitForEvent('serviceworker')` blocks until the MV3 service worker registers before any test runs.
+
+## Screenshots
+
+- File: `e2e/screenshot.ts` — seeded once, user-owned. Edit the config section to match the extension.
+- Split into `CONFIG` and `ENGINE` sections — only the config section changes per project.
+- `SURFACES` defines each extension page with its real-world dimensions.
+- `SEED` injects data into `chrome.storage.local` via `addInitScript` before the page loads. Set to `null` if no seed data needed.
+- `STATES` is an array of `{ name, setup? }` — adding a new state is one object.
+- Empty state uses a separate context with no seed data so storage is genuinely clean.
+- `emulateMedia({ colorScheme })` toggles light/dark without UI interaction.
+- Run `bun run screenshot` — builds first, then captures. Outputs to `screenshots/` (gitignored via vite-react).
+- Node 22+ required for `--experimental-strip-types`. On older versions use `bunx tsx e2e/screenshot.ts`.
+- Review one surface and one color scheme per AI session (4 images), not all 12 at once.
 
 ## Manifest
 
@@ -78,3 +99,4 @@ The chrome stack layers a Chrome Extension setup using CRXJS and Vite on top of 
 ## Package Scripts (Extend)
 
 - `setup` — `./scripts/setup.sh`
+- `screenshot` — `bun run build && node --experimental-strip-types e2e/screenshot.ts`
