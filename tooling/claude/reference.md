@@ -19,8 +19,7 @@ The claude stack installs the `.claude/` workflow directory into a project. Role
 └── .tmp/              ← ephemeral scratch space, gitignored
 
 scripts/
-└── core/
-    └── snapshot.sh    ← writes project file tree to .claude/.tmp/SNAPSHOT.md
+└── snapshot.sh    ← writes project file tree to .claude/.tmp/SNAPSHOT.md
 ```
 
 ## Gitignore
