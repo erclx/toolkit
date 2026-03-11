@@ -107,6 +107,7 @@ main() {
 
   echo -e "${GREY}┌${NC}"
   echo -e "${GREY}│${NC} ${WHITE}Snapshot${NC}"
+  echo -e "${GREY}│${NC}"
   echo -e "${GREY}├${NC} ${WHITE}Writing${NC}"
 
   write_snapshot
