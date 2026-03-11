@@ -303,7 +303,8 @@ reset_sandbox() {
     log_error "No sandbox found. Run \`aitk sandbox\` first."
   fi
 
-  echo -e "${GREY}├${NC} ${WHITE}Checking sandbox state${NC}"
+  echo -e "${GREY}│${NC}"
+  echo -e "${GREY}├${NC} ${WHITE}Sandbox state${NC}"
 
   local has_baseline=0
   (cd "$SANDBOX" && git rev-parse sandbox-baseline >/dev/null 2>&1) && has_baseline=1
@@ -333,10 +334,13 @@ reset_sandbox() {
   ) || is_dirty=1
 
   if [ "$is_dirty" -eq 0 ]; then
+    log_info "At baseline"
     echo -e "${GREY}└${NC}\n"
-    echo -e "${GREEN}✓ Sandbox already at initial state${NC}"
+    echo -e "${GREEN}✓ Sandbox at baseline${NC}"
     exit 0
   fi
+
+  log_warn "Uncommitted changes detected"
 
   select_option "Reset sandbox to initial state?" "Yes" "No"
   if [ "$SELECTED_OPTION" == "No" ]; then

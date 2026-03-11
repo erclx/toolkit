@@ -210,7 +210,8 @@ collect_stack_scripts() {
       local pkg_val
       pkg_val=$(node -e "
         const p = JSON.parse(require('fs').readFileSync('$pkg'));
-        process.stdout.write(p.scripts && p.scripts['$key'] !== undefined ? p.scripts['$key'] : '__MISSING__');
+        const scripts = p.scripts || {};
+        process.stdout.write(scripts['$key'] !== undefined ? scripts['$key'] : '__MISSING__');
       " 2>/dev/null)
 
       if [ "$pkg_val" = "__MISSING__" ]; then
@@ -272,7 +273,7 @@ collect_stack_deps() {
     local found
     found=$(node -e "
       const p = JSON.parse(require('fs').readFileSync('$pkg'));
-      const all = Object.assign({}, p.dependencies, p.devDependencies);
+      const all = Object.assign({}, p.dependencies || {}, p.devDependencies || {});
       process.stdout.write(all['$pkg_name'] !== undefined ? 'yes' : 'no');
     " 2>/dev/null)
 
@@ -318,32 +319,36 @@ scan_configs() {
   SEED_CHANGES=${#SEED_MISSING_FILES[@]}
 
   if [ -f "$target/package.json" ]; then
-    log_step "Scanning scripts"
-
     collect_stack_scripts "$stack" "$target" DRIFTED_SCRIPTS MISSING_SCRIPTS MATCHING_SCRIPTS
 
-    for s in "${MATCHING_SCRIPTS[@]}"; do
-      log_info "$s"
-    done
-    for s in "${DRIFTED_SCRIPTS[@]}"; do
-      log_warn "$s"
-    done
-    for s in "${MISSING_SCRIPTS[@]}"; do
-      log_add "$s"
-    done
+    local total_scripts=$((${#DRIFTED_SCRIPTS[@]} + ${#MISSING_SCRIPTS[@]} + ${#MATCHING_SCRIPTS[@]}))
+    if [ "$total_scripts" -gt 0 ]; then
+      log_step "Scanning scripts"
+      for s in "${MATCHING_SCRIPTS[@]}"; do
+        log_info "$s"
+      done
+      for s in "${DRIFTED_SCRIPTS[@]}"; do
+        log_warn "$s"
+      done
+      for s in "${MISSING_SCRIPTS[@]}"; do
+        log_add "$s"
+      done
+    fi
 
     SCRIPT_CHANGES=$((${#DRIFTED_SCRIPTS[@]} + ${#MISSING_SCRIPTS[@]}))
 
-    log_step "Scanning dependencies"
-
     collect_stack_deps "$stack" "$target" MISSING_DEPS PRESENT_DEPS
 
-    for d in "${PRESENT_DEPS[@]}"; do
-      log_info "$d"
-    done
-    for d in "${MISSING_DEPS[@]}"; do
-      log_add "$d"
-    done
+    local total_deps=$((${#MISSING_DEPS[@]} + ${#PRESENT_DEPS[@]}))
+    if [ "$total_deps" -gt 0 ]; then
+      log_step "Scanning dependencies"
+      for d in "${PRESENT_DEPS[@]}"; do
+        log_info "$d"
+      done
+      for d in "${MISSING_DEPS[@]}"; do
+        log_add "$d"
+      done
+    fi
 
     DEP_CHANGES=${#MISSING_DEPS[@]}
   fi
