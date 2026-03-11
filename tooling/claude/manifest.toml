@@ -8,7 +8,7 @@ scaffold = ""
 source = "configs"
 
 [scripts]
-"snapshot" = "./scripts/core/snapshot.sh"
+"snapshot" = "./scripts/snapshot.sh"
 
 [gitignore]
 "# Claude" = [".claude/.tmp/"]

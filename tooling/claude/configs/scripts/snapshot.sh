@@ -107,10 +107,11 @@ main() {
 
   echo -e "${GREY}┌${NC}"
   echo -e "${GREY}│${NC} ${WHITE}Snapshot${NC}"
+  echo -e "${GREY}│${NC}"
   echo -e "${GREY}├${NC} ${WHITE}Writing${NC}"
 
   write_snapshot
-  log_info "Written to $OUTPUT_FILE"
+  log_info "$OUTPUT_FILE"
 
   echo -e "${GREY}└${NC}\n"
   echo -e "${GREEN}✓ Snapshot complete${NC}"
