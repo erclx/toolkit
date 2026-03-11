@@ -17,6 +17,10 @@ The claude stack seeds the `.claude/` workflow directory into a project.
 ├── REVIEWER.md        ← system prompt for code review, copy-paste into fresh chat
 ├── IMPLEMENTER.md     ← system prompt for code generation, read by aitk claude prompt
 └── .tmp/              ← ephemeral scratch space, gitignored
+
+scripts/
+└── core/
+    └── snapshot.sh    ← writes project file tree to .claude/.tmp/SNAPSHOT.md
 ```
 
 ## Gitignore
@@ -30,3 +34,4 @@ The claude stack seeds the `.claude/` workflow directory into a project.
 | `aitk claude init`   | Seeds `.claude/` workflow docs, updates `.gitignore`                                                         |
 | `aitk claude sync`   | Diffs `PLANNER.md` against seed, offers to apply changes                                                     |
 | `aitk claude prompt` | Injects context into `PLANNER.md` and `IMPLEMENTER.md`, copies REVIEWER.md to `.tmp/`, writes all to `.tmp/` |
+| `npm run snapshot`   | Writes project file tree to `.claude/.tmp/SNAPSHOT.md`                                                       |
