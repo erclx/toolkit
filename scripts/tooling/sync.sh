@@ -7,6 +7,7 @@ PROJECT_ROOT="${PROJECT_ROOT:-$(dirname "$(dirname "$SCRIPT_DIR")")}"
 
 source "$PROJECT_ROOT/scripts/lib/ui.sh"
 source "$PROJECT_ROOT/scripts/lib/inject.sh"
+trap close_timeline EXIT
 
 declare -A SEEN_CONFIGS
 declare -A SEEN_SEEDS

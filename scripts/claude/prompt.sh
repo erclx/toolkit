@@ -7,6 +7,7 @@ PROJECT_ROOT="${PROJECT_ROOT:-$(dirname "$(dirname "$SCRIPT_DIR")")}"
 
 source "$PROJECT_ROOT/scripts/lib/ui.sh"
 source "$PROJECT_ROOT/scripts/lib/gov.sh"
+trap close_timeline EXIT
 
 RULES_DIR="$PWD/.cursor/rules"
 IMPLEMENTER_TEMPLATE="$PWD/.claude/IMPLEMENTER.md"
