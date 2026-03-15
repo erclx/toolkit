@@ -17,7 +17,9 @@ Enforce strict formatting with visual timeline UI and state-based interactivity.
 
 - Maintain vertical timeline (`│`) from `┌` to `└` throughout all output.
 - Open the timeline once at the very start of `main()` with `┌` alone, followed immediately by `│ Title` — before any logic, prompts, or checks.
-- Close the timeline with `└` via `trap close_timeline EXIT` registered immediately after the `┌` open. On success paths, disable the trap with `trap - EXIT` then print `└\n` and the success message manually — this ensures the success message appears outside the timeline. On cancellation and error paths, do not print `└` manually — the trap owns those exits.
+- Close the timeline via `trap close_timeline EXIT`, registered immediately after the `┌` open.
+- On success: disable with `trap - EXIT`, then print `└\n` and the success message manually.
+- On cancellation and error: never print `└` manually — the trap owns those exits.
 - Use state transitions for interactive prompts: `◆` (active) → `◇` (inactive).
 - Do not add diamonds (`◆`/`◇`) to non-interactive log functions.
 - On cancellation: show `◇ ... Cancelled`, exit 1, no `log_error` call. Both `ask()` and `select_option()` must handle escape cancellation identically.
