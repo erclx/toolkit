@@ -374,6 +374,7 @@ main() {
 
   echo -e "${GREY}┌${NC}"
   echo -e "${GREY}│${NC} ${WHITE}aitk sandbox${NC}"
+  trap close_timeline EXIT
 
   if [[ "$PWD" != "$PROJECT_ROOT"* ]]; then
     log_error "Context error: you must run this command from inside the toolkit repository."

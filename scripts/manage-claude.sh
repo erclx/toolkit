@@ -254,6 +254,7 @@ main() {
 
   echo -e "${GREY}┌${NC}"
   echo -e "${GREY}│${NC} ${WHITE}aitk claude${NC}"
+  trap close_timeline EXIT
 
   local command="$1"
 
