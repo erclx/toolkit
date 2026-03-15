@@ -47,17 +47,23 @@ Snippets are organized into categories in `snippets.toml`. Each category is a na
 
 ## CLI
 
-| Command                                   | Description                                      |
-| ----------------------------------------- | ------------------------------------------------ |
-| `aitk snippets install [category] [path]` | Copy slugs for a category into a project         |
-| `aitk snippets sync [path]`               | Update snippets already present (never adds new) |
-| `aitk snippets create`                    | Create a new snippet and register it in the TOML |
+| Command                                   | Description                                                        |
+| ----------------------------------------- | ------------------------------------------------------------------ |
+| `aitk snippets install [category] [path]` | Copy slugs for a category into a project, use `all` for everything |
+| `aitk snippets sync [path]`               | Update snippets already present (never adds new)                   |
+| `aitk snippets create`                    | Create a new snippet and register it in the TOML                   |
 
 `aitk snippets` with no args shows a picker: `install`, `sync`, or `create`.
 
 ## Workflow
 
-To install snippets into a new project:
+To install all snippets into a new project:
+
+```bash
+aitk snippets install all ../my-app
+```
+
+To install a specific category only:
 
 ```bash
 aitk snippets install base ../my-app
