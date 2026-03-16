@@ -116,11 +116,11 @@ append_new_category() {
 }
 
 cmd_create() {
-  select_option "Category type?" "existing category" "new category"
+  select_option "Category type?" "Existing category" "New category"
   local type="$SELECTED_OPTION"
 
   local category
-  if [ "$type" = "existing category" ]; then
+  if [ "$type" = "Existing category" ]; then
     local categories=()
     mapfile -t categories < <(list_categories)
     if [ "${#categories[@]}" -eq 0 ]; then
@@ -138,7 +138,7 @@ cmd_create() {
 
   log_step "Registering slug"
 
-  if [ "$type" = "new category" ]; then
+  if [ "$type" = "New category" ]; then
     append_new_category "$category" "$slug"
     log_add "snippets.toml → [$category] → $slug"
   else
