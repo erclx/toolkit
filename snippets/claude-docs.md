@@ -1,1 +1,1 @@
-Read `.claude/REVIEWER.md`, adopt the role, and review all files changed on this branch against main.
+Update `.claude/` docs to reflect decisions made during this session. In TASKS.md, move completed items to done, update in-progress status, and add any new tasks identified during implementation. Update ARCHITECTURE.md, DESIGN.md, WIREFRAMES.md, and REQUIREMENTS.md if any decisions were made or changed. Follow `standards/prose.md` for all edits.
