@@ -1,10 +1,4 @@
-Review our discussion and produce blocks for any docs that changed. Use this format for each:
-
-**FILENAME.md**
-
-```markdown
-<full updated section or new content only>
-```
+Review our discussion and produce blocks for any docs that changed. For each changed doc, write the filename on one line followed by the full updated section or new content in a markdown fenced block.
 
 Then end with:
 
