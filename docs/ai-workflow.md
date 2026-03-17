@@ -31,10 +31,11 @@ Run `aitk claude prompt` to build the context payload. Work in Claude chat for p
 
 Switch to Claude Code for implementation. It reads CLAUDE.md automatically and has full file access, no pasting needed.
 
+- Invoke `claude-feature` before starting to scan for code-level conflicts and ambiguities
 - Implement the feature, run `bun run check`, fix failures, iterate until verify passes
-- Invoke the `code-review` snippet when implementation feels done. Claude Code reads REVIEWER.md and produces a findings report against main.
+- Invoke `claude-review` when implementation feels done. Claude Code reads REVIEWER.md and produces a findings report against main.
 - Feed critical findings back into the same Claude Code session and fix.
-- Invoke the `claude-docs` snippet. Claude Code checks ARCHITECTURE.md, DESIGN.md, TASKS.md, REQUIREMENTS.md and updates anything that drifted during implementation.
+- Invoke `claude-docs`. Claude Code checks ARCHITECTURE.md, DESIGN.md, TASKS.md, REQUIREMENTS.md and updates anything that drifted during implementation.
 
 When done, run pre-PR steps in parallel terminal instances:
 
@@ -63,7 +64,7 @@ Screenshot the component, open a Claude chat session, describe the change. Claud
 
 ### Review
 
-Invoke the `code-review` snippet in the active Claude Code session:
+Invoke `claude-review` in the active Claude Code session:
 
 > Read `.claude/REVIEWER.md`, adopt the role, and review all files changed on this branch against main.
 
@@ -81,11 +82,15 @@ review finds  → Claude Code (same implementation session)
 
 Claude-specific snippets require the `.claude/` workflow to be set up.
 
-| Slug          | When to use                                                |
-| ------------- | ---------------------------------------------------------- |
-| `claude-plan` | Start of session, plan a feature with full doc context     |
-| `code-review` | After implementation, triggers REVIEWER.md role            |
-| `claude-docs` | After review, syncs `.claude/` docs with session decisions |
+| Slug              | When to use                                                     |
+| ----------------- | --------------------------------------------------------------- |
+| `claude-feature`  | Before implementation, scan for code-level conflicts            |
+| `claude-plan`     | Start of session, plan a feature with full doc context          |
+| `claude-review`   | After implementation, triggers REVIEWER.md role                 |
+| `claude-docs`     | After review, syncs `.claude/` docs with session decisions      |
+| `claude-tell`     | End of chat session, produce doc blocks and Claude Code handoff |
+| `claude-ui-test`  | After implementation, manual browser verification checklist     |
+| `claude-ux-audit` | Standalone session, UX/UI audit of existing features            |
 
 ## Prompt generation
 
