@@ -17,4 +17,4 @@ priority: 60
 
 ## Test naming
 
-- Name tests using "should" or descriptive phrases: "should validate email format".
+- Name tests with descriptive phrases that state the expected behavior.

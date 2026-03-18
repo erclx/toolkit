@@ -24,3 +24,5 @@ priority: 300
 
 - Use `.test.ts` / `.test.tsx` for unit tests and `.spec.ts` / `.spec.tsx` for integration tests.
 - Do not make real network calls in unit tests.
+- `describe()` labels use the exact identifier of the subject under test, preserving its natural casing: `describe('Component', ...)`, `describe('useHook', ...)`. For groupings that are not an identifier, use sentence case.
+- `it()` descriptions use "should" + sentence case: `it('should validate email format', ...)`.
