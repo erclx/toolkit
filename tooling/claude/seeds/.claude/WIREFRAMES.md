@@ -1,6 +1,6 @@
 # Wireframes
 
-> ASCII wireframes for planning purposes. Not final design, structure and layout only.
+> ASCII wireframes for planning purposes. Structure and layout only, not final design.
 
 ## Feature name
 

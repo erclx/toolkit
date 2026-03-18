@@ -4,17 +4,17 @@
 
 ## Up next
 
-### Feature N — Description
+### Feature N: description
 
-- [ ] Todo item — what done looks like
-- [ ] Todo item — what done looks like
+- [ ] Todo item: what done looks like
+- [ ] Todo item: what done looks like
 
-> Test strategy: unit — justification
+> Test strategy: unit: justification
 
 ## Done
 
-- [x] Todo item — what done looks like
+- [x] Todo item: what done looks like
 
 ## Blocked
 
-- [ ] Todo item — blocked by: reason
+- [ ] Todo item: blocked by: reason
