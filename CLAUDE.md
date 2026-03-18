@@ -8,22 +8,23 @@ CLI toolkit for managing AI workflows, developer standards, and project tooling 
 - Confirm with the user before making any edits
 - Flag concerns or alternatives when a proposed change has tradeoffs worth discussing
 - After any edit that changes how a domain works, update the corresponding skill body in `.claude/skills/`
+- When updating skills, load `aitk-claude` and follow `standards/skill.md` conventions
 - After any edit, update affected files in `docs/` and `README.md` following `standards/prose.md`
 
 ## System overview
 
 The toolkit has seven domains. Each maps to a skill. Load the skill before editing anything in that domain.
 
-| Task type                                                      | Skill to load     |
-| -------------------------------------------------------------- | ----------------- |
-| Modifying `scripts/`, sandbox scenarios, `manage-*.sh`, `lib/` | `aitk-scripts`    |
-| Modifying `tooling/`, manifests, golden configs, seeds         | `aitk-tooling`    |
-| Modifying `standards/`, `docs/`                                | `aitk-standards`  |
-| Modifying `.cursor/rules/`, `.cursor/stacks/`                  | `aitk-governance` |
-| Modifying `snippets/`, `snippets.toml`                         | `aitk-snippets`   |
-| Modifying `prompts/`                                           | `aitk-prompts`    |
-| Modifying `gemini/commands/`, `gemini/README.md`               | `aitk-gemini`     |
-| Modifying `claude/skills/`, `claude/README.md`                 | `aitk-claude`     |
+| Task type                                                         | Skill to load     |
+| ----------------------------------------------------------------- | ----------------- |
+| Modifying `scripts/`, sandbox scenarios, `manage-*.sh`, `lib/`    | `aitk-scripts`    |
+| Modifying `tooling/`, manifests, golden configs, seeds            | `aitk-tooling`    |
+| Modifying `standards/`, `docs/`                                   | `aitk-standards`  |
+| Modifying `.cursor/rules/`, `.cursor/stacks/`                     | `aitk-governance` |
+| Modifying `snippets/`, `snippets.toml`                            | `aitk-snippets`   |
+| Modifying `prompts/`                                              | `aitk-prompts`    |
+| Modifying `gemini/commands/`, `gemini/README.md`                  | `aitk-gemini`     |
+| Modifying `claude/skills/`, `claude/README.md`, `.claude/skills/` | `aitk-claude`     |
 
 ## Key paths
 
