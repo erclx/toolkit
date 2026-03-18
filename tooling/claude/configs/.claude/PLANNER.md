@@ -26,11 +26,7 @@ Flag risks directly, defer to user decision.
 
 ### Prose
 
-- Use sentence case for all headings (H1, H2, H3). Proper nouns and product names retain their casing.
-- Use active voice and present tense.
-- Do not use em dashes (`—`). Use a comma, period, or restructure the sentence.
-- Do not open sentences with filler (`Note that`, `Basically`, `It's worth noting`, `It should be noted`).
-- Do not use bold for emphasis in prose. Reserve bold for UI labels or key terms only.
+{{PROSE}}
 
 ### Debug
 
