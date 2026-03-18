@@ -110,6 +110,15 @@ build_planner() {
   cp "$PLANNER_TEMPLATE" "$output_file"
 
   log_step "Injecting Planner context"
+
+  local prose_src="$PROJECT_ROOT/standards/prose.md"
+  if [ -f "$prose_src" ] && grep -qF "{{PROSE}}" "$output_file" 2>/dev/null; then
+    substitute_placeholder "{{PROSE}}" "$prose_src" "$output_file"
+    log_info "prose.md"
+  elif ! [ -f "$prose_src" ]; then
+    log_warn "standards/prose.md not found, skipping"
+  fi
+
   inject_placeholder_file "TASKS.md" "{{TASKS}}" "$output_file"
   inject_placeholder_file "REQUIREMENTS.md" "{{REQUIREMENTS}}" "$output_file"
   inject_placeholder_file "ARCHITECTURE.md" "{{ARCHITECTURE}}" "$output_file"

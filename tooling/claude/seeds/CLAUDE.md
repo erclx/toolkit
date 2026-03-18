@@ -4,8 +4,8 @@
 
 ## Key paths
 
-- `src/` — [description]
-- `.claude/` — planning docs (requirements, architecture, wireframes, design, tasks)
+- `src/`: [description]
+- `.claude/`: planning docs (requirements, architecture, wireframes, design, tasks)
 
 ## Before making changes
 

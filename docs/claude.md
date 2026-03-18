@@ -57,7 +57,7 @@ Diffs the three managed role prompts (`PLANNER.md`, `IMPLEMENTER.md`, `REVIEWER.
 
 ### prompt
 
-Reads `PLANNER.md` and `IMPLEMENTER.md` from `.claude/`, injects governance rules from `.cursor/rules/` and context docs (`TASKS.md`, `REQUIREMENTS.md`, `ARCHITECTURE.md`, `DESIGN.md`, `WIREFRAMES.md`), and writes output to `.claude/.tmp/`. Also copies `REVIEWER.md` to `.claude/.tmp/`.
+Reads `PLANNER.md` and `IMPLEMENTER.md` from `.claude/`, injects governance rules from `.cursor/rules/` and context docs (`TASKS.md`, `REQUIREMENTS.md`, `ARCHITECTURE.md`, `DESIGN.md`, `WIREFRAMES.md`), and writes output to `.claude/.tmp/`. Also injects `standards/prose.md` into `PLANNER.md` and copies `REVIEWER.md` to `.claude/.tmp/`.
 
 Prerequisites: run `aitk claude init` first, then `aitk gov install` to install rules for your stack.
 

@@ -4,7 +4,7 @@
 
 ## Key paths
 
-- `src/` — [description]
+- `src/`: [description]
 
 ## Behavior
 
