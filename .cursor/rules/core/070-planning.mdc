@@ -1,7 +1,6 @@
 ---
 description: Enforce planning standards before implementation
-globs: '**/*.ts,**/*.tsx,**/*.js,**/*.jsx,**/*.py'
-alwaysApply: false
+alwaysApply: true
 priority: 70
 ---
 
