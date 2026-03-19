@@ -53,11 +53,9 @@ build_rules_payload() {
     local filename
     filename=$(basename "$file" .mdc)
 
-    echo "## $filename" >>"$payload_file"
-    echo "" >>"$payload_file"
-    echo '```markdown' >>"$payload_file"
+    echo "<rule name=\"$filename\">" >>"$payload_file"
     strip_frontmatter "$file" | sed -e '/./,$!d' -e :a -e '/^\n*$/{$d;N;ba' -e '}' >>"$payload_file"
-    echo '```' >>"$payload_file"
+    echo "</rule>" >>"$payload_file"
     [[ "$file" != "$last_file" ]] && echo "" >>"$payload_file"
   done
 
