@@ -29,13 +29,27 @@ strip_frontmatter() {
 
 build_rules_payload() {
   local rules_dir="$1"
+  local filter="${2:-}"
   local payload_file
   payload_file=$(mktemp)
 
-  local last_file
-  last_file=$(find "$rules_dir" -type f -name "*.mdc" | sort | tail -n 1)
+  local files=()
+  if [ -n "$filter" ]; then
+    for name in $filter; do
+      local f
+      f=$(find "$rules_dir" -type f -name "${name}.mdc" | head -n 1)
+      [ -n "$f" ] && files+=("$f")
+    done
+    mapfile -t files < <(printf '%s\n' "${files[@]}" | sort)
+  else
+    while IFS= read -r f; do
+      files+=("$f")
+    done < <(find "$rules_dir" -type f -name "*.mdc" | sort)
+  fi
 
-  while IFS= read -r file; do
+  local last_file="${files[-1]:-}"
+
+  for file in "${files[@]}"; do
     local filename
     filename=$(basename "$file" .mdc)
 
@@ -45,7 +59,7 @@ build_rules_payload() {
     strip_frontmatter "$file" | sed -e '/./,$!d' -e :a -e '/^\n*$/{$d;N;ba' -e '}' >>"$payload_file"
     echo '```' >>"$payload_file"
     [[ "$file" != "$last_file" ]] && echo "" >>"$payload_file"
-  done < <(find "$rules_dir" -type f -name "*.mdc" | sort)
+  done
 
   sed -i -e :a -e '/^\n*$/{$d;N;ba' -e '}' "$payload_file"
 
