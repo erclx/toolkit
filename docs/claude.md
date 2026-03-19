@@ -40,13 +40,12 @@ Invoke with `/skill-name` or let Claude auto-trigger by matching against the ski
 
 ## CLI
 
-| Command                   | Description                                                  |
-| ------------------------- | ------------------------------------------------------------ |
-| `aitk claude init`        | Seed `.claude/` workflow docs and `CLAUDE.md` into a project |
-| `aitk claude sync`        | Diff managed role prompts against source and apply updates   |
-| `aitk claude prompt`      | Generate master prompts from installed governance rules      |
-| `aitk claude gov`         | Build governance rules into `.claude/GOV.md`                 |
-| `aitk claude gov [stack]` | Build a stack-filtered subset into `.claude/GOV-[STACK].md`  |
+| Command              | Description                                                  |
+| -------------------- | ------------------------------------------------------------ |
+| `aitk claude init`   | Seed `.claude/` workflow docs and `CLAUDE.md` into a project |
+| `aitk claude sync`   | Diff managed role prompts against source and apply updates   |
+| `aitk claude prompt` | Generate master prompts from installed governance rules      |
+| `aitk claude gov`    | Build governance rules into `.claude/GOV.md`                 |
 
 ### init
 
@@ -68,6 +67,6 @@ Prerequisites: run `aitk claude init` first, then `aitk gov install` to install 
 
 ### gov
 
-Reads `.mdc` files from `.cursor/rules/`, strips frontmatter, concatenates them, and writes `.claude/GOV.md`. Claude Code loads this file automatically each session to provide governance context inline. Pass an optional stack name to build a filtered subset into `.claude/GOV-[STACK].md`.
+Reads `.mdc` files from `.cursor/rules/`, strips frontmatter, concatenates them, and writes `.claude/GOV.md`. Claude Code loads this file automatically each session to provide governance context inline.
 
 Prerequisites: run `aitk gov install` first to populate `.cursor/rules/`.

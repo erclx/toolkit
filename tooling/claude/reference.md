@@ -30,14 +30,13 @@ scripts/
 
 ## CLI
 
-| Command                   | What it does                                                                                                   |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `aitk claude init`        | Seeds `.claude/` workflow docs, updates `.gitignore`                                                           |
-| `aitk claude sync`        | Diffs managed role prompts against configs and applies updates. Reports seeded file status.                    |
-| `aitk claude prompt`      | Injects context into `PLANNER.md` and `IMPLEMENTER.md`, copies `REVIEWER.md` to `.tmp/`, writes all to `.tmp/` |
-| `aitk claude gov`         | Builds all governance rules from `.cursor/rules/` and writes to `.claude/GOV.md`                               |
-| `aitk claude gov [stack]` | Builds a stack-filtered subset and writes to `.claude/GOV-[STACK].md` (standalone/inspect)                     |
-| `npm run snapshot`        | Writes project file tree to `.claude/.tmp/SNAPSHOT.md`                                                         |
+| Command              | What it does                                                                                                   |
+| -------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `aitk claude init`   | Seeds `.claude/` workflow docs, updates `.gitignore`                                                           |
+| `aitk claude sync`   | Diffs managed role prompts against configs and applies updates. Reports seeded file status.                    |
+| `aitk claude prompt` | Injects context into `PLANNER.md` and `IMPLEMENTER.md`, copies `REVIEWER.md` to `.tmp/`, writes all to `.tmp/` |
+| `aitk claude gov`    | Builds governance rules from `.cursor/rules/` and writes to `.claude/GOV.md`                                   |
+| `npm run snapshot`   | Writes project file tree to `.claude/.tmp/SNAPSHOT.md`                                                         |
 
 ## Notes
 
