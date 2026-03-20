@@ -32,3 +32,9 @@ priority: 210
 
 - Show format examples over instructions: `name@example.com` over `Enter your email here`.
 - Reserve instructions for labels or helper text below the input.
+
+## Alt text
+
+- Describe the content or function of the image, not its appearance.
+- Keep alt text concise; avoid prefixes like "Image of" or "Photo of".
+- Alt text for functional images (icons, buttons) should describe the action, not the graphic.

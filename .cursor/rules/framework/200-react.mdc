@@ -50,3 +50,5 @@ priority: 200
 
 - Use semantic HTML elements over `div`/`span` where a native element exists.
 - Add `aria-label` to interactive elements with no visible text label.
+- Always provide an `alt` prop on `<img>` elements.
+- Use `alt=""` for decorative images with no informational value.
