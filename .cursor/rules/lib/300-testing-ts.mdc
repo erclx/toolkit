@@ -20,6 +20,11 @@ priority: 300
 - Use Playwright for end-to-end tests.
 - Place all Playwright tests within the `e2e/` directory; never inside `src/`.
 
+## Timers and async
+
+- Never use `vi.useFakeTimers()` in `beforeEach` when tests use `waitFor`, `act`, or `userEvent`.
+- Scope fake timers to the individual test; restore with `vi.useRealTimers()` in a matching `afterEach`.
+
 ## Conventions
 
 - Use `.test.ts` / `.test.tsx` for unit tests and `.spec.ts` / `.spec.tsx` for integration tests.
