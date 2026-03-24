@@ -14,19 +14,25 @@ Follow them exactly.
 
 ## Context
 
-Run `scripts/context.sh` to gather git context before generating the PR description.
+Run these commands in parallel to gather git context:
+
+- `git remote get-url origin 2>/dev/null || echo "NO_REMOTE"`
+- `git branch --show-current 2>/dev/null || echo "unknown"`
+- `git log main..HEAD --oneline 2>/dev/null || echo "NO_COMMITS"`
+- `git diff main..HEAD --stat 2>/dev/null || echo "NO_STATS"`
+- `git diff main..HEAD -- . ':(exclude)*.lock' ':(exclude)*-lock.json' 2>/dev/null || echo "NO_DIFF"`
 
 ## Guards
 
-- If context shows no commits ahead of main, stop and output:
+- If no commits ahead of main, stop and output:
   `❌ No commits ahead of main. Nothing to PR.`
 
-## Response Format
+## Response format
 
 ### Preview
 
 - **Title:** <title>
-- **Files Changed:** <count>
+- **Files changed:** <count>
 - **Analysis:** <brief summary of impact>
 
 ### Final command
@@ -35,7 +41,15 @@ Run `scripts/context.sh` to gather git context before generating the PR descript
 mkdir -p .claude/.tmp && (cat <<'BODY' > .claude/.tmp/pr-body.md
 <body content following pr.md template exactly>
 BODY
-) && gh pr create --title "<title>" --body-file .claude/.tmp/pr-body.md \
+) && git push -u origin HEAD && gh pr create --title "<title>" --body-file .claude/.tmp/pr-body.md \
   && rm .claude/.tmp/pr-body.md \
   && echo "Link: $(gh pr view --json url -q .url)"
 ```
+
+## After execution
+
+Respond with exactly one line:
+
+`✅ PR: <url>`
+
+Do not add any other text.
