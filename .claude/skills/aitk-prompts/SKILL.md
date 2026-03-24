@@ -18,7 +18,21 @@ description: System prompt templates for AI authoring. Use for adding prompts, e
 - Do not duplicate general LLM knowledge. Focus on project-specific constraints and output shape.
 - Use imperative voice throughout. "Do X", never "You should" or "Try to".
 
+## Exportable prompts
+
+- Prompts in `prompts.toml` are installable into target projects via `aitk prompts install`.
+- Toolkit-internal prompts (cursor-rules, gemini-cli, claude-skill, meta-prompt, standards-reference, tooling-reference) are not registered and must not be added to `prompts.toml`.
+- When adding an exportable prompt, register it under the appropriate category in `prompts.toml` using the file stem as the name.
+
+## Sync checklist
+
+When adding an exportable prompt:
+
+- Create the `.md` file in `prompts/`
+- Add the name to the correct category in `prompts.toml`
+- Update the prompts table and categories table in `docs/prompts.md`
+
 ## Full reference
 
-- `docs/prompts.md`: system overview, heading conventions, required sections
+- `docs/prompts.md`: system overview, categories, CLI, heading conventions, required sections
 - `prompts/meta-prompt.md`: system prompt generator template, output format, constraint patterns
