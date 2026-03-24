@@ -42,8 +42,7 @@ mkdir -p .claude/.tmp && (cat <<'BODY' > .claude/.tmp/pr-body.md
 <body content following pr.md template exactly>
 BODY
 ) && git push -u origin HEAD && gh pr create --title "<title>" --body-file .claude/.tmp/pr-body.md \
-  && rm .claude/.tmp/pr-body.md \
-  && echo "Link: $(gh pr view --json url -q .url)"
+  && rm .claude/.tmp/pr-body.md
 ```
 
 ## After execution
