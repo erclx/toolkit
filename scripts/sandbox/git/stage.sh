@@ -13,10 +13,12 @@ stage_setup() {
   git config user.email "architect@example.com"
   git config user.name "Senior Architect"
 
+  mkdir -p docs
   echo "# My App" >README.md
+  printf "# Old API Reference\n\nDeprecated.\n" >docs/old-api.md
   git add . && git commit -m "chore(project): init" -q
 
-  mkdir -p src/auth src/api docs
+  mkdir -p src/auth src/api
 
   echo 'export function login(user) { return fetch("/api/login", { body: user }); }' >src/auth/login.js
   echo 'export function logout() { return fetch("/api/logout"); }' >src/auth/logout.js
@@ -24,10 +26,11 @@ stage_setup() {
   printf "# Auth module\n\nHandles login and logout.\n" >docs/auth.md
   echo '{ "name": "my-app", "version": "1.1.0" }' >package.json
 
+  git rm docs/old-api.md -q
   git add src/auth/login.js src/auth/logout.js src/api/users.js docs/auth.md package.json
 
-  log_step "Scenario ready: 5 staged files across mixed concerns"
-  log_info "Context: 2 auth files, 1 api file, 1 doc, 1 config change — all staged"
+  log_step "Scenario ready: 6 staged changes across mixed concerns"
+  log_info "Context: 2 auth files, 1 api file, 1 doc, 1 config change, 1 deletion — all staged"
   log_info "Action:  gemini git:stage"
-  log_info "Expect:  groups auth + api separately, docs solo, config solo"
+  log_info "Expect:  groups auth + api separately, docs solo, config solo; uses git rm for deletion"
 }
