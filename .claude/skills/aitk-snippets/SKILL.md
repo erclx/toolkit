@@ -31,4 +31,5 @@ When renaming a snippet:
 
 ## Full reference
 
-- `docs/snippets.md`: system overview, slug conventions, categories, CLI
+- `docs/snippets.md`: system overview, categories, CLI
+- `standards/snippets.md`: what a snippet is, invocation channels, use patterns, authoring conventions
