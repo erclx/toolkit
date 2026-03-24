@@ -5,6 +5,12 @@ description: Claude Code plugin and tooling. Use for adding or modifying plugin 
 
 # Claude
 
+## Internal skills
+
+- Internal skills live in `.claude/skills/` and are toolkit-only, not installed into target projects.
+- Each skill is a folder named in kebab-case containing `SKILL.md`.
+- When updating an internal skill, write to `{base-dir}/SKILL.md` where `{base-dir}` is the path shown in the skill header at load time.
+
 ## Plugin skills
 
 - Plugin skills live in `claude/skills/` and are auto-discovered when Claude Code loads with `--plugin-dir`. No registration needed, folder presence is enough.

@@ -8,20 +8,21 @@ Snippets are small, reusable prompts stored as plain markdown files. Invoke them
 
 ```plaintext
 snippets/
-├── *.md               ← invokable prompt snippets
-└── snippets.toml      ← category definitions (slug lists)
+├── *.md               ← base snippets (no category prefix)
+├── claude/
+│   └── *.md           ← claude snippets, installed as claude-{name}.md
 docs/
 └── snippets.md        ← this file
 ```
 
+Base snippets live at the root with no prefix. Category snippets live in a named subfolder; the folder name becomes the slug prefix on install. A snippet at `claude/docs.md` installs as `claude-docs.md` and is invoked as `@claude-docs`.
+
 ## Categories
 
-Snippets are organized into categories in `snippets.toml`. Each category is a named list of slugs. There is no inheritance; categories are flat file lists.
-
-| Category | Slugs                                                                                                                                                                  |
-| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `base`   | chat-mode, senior-mode, claude-edit, session-notes, code-search, create-snippet, claude-steps                                                                          |
-| `claude` | claude-plan, claude-review, claude-docs, claude-tell, claude-feature, claude-ui-test, claude-ux-audit, claude-figma, claude-tasks, claude-docs-sync, claude-seed-audit |
+| Category | Slugs                                                                                                                                                                                             |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `base`   | chat-mode, senior-mode, session-notes, code-search, create-snippet                                                                                                                                |
+| `claude` | claude-docs, claude-docs-sync, claude-edit, claude-feature, claude-figma, claude-plan, claude-review, claude-seed-audit, claude-steps, claude-tasks, claude-tell, claude-ui-test, claude-ux-audit |
 
 ## Snippets
 
@@ -29,22 +30,22 @@ Snippets are organized into categories in `snippets.toml`. Each category is a na
 | ------------------- | --------------------------------------------------- |
 | `chat-mode`         | Session opener for tool behavior                    |
 | `senior-mode`       | Senior-level judgment, discuss only                 |
-| `claude-edit`       | Generate Claude Code edit prompt                    |
 | `session-notes`     | Capture session decisions                           |
 | `code-search`       | Generate a git grep bash script                     |
+| `create-snippet`    | Draft a new snippet (chat/Chrome extension)         |
+| `claude-docs`       | Sync `.claude/` docs with session decisions         |
+| `claude-docs-sync`  | Sync public docs with recent code changes           |
+| `claude-edit`       | Generate Claude Code edit prompt                    |
+| `claude-feature`    | Scan codebase before implementing a feature         |
+| `claude-figma`      | Generate Figma instructions from a design spec      |
 | `claude-plan`       | Plan a feature, update `.claude/` docs when done    |
 | `claude-review`     | Adopt REVIEWER.md role, review changes against main |
-| `claude-docs`       | Sync `.claude/` docs with session decisions         |
+| `claude-seed-audit` | Audit seed files against toolkit source of truth    |
+| `claude-steps`      | Request step-by-step instructions for any process   |
+| `claude-tasks`      | Promote complete tasks and archive overflow         |
 | `claude-tell`       | Produce doc blocks and Claude Code handoff          |
-| `claude-feature`    | Scan codebase before implementing a feature         |
 | `claude-ui-test`    | Manual browser verification checklist               |
 | `claude-ux-audit`   | UX/UI audit of existing features                    |
-| `create-snippet`    | Draft a new snippet (chat/Chrome extension)         |
-| `claude-steps`      | Request step-by-step instructions for any process   |
-| `claude-figma`      | Generate Figma instructions from a design spec      |
-| `claude-tasks`      | Promote complete tasks and archive overflow         |
-| `claude-docs-sync`  | Sync public docs with recent code changes           |
-| `claude-seed-audit` | Audit seed files against toolkit source of truth    |
 
 ## CLI
 
@@ -52,7 +53,7 @@ Snippets are organized into categories in `snippets.toml`. Each category is a na
 | ----------------------------------------- | ------------------------------------------------------------------ |
 | `aitk snippets install [category] [path]` | Copy slugs for a category into a project, use `all` for everything |
 | `aitk snippets sync [path]`               | Update snippets already present (never adds new)                   |
-| `aitk snippets create`                    | Create a new snippet and register it in the TOML                   |
+| `aitk snippets create`                    | Create a new snippet file in the correct category folder           |
 
 `aitk snippets` with no args shows a picker: `install`, `sync`, or `create`.
 
@@ -83,19 +84,15 @@ To create a new snippet:
 
 ```bash
 aitk snippets create
-# prompts for category (existing or new), then slug
-# writes entry to snippets.toml and creates snippets/<slug>.md
+# prompts for category (existing folder, new folder, or base root)
+# confirms the derived slug before writing
+# creates snippets/{category}/{name}.md or snippets/{name}.md for base
 ```
 
 ## Adding a snippet
 
-Use `aitk snippets create`; it handles both the TOML entry and the file. For manual additions or authoring best practices, refer to `standards/snippets.md`. To add manually: create a `.md` file in `snippets/` using a kebab-case slug as the filename, then add the slug to the relevant category in `snippets.toml`.
+Use `aitk snippets create`; it handles the file and folder creation. For manual additions or authoring best practices, refer to `standards/snippets.md`. To add manually: create a `.md` file in the correct folder using a kebab-case name, following the path conventions above.
 
 ## Adding a category
 
-Use `aitk snippets create` and select `new category` when prompted. To add manually: append a new section to `snippets.toml`:
-
-```toml
-[my-category]
-slugs = ["slug-one", "slug-two"]
-```
+Use `aitk snippets create` and select `new category` when prompted. To add manually: create a new subfolder under `snippets/` with a kebab-case name and add your snippet files inside it.
