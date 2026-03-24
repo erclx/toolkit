@@ -9,13 +9,12 @@ source "$PROJECT_ROOT/scripts/lib/ui.sh"
 trap close_timeline EXIT
 
 SNIPPETS_SOURCE="$PROJECT_ROOT/snippets"
-TOML="$PROJECT_ROOT/snippets/snippets.toml"
 
 show_help() {
   echo -e "${GREY}┌${NC}"
   echo -e "${GREY}├${NC} ${WHITE}Usage:${NC} aitk snippets create"
   echo -e "${GREY}│${NC}"
-  echo -e "${GREY}│${NC}  Creates a new snippet: writes entry to snippets.toml and creates the slug file."
+  echo -e "${GREY}│${NC}  Creates a new snippet: prompts for category and name, writes the file."
   echo -e "${GREY}│${NC}"
   echo -e "${GREY}│${NC}  ${WHITE}Options:${NC}"
   echo -e "${GREY}│${NC}    -h, --help    ${GREY}# Show this help message${NC}"
@@ -24,40 +23,30 @@ show_help() {
 }
 
 list_categories() {
-  grep '^\[' "$TOML" | tr -d '[]' | sort
+  echo "base (root, no prefix)"
+  find "$SNIPPETS_SOURCE" -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sort
+  echo "new category"
 }
 
 slug_error() {
   local slug="$1"
+  local path="$2"
   if [ -z "$slug" ]; then
-    echo "slug cannot be empty"
+    echo "name cannot be empty"
     return
   fi
   if [[ ! "$slug" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
     echo "kebab-case only (e.g. my-snippet)"
     return
   fi
-  if [ -f "$SNIPPETS_SOURCE/$slug.md" ]; then
-    echo "slug '$slug' already exists"
+  if [ -f "$path" ]; then
+    echo "file already exists: $path"
     return
   fi
   echo ""
 }
 
-ask_slug() {
-  local error
-  while true; do
-    ask "Snippet slug?" "SLUG_INPUT"
-    error=$(slug_error "$SLUG_INPUT")
-    if [ -z "$error" ]; then
-      SLUG="$SLUG_INPUT"
-      break
-    fi
-    log_warn "Invalid slug: $error"
-  done
-}
-
-ask_category_name() {
+ask_new_category() {
   while true; do
     ask "Category name?" "CATEGORY_INPUT"
     if [ -z "$CATEGORY_INPUT" ]; then
@@ -68,7 +57,7 @@ ask_category_name() {
       log_warn "Invalid category: kebab-case only (e.g. my-category)"
       continue
     fi
-    if grep -q "^\[$CATEGORY_INPUT\]" "$TOML"; then
+    if [ -d "$SNIPPETS_SOURCE/$CATEGORY_INPUT" ]; then
       log_warn "Category '$CATEGORY_INPUT' already exists"
       continue
     fi
@@ -77,79 +66,83 @@ ask_category_name() {
   done
 }
 
-append_slug_to_category() {
+ask_name() {
   local category="$1"
-  local slug="$2"
-  local tmp
-  tmp=$(mktemp)
+  local is_base="$2"
+  local label
+  local error
 
-  local in_section=0
-  local in_array=0
-  local inserted=0
+  if [ "$is_base" = "true" ]; then
+    label="Snippet slug?"
+  else
+    label="Snippet name (slug without '${category}-' prefix)?"
+  fi
 
-  while IFS= read -r line; do
-    if [[ "$inserted" -eq 0 && "$line" =~ ^\["$category"\] ]]; then
-      in_section=1
-      echo "$line" >>"$tmp"
-      continue
+  while true; do
+    ask "$label" "NAME_INPUT"
+    local dest_path
+    if [ "$is_base" = "true" ]; then
+      dest_path="$SNIPPETS_SOURCE/$NAME_INPUT.md"
+    else
+      dest_path="$SNIPPETS_SOURCE/$category/$NAME_INPUT.md"
     fi
-
-    if [[ "$in_section" -eq 1 && "$inserted" -eq 0 ]]; then
-      [[ "$line" =~ ^slugs ]] && in_array=1
-
-      if [[ "$in_array" -eq 1 && "$line" =~ \] ]]; then
-        echo "    \"$slug\"," >>"$tmp"
-        inserted=1
-      fi
+    error=$(slug_error "$NAME_INPUT" "$dest_path")
+    if [ -z "$error" ]; then
+      NAME="$NAME_INPUT"
+      break
     fi
-
-    echo "$line" >>"$tmp"
-  done <"$TOML"
-
-  mv "$tmp" "$TOML"
-}
-
-append_new_category() {
-  local category="$1"
-  local slug="$2"
-  printf '\n[%s]\nslugs = ["%s"]\n' "$category" "$slug" >>"$TOML"
+    log_warn "Invalid name: $error"
+  done
 }
 
 cmd_create() {
-  select_option "Category type?" "Existing category" "New category"
-  local type="$SELECTED_OPTION"
+  local categories=()
+  mapfile -t categories < <(list_categories)
+
+  select_option "Category?" "${categories[@]}"
+  local selected="$SELECTED_OPTION"
 
   local category
-  if [ "$type" = "Existing category" ]; then
-    local categories=()
-    mapfile -t categories < <(list_categories)
-    if [ "${#categories[@]}" -eq 0 ]; then
-      log_error "No categories found in snippets.toml"
-    fi
-    select_option "Select category:" "${categories[@]}"
-    category="$SELECTED_OPTION"
-  else
-    ask_category_name
+  local is_base="false"
+
+  if [ "$selected" = "base (root, no prefix)" ]; then
+    is_base="true"
+    category="base"
+  elif [ "$selected" = "new category" ]; then
+    ask_new_category
     category="$CATEGORY_NAME"
-  fi
-
-  ask_slug
-  local slug="$SLUG"
-
-  log_step "Registering slug"
-
-  if [ "$type" = "New category" ]; then
-    append_new_category "$category" "$slug"
-    log_add "snippets.toml → [$category] → $slug"
   else
-    append_slug_to_category "$category" "$slug"
-    log_add "snippets.toml → $category → $slug"
+    category="$selected"
   fi
+
+  ask_name "$category" "$is_base"
+  local name="$NAME"
+
+  local dest_path
+  local slug
+  if [ "$is_base" = "true" ]; then
+    dest_path="$SNIPPETS_SOURCE/$name.md"
+    slug="$name"
+  else
+    dest_path="$SNIPPETS_SOURCE/$category/$name.md"
+    slug="${category}-${name}"
+  fi
+
+  log_info "Slug: @${slug}"
 
   log_step "Creating file"
 
-  printf '<!-- TODO: write %s prompt -->\n' "$slug" >"$SNIPPETS_SOURCE/$slug.md"
-  log_add "snippets/$slug.md"
+  if [ "$is_base" = "false" ]; then
+    mkdir -p "$SNIPPETS_SOURCE/$category"
+  fi
+
+  printf '<!-- TODO: write %s prompt -->\n' "$slug" >"$dest_path"
+
+  if [ "$is_base" = "true" ]; then
+    log_add "snippets/$name.md"
+  else
+    log_add "snippets/$category/$name.md"
+  fi
 }
 
 main() {
