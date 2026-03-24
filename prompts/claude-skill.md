@@ -27,6 +27,10 @@ Optimize for token efficiency and routing accuracy.
 - Do not include code examples unless a 1-3 line inline snippet for a pattern the LLM cannot infer.
 - Do not duplicate general knowledge the LLM already has. Focus on project-specific conventions and preferences.
 
+### Execution
+
+- Task skills with preview+execute patterns must execute commands immediately after outputting the preview. Do not add a "confirm before running" step or pause for user input. Claude Code's tool permission dialog is the confirmation gate.
+
 ## OUTPUT FORMAT
 
 **Reference type (conventions, patterns, domain knowledge):**

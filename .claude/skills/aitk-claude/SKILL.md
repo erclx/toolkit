@@ -18,6 +18,10 @@ description: Claude Code plugin and tooling. Use for adding or modifying plugin 
 - Read `docs/claude.md` before adding a skill. It lists all existing skills.
 - Follow `standards/skill.md` for skill structure and frontmatter conventions.
 
+## Authoring conventions
+
+- Task skills with preview+execute patterns must execute commands immediately after the preview. Do not add a "confirm before running" step or pause for user input. Claude Code's tool permission dialog is the confirmation gate. The user hits Enter to approve or Escape to interrupt and revise.
+
 ## Sync checklist
 
 When adding a new skill:

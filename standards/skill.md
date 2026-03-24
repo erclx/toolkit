@@ -50,6 +50,11 @@ Skills provide Claude Code with domain-specific constraints and rules inline, so
 - Plugin skills are namespaced: `plugin-name:skill-name`
 - Priority order when names conflict: enterprise > personal > project > plugin
 
+## Execution
+
+- Task skills with preview+execute patterns must execute commands immediately after outputting the preview. Do not include "confirm before running" language or pause for user input.
+- Claude Code's tool permission dialog is the confirmation gate. The user hits Enter to approve or Escape to interrupt and revise.
+
 ## Examples
 
 ### Correct
