@@ -6,4 +6,4 @@ For each file:
 2. Compare against the source of truth
 3. Identify sections or instructions present in the source but missing or outdated here
 
-Propose surgical additions only. Do not remove or overwrite existing content — seeds are user-owned and may contain project-specific customizations.
+Propose surgical additions only. Do not remove or overwrite existing content; seeds are user-owned and may contain project-specific customizations.
