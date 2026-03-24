@@ -33,7 +33,7 @@ scripts/
 ├── snippets/
 │   ├── install.sh       ← copies slugs for a category into a target project
 │   ├── sync.sh          ← diffs and updates snippets already present in target
-│   └── create.sh        ← creates a new snippet and registers it in snippets.toml
+│   └── create.sh        ← creates a new snippet file in the correct category folder
 ├── prompts/
 │   ├── install.sh       ← copies prompts for a category into a target project
 │   └── sync.sh          ← diffs and updates prompts already present in target

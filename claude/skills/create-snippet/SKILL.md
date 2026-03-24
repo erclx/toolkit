@@ -21,4 +21,4 @@ Before creating, read:
 
 ## After writing
 
-Remind the user: copy `snippets/<slug>.md` to the toolkit repo and register the slug in `snippets.toml` under the correct category.
+Remind the user: copy `snippets/<slug>.md` to the toolkit repo and place it in the correct category folder (`snippets/<category>/<name>.md`).

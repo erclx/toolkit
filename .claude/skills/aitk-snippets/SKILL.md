@@ -1,13 +1,13 @@
 ---
 name: aitk-snippets
-description: Reusable prompt snippets for Claude and Gemini. Use for adding snippets, renaming slugs, or editing snippets.toml.
+description: Reusable prompt snippets for Claude and Gemini. Use for adding snippets, renaming slugs, or editing snippet folder structure.
 ---
 
 # Snippets
 
 ## Conventions
 
-- Filename is the slug. `claude-edit.md` is invoked as `claude-edit`.
+- Filename is the local name. `claude/docs.md` installs and is invoked as `claude-docs`.
 - Kebab-case only, no capitals, no underscores.
 - Plain markdown only. No YAML frontmatter, no structure requirements.
 - One focused purpose per snippet. If it needs sections it is a system prompt, not a snippet.
@@ -15,19 +15,23 @@ description: Reusable prompt snippets for Claude and Gemini. Use for adding snip
 
 ## Categories
 
-- Categories are flat slug lists in `snippets.toml`. No inheritance.
-- Use `aitk snippets create` to add a snippet. It handles both the file and the TOML entry.
-- To add manually: create the `.md` file, then add the slug to the correct category in `snippets.toml`.
+- Base snippets live at `snippets/` root with no prefix. Slug = filename.
+- Category snippets live in `snippets/{category}/`. Slug = `{category}-{filename}`.
+- No TOML manifest. The folder structure is the source of truth.
+- Use `aitk snippets create` to add a snippet. It prompts for category, writes the file, and confirms the derived slug.
+- To add manually: create a `.md` file in the correct folder.
 
 ## Sync checklist
 
 When adding a snippet:
 
-- Register the slug in `snippets.toml` under the correct category
+- Place the file in `snippets/{category}/{name}.md` (or `snippets/{name}.md` for base)
+- Update `docs/snippets.md` categories table and snippets table
 
 When renaming a snippet:
 
-- Update both the filename and the slug entry in `snippets.toml`
+- Rename the file; the slug is derived from the path, nothing else to update in source
+- Notify any projects using the old slug to re-sync
 
 ## Full reference
 

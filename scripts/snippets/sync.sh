@@ -31,6 +31,35 @@ check_dependencies() {
   command -v find >/dev/null 2>&1 || log_error "find not installed"
 }
 
+build_source_map() {
+  SOURCE_MAP_KEYS=()
+  SOURCE_MAP_VALS=()
+
+  while IFS= read -r f; do
+    local filename parent slug
+    filename=$(basename "$f" .md)
+    parent=$(basename "$(dirname "$f")")
+    if [ "$parent" = "snippets" ]; then
+      slug="$filename"
+    else
+      slug="${parent}-${filename}"
+    fi
+    SOURCE_MAP_KEYS+=("$slug")
+    SOURCE_MAP_VALS+=("$f")
+  done < <(find "$SNIPPETS_SOURCE" -type f -name "*.md" | sort)
+}
+
+lookup_source() {
+  local slug="$1"
+  for i in "${!SOURCE_MAP_KEYS[@]}"; do
+    if [ "${SOURCE_MAP_KEYS[$i]}" = "$slug" ]; then
+      echo "${SOURCE_MAP_VALS[$i]}"
+      return
+    fi
+  done
+  echo ""
+}
+
 validate_target() {
   local target="$1"
   [ -z "$target" ] && target="."
@@ -53,11 +82,12 @@ collect_changes() {
   local count=0
 
   while IFS= read -r dest_file; do
-    local filename
+    local filename slug src_file
     filename=$(basename "$dest_file")
-    local src_file="$SNIPPETS_SOURCE/$filename"
+    slug="${filename%.md}"
+    src_file=$(lookup_source "$slug")
 
-    if [ ! -f "$src_file" ]; then
+    if [ -z "$src_file" ] || [ ! -f "$src_file" ]; then
       log_warn "$filename (not in toolkit source, skipping)"
       continue
     fi
@@ -118,6 +148,7 @@ parse_args() {
 main() {
   parse_args "$@"
   check_dependencies
+  build_source_map
 
   TARGET_PATH=$(validate_target "$TARGET_PATH")
 

@@ -9,7 +9,6 @@ source "$PROJECT_ROOT/scripts/lib/ui.sh"
 trap close_timeline EXIT
 
 SNIPPETS_SOURCE="$PROJECT_ROOT/snippets"
-TOML="$PROJECT_ROOT/snippets/snippets.toml"
 
 show_help() {
   echo -e "${GREY}┌${NC}"
@@ -31,7 +30,8 @@ show_help() {
 }
 
 list_categories() {
-  grep '^\[' "$TOML" | tr -d '[]' | sort
+  echo "base"
+  find "$SNIPPETS_SOURCE" -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sort
 }
 
 select_category() {
@@ -39,66 +39,73 @@ select_category() {
   mapfile -t categories < <(list_categories)
 
   if [ "${#categories[@]}" -eq 0 ]; then
-    log_error "No categories found in snippets.toml"
+    log_error "No categories found in snippets source."
   fi
 
   select_option "Select category to install:" "all" "${categories[@]}"
   echo "$SELECTED_OPTION"
 }
 
-resolve_slugs() {
+collect_files_for_category() {
   local category="$1"
-  local -n _slugs=$2
+  local -n _files=$2
 
-  if ! grep -q "^\[$category\]" "$TOML"; then
-    log_error "Category not found: $category"
+  if [ "$category" = "base" ]; then
+    while IFS= read -r f; do
+      _files+=("$f")
+    done < <(find "$SNIPPETS_SOURCE" -maxdepth 1 -type f -name "*.md" | sort)
+  else
+    local dir="$SNIPPETS_SOURCE/$category"
+    if [ ! -d "$dir" ]; then
+      log_error "Category not found: $category"
+    fi
+    while IFS= read -r f; do
+      _files+=("$f")
+    done < <(find "$dir" -maxdepth 1 -type f -name "*.md" | sort)
   fi
-
-  local in_section=0
-  local in_array=0
-  while IFS= read -r line; do
-    if [[ "$line" =~ ^\["$category"\] ]]; then
-      in_section=1
-      continue
-    fi
-    if [[ "$in_section" -eq 1 && "$line" =~ ^\[.+\] ]]; then
-      break
-    fi
-    [ "$in_section" -eq 0 ] && continue
-
-    if [[ "$in_array" -eq 0 ]]; then
-      [[ "$line" =~ ^slugs ]] || continue
-      in_array=1
-    fi
-
-    while [[ "$line" =~ \"([^\"]+)\" ]]; do
-      local slug="${BASH_REMATCH[1]}"
-      _slugs+=("$slug")
-      line=$(echo "$line" | sed "s/\"${slug}\"//")
-    done
-
-    [[ "$line" =~ \] ]] && in_array=0
-  done <"$TOML"
 }
 
-resolve_all_slugs() {
-  local -n _all_slugs=$1
+collect_all_files() {
+  local -n _all=$1
   local seen=()
 
+  collect_files_for_category "base" _all
+
   while IFS= read -r category; do
-    local cat_slugs=()
-    resolve_slugs "$category" cat_slugs
-    for slug in "${cat_slugs[@]}"; do
+    local cat_files=()
+    collect_files_for_category "$category" cat_files
+    for f in "${cat_files[@]}"; do
+      local slug
+      slug=$(derive_slug "$f")
       local already=0
       for s in "${seen[@]}"; do
         [ "$s" = "$slug" ] && already=1 && break
       done
       if [ "$already" -eq 0 ]; then
-        _all_slugs+=("$slug")
+        _all+=("$f")
         seen+=("$slug")
       fi
     done
-  done < <(list_categories)
+  done < <(find "$SNIPPETS_SOURCE" -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sort)
+}
+
+derive_slug() {
+  local filepath="$1"
+  local filename
+  filename=$(basename "$filepath" .md)
+  local parent
+  parent=$(basename "$(dirname "$filepath")")
+
+  if [ "$parent" = "snippets" ]; then
+    echo "$filename"
+  else
+    echo "${parent}-${filename}"
+  fi
+}
+
+derive_dest_name() {
+  local filepath="$1"
+  echo "$(derive_slug "$filepath").md"
 }
 
 cmd_install() {
@@ -115,43 +122,28 @@ cmd_install() {
     log_error "Cannot install into toolkit root."
   fi
 
-  local slugs=()
+  local files=()
   if [ "$category" = "all" ]; then
-    resolve_all_slugs slugs
+    collect_all_files files
     log_step "Resolving all categories"
   else
-    if ! grep -q "^\[$category\]" "$TOML"; then
-      log_error "Category not found: $category"
-    fi
-    resolve_slugs "$category" slugs
+    collect_files_for_category "$category" files
     log_step "Resolving category: $category"
   fi
 
-  if [ "${#slugs[@]}" -eq 0 ]; then
-    log_warn "No slugs defined for category: $category"
+  if [ "${#files[@]}" -eq 0 ]; then
+    log_warn "No snippets found for category: $category"
     exit 0
   fi
 
-  local found=()
-  local missing=()
-
-  for slug in "${slugs[@]}"; do
-    local src="$SNIPPETS_SOURCE/$slug.md"
-    if [ -f "$src" ]; then
-      found+=("$slug")
-      log_info "$slug"
-    else
-      missing+=("$slug")
-    fi
+  for f in "${files[@]}"; do
+    log_info "$(derive_slug "$f")"
   done
 
-  for slug in "${missing[@]}"; do
-    log_warn "$slug (source not found, skipping)"
-  done
+  local dest_dir="$target_abs/snippets"
+  local dest_dir_display="${target%/}/snippets"
 
-  local dest_dir="$target/snippets"
-
-  select_option "Install ${#found[@]} snippets to $dest_dir?" "Yes" "No"
+  select_option "Install ${#files[@]} snippets to $dest_dir_display?" "Yes" "No"
 
   if [ "$SELECTED_OPTION" = "No" ]; then
     log_warn "Cancelled"
@@ -162,9 +154,11 @@ cmd_install() {
 
   mkdir -p "$dest_dir"
 
-  for slug in "${found[@]}"; do
-    cp "$SNIPPETS_SOURCE/$slug.md" "$dest_dir/$slug.md"
-    log_add "snippets/$slug.md"
+  for f in "${files[@]}"; do
+    local dest_name
+    dest_name=$(derive_dest_name "$f")
+    cp "$f" "$dest_dir/$dest_name"
+    log_add "snippets/$dest_name"
   done
 }
 
