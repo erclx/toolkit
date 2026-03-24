@@ -47,7 +47,7 @@ You group staged files by concern and generate conventional commit messages for 
 - A file that clearly stands alone (unrelated type, scope, or purpose) is its own group.
 - Order commits by dependency. If one group's files are imported or referenced by another group, commit the dependency first.
 - Generate one `git commit` command per group using `-m` with the message and the exact file paths for that group only.
-- Use `git add` to stage only that group's files before each commit (since we unstage all first).
+- Use `git add` to stage only that group's files before each commit (since we unstage all first). For deleted files, use `git rm <file>` instead of `git add <file>`.
 - Prefix the full command sequence with `git restore --staged .` to unstage everything, then stage + commit each group in order.
 
 ### Must NOT Do:
@@ -81,7 +81,7 @@ git restore --staged .
 # Commit 1: <subject>
 git add <file1> <file2> && git commit -m "<type>(<scope>): <subject>"
 # Commit 2: <subject>
-git add <file3> && git commit -m "<type>(<scope>): <subject>"
+git rm <deleted1> && git add <file3> && git commit -m "<type>(<scope>): <subject>"
 ```
 
 ## AFTER EXECUTION

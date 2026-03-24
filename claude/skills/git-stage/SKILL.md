@@ -33,6 +33,7 @@ Run these commands in parallel to gather git context:
 - A file that clearly stands alone is its own group.
 - Order commits by dependency: commit dependencies before the files that import them.
 - Prefix the full command sequence with `git restore --staged .` to unstage everything, then stage and commit each group in order.
+- For deleted files, use `git rm <file>` instead of `git add <file>` in the final commands.
 
 ## Response format
 
@@ -55,7 +56,7 @@ git restore --staged .
 # Commit 1: <subject>
 git add <file1> <file2> && git commit -m "<type>(<scope>): <subject>"
 # Commit 2: <subject>
-git add <file3> && git commit -m "<type>(<scope>): <subject>"
+git rm <deleted1> && git add <file3> && git commit -m "<type>(<scope>): <subject>"
 ```
 
 ## After execution
