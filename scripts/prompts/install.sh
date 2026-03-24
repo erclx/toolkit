@@ -67,7 +67,7 @@ resolve_slugs() {
     [ "$in_section" -eq 0 ] && continue
 
     if [[ "$in_array" -eq 0 ]]; then
-      [[ "$line" =~ ^slugs ]] || continue
+      [[ "$line" =~ ^names ]] || continue
       in_array=1
     fi
 
