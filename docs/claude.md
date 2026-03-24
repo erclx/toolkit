@@ -7,7 +7,7 @@ Claude Code plugin and skills for the Toolkit.
 ```plaintext
 claude/
 ├── skills/              ← plugin skills (auto-discovered by plugin)
-│   ├── create-snippet/      ← create a new snippet and register it in snippets.toml
+│   ├── create-snippet/      ← create a new snippet file in the correct category folder
 │   ├── git-branch/          ← rename current branch to conventional format
 │   ├── git-commit/          ← generate conventional commit message from staged changes
 │   ├── git-pr/              ← generate PR description and open pull request
