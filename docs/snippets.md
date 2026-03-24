@@ -16,12 +16,14 @@ docs/
 
 ## Conventions
 
-- Filename is the slug: `claude-edit.md` → invoked as `claude-edit`
-- Kebab-case, no capitals, no underscores
-- Plain markdown only, no YAML frontmatter
-- One focused purpose per snippet; if it needs sections it's a system prompt, not a snippet
-- Use `<placeholder>` syntax for fill-in values, never `[placeholder]`
-- Sync to the Chrome extension from `snippets/`
+Snippets follow strict authoring conventions detailed in `standards/snippets.md`. Key conventions include:
+
+- Filename is the slug (e.g., `claude-edit.md` is invoked as `claude-edit`).
+- Kebab-case filenames.
+- Plain markdown only; no YAML frontmatter.
+- One focused purpose per snippet.
+- Use `<placeholder>` syntax for fill-in values.
+- Sync to the Chrome extension from `snippets/`.
 
 ## Categories
 
@@ -92,7 +94,7 @@ aitk snippets create
 
 ## Adding a snippet
 
-Use `aitk snippets create`; it handles both the TOML entry and the file. To add manually: create a `.md` file in `snippets/` using a kebab-case slug as the filename, then add the slug to the relevant category in `snippets.toml`.
+Use `aitk snippets create`; it handles both the TOML entry and the file. For manual additions or authoring best practices, refer to `standards/snippets.md`. To add manually: create a `.md` file in `snippets/` using a kebab-case slug as the filename, then add the slug to the relevant category in `snippets.toml`.
 
 ## Adding a category
 
