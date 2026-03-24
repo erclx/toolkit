@@ -25,6 +25,7 @@ scripts/
 | `prose.md`     | Voice, structure, formatting, and language  |
 | `readme.md`    | Readme structure and content conventions    |
 | `skill.md`     | Claude skill structure and authoring rules  |
+| `snippets.md`  | Snippet reference and authoring conventions |
 
 ## CLI
 
