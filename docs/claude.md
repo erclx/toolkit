@@ -7,9 +7,12 @@ Claude Code plugin and skills for the Toolkit.
 ```plaintext
 claude/
 ├── skills/              ← plugin skills (auto-discovered by plugin)
-│   ├── git-commit/      ← generate conventional commit message from staged changes
-│   ├── git-pr/          ← generate PR description and open pull request
-│   └── git-branch/      ← rename current branch to conventional format
+│   ├── git-branch/          ← rename current branch to conventional format
+│   ├── git-commit/          ← generate conventional commit message from staged changes
+│   ├── git-pr/              ← generate PR description and open pull request
+│   ├── git-split/           ← split a mixed-commit branch into focused branches
+│   ├── git-stage/           ← batch-commit staged files grouped by concern
+│   └── release-changelog/   ← generate changelog entry from commits since main
 └── .claude-plugin/
     └── plugin.json      ← plugin manifest
 ```
@@ -30,11 +33,14 @@ alias claude='claude --plugin-dir /path/to/toolkit/claude'
 
 Plugin skills live in `claude/skills/` and are auto-discovered when Claude Code loads with `--plugin-dir`. No registration needed, folder presence is enough. Each skill is a kebab-case folder containing `SKILL.md`.
 
-| Skill        | Description                                                |
-| ------------ | ---------------------------------------------------------- |
-| `git-commit` | Generate a conventional commit message from staged changes |
-| `git-branch` | Rename current branch to match conventional format         |
-| `git-pr`     | Generate a PR description and open a pull request          |
+| Skill               | Description                                                |
+| ------------------- | ---------------------------------------------------------- |
+| `git-branch`        | Rename current branch to match conventional format         |
+| `git-commit`        | Generate a conventional commit message from staged changes |
+| `git-pr`            | Generate a PR description and open a pull request          |
+| `git-split`         | Split a mixed-commit branch into focused branches off main |
+| `git-stage`         | Batch-commit staged files grouped by concern               |
+| `release-changelog` | Generate a changelog entry from commits since main         |
 
 Invoke with `/skill-name` or let Claude auto-trigger by matching against the skill description. See `standards/skill.md` for authoring conventions.
 
