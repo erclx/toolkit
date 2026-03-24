@@ -13,14 +13,22 @@
 
 ## Rules
 
-- Follow `standards/prose.md` for all document edits
+- Before editing any doc, re-read `standards/prose.md` and the document's own preamble
 - When editing any doc, read surrounding content first and match its depth, length, and tone
-- Keep `.claude/` docs current as decisions are made
 
 ## Key paths
 
 - `src/`: [description]
 - `.claude/`: planning docs (requirements, architecture, wireframes, design, tasks)
+
+## Spelling
+
+- Add unknown words to the appropriate dictionary defined in `cspell.json`
+- Keep dictionary files sorted alphabetically
+
+## Snippets
+
+- When a snippet is referenced with `@`, execute its instructions immediately using available session context
 
 ## Memory
 
