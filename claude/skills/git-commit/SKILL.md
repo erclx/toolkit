@@ -11,12 +11,20 @@ Before generating a commit message, read:
 
 Follow it exactly.
 
+## Context
+
+Run these commands in parallel to gather git context:
+
+- `git diff --cached --name-only 2>/dev/null || echo "NO_STAGED_CHANGES"`
+- `git diff --cached --stat 2>/dev/null || echo "NO_STAT"`
+- `git diff --cached -- . ':(exclude)*.lock' ':(exclude)*-lock.json' 2>/dev/null || echo "NO_DIFF"`
+
 ## Guards
 
-- Check staged files first. If nothing is staged, stop and output:
+- If staged files output is `NO_STAGED_CHANGES`, stop and output:
   `❌ No staged changes. Stage files first with git add before committing.`
 
-## Response Format
+## Response format
 
 ### Preview
 
