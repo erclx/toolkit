@@ -56,3 +56,4 @@ The toolkit has seven domains. Each maps to a skill. Load the skill before editi
 ## Memory
 
 - Write all memory files to `.claude/memory/`, not `~/.claude/projects/`
+- Follow `standards/prose.md` when writing memory file content

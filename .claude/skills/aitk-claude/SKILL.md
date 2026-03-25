@@ -9,6 +9,7 @@ description: Claude Code plugin and tooling. Use for adding or modifying plugin 
 
 - Internal skills live in `.claude/skills/` and are toolkit-only, not installed into target projects.
 - Each skill is a folder named in kebab-case containing `SKILL.md`.
+- Internal skill names must use the `aitk-` prefix (e.g., `aitk-claude`, `aitk-session-resume`).
 - When updating an internal skill, write to `{base-dir}/SKILL.md` where `{base-dir}` is the path shown in the skill header at load time.
 
 ## Plugin skills
