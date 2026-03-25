@@ -19,10 +19,10 @@ Base snippets live at the root with no prefix. Category snippets live in a named
 
 ## Categories
 
-| Category | Slugs                                                                                                                                                                                             |
-| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `base`   | chat-mode, senior-mode, session-notes, code-search, create-snippet                                                                                                                                |
-| `claude` | claude-docs, claude-docs-sync, claude-edit, claude-feature, claude-figma, claude-plan, claude-review, claude-seed-audit, claude-steps, claude-tasks, claude-tell, claude-ui-test, claude-ux-audit |
+| Category | Slugs                                                                                                                                                                   |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `base`   | chat-mode, senior-mode, session-notes, code-search, create-snippet                                                                                                      |
+| `claude` | claude-docs, claude-docs-sync, claude-edit, claude-feature, claude-figma, claude-review, claude-seed-audit, claude-steps, claude-tasks, claude-ui-test, claude-ux-audit |
 
 ## Snippets
 
@@ -38,12 +38,10 @@ Base snippets live at the root with no prefix. Category snippets live in a named
 | `claude-edit`       | Generate Claude Code edit prompt                    |
 | `claude-feature`    | Scan codebase before implementing a feature         |
 | `claude-figma`      | Generate Figma instructions from a design spec      |
-| `claude-plan`       | Plan a feature, update `.claude/` docs when done    |
 | `claude-review`     | Adopt REVIEWER.md role, review changes against main |
 | `claude-seed-audit` | Audit seed files against toolkit source of truth    |
 | `claude-steps`      | Request step-by-step instructions for any process   |
 | `claude-tasks`      | Promote complete tasks and archive overflow         |
-| `claude-tell`       | Produce doc blocks and Claude Code handoff          |
 | `claude-ui-test`    | Manual browser verification checklist               |
 | `claude-ux-audit`   | UX/UI audit of existing features                    |
 
