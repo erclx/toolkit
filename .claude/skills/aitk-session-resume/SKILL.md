@@ -21,6 +21,8 @@ For each project memory entry, output:
 
 ## Step 3: offer cleanup
 
-After summarizing, ask: `Remove any completed entries from memory?`
+After summarizing, list each entry by number and ask which to remove:
 
-If yes, delete the relevant memory file and remove its entry from `MEMORY.md`.
+`Remove any completed entries? Reply with numbers (e.g. 1, 3) or 'none'.`
+
+For each entry the user marks for removal, delete the memory file and remove its line from `MEMORY.md`.
