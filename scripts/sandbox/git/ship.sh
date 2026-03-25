@@ -54,13 +54,13 @@ EOF
 
     log_step "Scenario ready: with changelog"
     log_info "Context: draft/init branch, port changed to 3000, health check added, README stale, CHANGELOG.md present"
-    log_info "Action:  /git-ship"
+    log_info "Action:  /git:ship"
     log_info "Expect:  README updated, changes committed, branch renamed, PR opened, changelog appended"
     ;;
   "without changelog")
     log_step "Scenario ready: without changelog"
     log_info "Context: draft/init branch, port changed to 3000, health check added, README stale, no CHANGELOG.md"
-    log_info "Action:  /git-ship"
+    log_info "Action:  /git:ship"
     log_info "Expect:  README updated, changes committed, branch renamed, PR opened, changelog step skipped"
     ;;
   esac
