@@ -11,6 +11,7 @@
 - Rules: `semi: false`, `singleQuote: true`.
 - Add parser overrides for non-standard extensions (e.g., `.mdc` → `markdown`).
 - Ignore paths via `.gitignore`. Do not create `.prettierignore`.
+- Use `--log-level warn` on all prettier invocations to suppress per-file `(unchanged)` output.
 
 ## Dev Dependencies
 
@@ -93,9 +94,9 @@
 ## Package Scripts
 
 - `check:spell`: runs cspell across all files, shows context on failures.
-- `check:format`: checks prettier and shfmt formatting without writing. shfmt targets `scripts/` directory directly.
+- `check:format`: checks prettier and shfmt formatting without writing. shfmt targets `scripts/` directory directly. Uses `--log-level warn` to suppress unchanged file output.
 - `check:shell`: runs shellcheck at warning severity via `find scripts -name '*.sh'` (shellcheck has no directory mode).
-- `format`: writes prettier and shfmt formatting in place. shfmt targets `scripts/` directory directly.
+- `format`: writes prettier and shfmt formatting in place. shfmt targets `scripts/` directory directly. Uses `--log-level warn` to suppress unchanged file output.
 - `prepare`: initializes husky hooks (runs automatically on `bun install`).
 - `check`: runs `scripts/verify.sh`, the full verification suite. Auto-formats before asserting.
 - `clean`: runs `scripts/clean.sh`, wipes and reinstalls dependencies.
