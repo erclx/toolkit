@@ -19,7 +19,8 @@ The claude stack installs the `.claude/` workflow directory into a project. Role
 ├── WIREFRAMES.md      ← seeded. ASCII wireframes; layout, UI copy, interaction rules, and meaningful states
 ├── GOV.md             ← generated. Governance rules built from installed .cursor/rules via aitk claude gov
 ├── settings.json      ← seeded. Baseline Claude Code permissions; user-owned after init
-└── .tmp/              ← ephemeral scratch space, gitignored
+├── .tmp/              ← ephemeral scratch space, gitignored
+└── memory/            ← session memory files, gitignored
 
 scripts/
 └── snapshot.sh    ← writes project file tree to .claude/.tmp/SNAPSHOT.md
@@ -27,7 +28,7 @@ scripts/
 
 ## Gitignore
 
-- `# Claude` — `.claude/.tmp/`
+- `# Claude` — `.claude/.tmp/`, `.claude/memory/`
 
 ## CLI
 

@@ -33,3 +33,4 @@
 ## Memory
 
 - Write all memory files to `.claude/memory/`, not `~/.claude/projects/`
+- Follow `standards/prose.md` when writing memory file content
