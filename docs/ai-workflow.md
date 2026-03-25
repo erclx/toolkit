@@ -2,7 +2,7 @@
 
 A concise reference for when to reach for which tool, organized by what you're trying to do.
 
-> **Mental model:** Claude chat for planning. Claude Code for implementation and review. Gemini CLI for deterministic git and release scripts.
+> **Mental model:** Claude chat for planning. Claude Code for implementation, git, and release. Gemini CLI for review and task management.
 
 ## Documents
 
@@ -33,27 +33,12 @@ Switch to Claude Code for implementation. It reads CLAUDE.md automatically and h
 
 - Invoke `claude-feature` to scan for code-level conflicts and ambiguities, confirm approach before proceeding
 - Implement the feature, then Claude Code runs the commands defined in `CLAUDE.md`, fixes failures, and iterates until all pass
-- Run `gemini dev:review` in terminal, copy valid findings to Claude Code and fix, then run `git:commit`
-- Invoke `claude-docs` to sync `.claude/` docs and run `git:stage` to group staged files for the commit
+- For UI changes, invoke `toolkit:claude-ui-test` to generate a browser verification checklist before review
+- Run `gemini dev:review` in terminal, copy valid findings to Claude Code and fix
+- If decisions diverged from the original plan (design pivots, requirement changes), invoke `claude-docs` to update `.claude/` planning docs before shipping
+- Invoke `toolkit:git-ship` to sync docs, commit by concern, rename branch, and open PR
 
-Then run in parallel terminal instances:
-
-```bash
-# Terminal 1
-gemini git:branch
-
-# Terminal 2
-gemini docs:sync
-
-# Terminal 3
-gemini release:changelog
-
-# Terminal 4
-gemini tasks:flush
-
-# Terminal 5
-gemini git:pr
-```
+> **Planned:** `toolkit:claude-ui-test` (diff-aware UI checklist skill) and `toolkit:claude-docs` (capture mid-cycle decisions to REQUIREMENTS.md, TASKS.md, ARCHITECTURE.md).
 
 ### UI polish
 
@@ -69,6 +54,10 @@ Verify the change manually in the browser. Use `claude-ui-test` if you need Clau
 
 Run `gemini dev:review` in terminal. Copy valid findings to Claude Code and fix. If nothing is valid, do nothing. For a deeper review with fresh context, invoke `claude-review` in Claude Code. It reads REVIEWER.md and produces a findings report against main.
 
+## Maintenance
+
+Invoke `toolkit:ai-sync` manually when structural changes affect `CLAUDE.md`-relevant content: key paths, commands, skill names, or workflow conventions. It reviews `CLAUDE.md` and `GEMINI.md` against the diff and outputs suggested edits as diff blocks. It does not write. `toolkit:git-ship` prompts you to run it when structural changes are detected in the diff.
+
 ## Feedback routing
 
 ```plaintext
@@ -81,15 +70,13 @@ review finds  → Claude Code (same implementation session)
 
 Claude-specific snippets require the `.claude/` workflow to be set up.
 
-| Slug              | When to use                                                      |
-| ----------------- | ---------------------------------------------------------------- |
-| `claude-feature`  | Before implementation, scan for code-level conflicts             |
-| `claude-plan`     | Start of planning session, plan a feature with full doc context  |
-| `claude-review`   | After implementation, triggers REVIEWER.md role in Claude Code   |
-| `claude-docs`     | After implementation, syncs `.claude/` docs with session changes |
-| `claude-tell`     | In Claude chat, produce doc blocks and Claude Code handoff       |
-| `claude-ui-test`  | After implementation, generate manual browser verification steps |
-| `claude-ux-audit` | Standalone session, UX/UI audit of existing features             |
+| Slug              | When to use                                                                |
+| ----------------- | -------------------------------------------------------------------------- |
+| `claude-feature`  | Before implementation, scan for code-level conflicts                       |
+| `claude-review`   | After implementation, triggers REVIEWER.md role in Claude Code             |
+| `claude-ui-test`  | After implementation, generate UI verification steps (becoming skill)      |
+| `claude-docs`     | When decisions diverged from plan, update `.claude/` docs (becoming skill) |
+| `claude-ux-audit` | Standalone session, UX/UI audit of existing features                       |
 
 ## Prompt generation
 
@@ -99,18 +86,4 @@ Run `aitk gov sync` first when switching stacks. Run `aitk claude gov` to build 
 
 ## Gemini CLI commands
 
-Deterministic scripts with zero AI tokens and zero variability.
-
-| Command              | What it does                                        |
-| -------------------- | --------------------------------------------------- |
-| `/dev:review`        | Review branch changes vs main, or a pasted response |
-| `/dev:apply`         | Write files from AI response, fallback only         |
-| `/dev:comment`       | Add comments to source code                         |
-| `/docs:sync`         | Sync README and docs with codebase changes          |
-| `/git:branch`        | Generate branch name                                |
-| `/git:stage`         | Group staged files for batch commits                |
-| `/git:commit`        | Generate commit message                             |
-| `/git:pr`            | Generate PR description                             |
-| `/git:split`         | Split mixed commits into separate branches          |
-| `/release:changelog` | Generate changelog from commit history              |
-| `/tasks:flush`       | Move completed tasks to Done and archive overflow   |
+See [docs/gemini.md](gemini.md) for the full command reference.
