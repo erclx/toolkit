@@ -17,7 +17,8 @@ claude/
 │   ├── git-pr/              ← generate PR description and open pull request
 │   ├── git-split/           ← split a mixed-commit branch into focused branches
 │   ├── git-stage/           ← batch-commit staged files grouped by concern
-│   └── release-changelog/   ← generate changelog entry from commits since main
+│   ├── release-changelog/   ← generate changelog entry from commits since main
+│   └── session-resume/      ← resume in-progress work from memory at session start
 └── .claude-plugin/
     └── plugin.json      ← plugin manifest
 
@@ -29,8 +30,7 @@ claude/
 ├── aitk-scripts/            ← bash scripts domain
 ├── aitk-snippets/           ← snippets domain
 ├── aitk-standards/          ← standards and docs domain
-├── aitk-tooling/            ← tooling stacks domain
-└── aitk-session-resume/     ← resume in-progress work from memory
+└── aitk-tooling/            ← tooling stacks domain
 ```
 
 ## Setup
@@ -64,6 +64,7 @@ Plugin skills live in `claude/skills/` and are auto-discovered when Claude Code 
 | `git-stage`         | Batch-commit staged files grouped by concern                          |
 | `release-changelog` | Generate a changelog entry from commits and staged changes since main |
 | `git-ship`          | Run the full post-feature workflow in one sequence                    |
+| `session-resume`    | Resume in-progress work from memory at session start                  |
 
 Invoke with `/skill-name` or let Claude auto-trigger by matching against the skill description. See `standards/skill.md` for authoring conventions.
 
@@ -71,17 +72,16 @@ Invoke with `/skill-name` or let Claude auto-trigger by matching against the ski
 
 Internal skills live in `.claude/skills/` and are toolkit-only. They are not installed into target projects.
 
-| Skill                 | Description                                           |
-| --------------------- | ----------------------------------------------------- |
-| `aitk-claude`         | Load before editing plugin skills or `docs/claude.md` |
-| `aitk-gemini`         | Load before editing Gemini commands                   |
-| `aitk-governance`     | Load before editing Cursor rules or stack definitions |
-| `aitk-prompts`        | Load before editing system prompt templates           |
-| `aitk-scripts`        | Load before editing scripts or sandbox scenarios      |
-| `aitk-snippets`       | Load before editing snippets or `snippets.toml`       |
-| `aitk-standards`      | Load before editing standards or docs                 |
-| `aitk-tooling`        | Load before editing tooling stacks or golden configs  |
-| `aitk-session-resume` | Resume in-progress work from memory at session start  |
+| Skill             | Description                                           |
+| ----------------- | ----------------------------------------------------- |
+| `aitk-claude`     | Load before editing plugin skills or `docs/claude.md` |
+| `aitk-gemini`     | Load before editing Gemini commands                   |
+| `aitk-governance` | Load before editing Cursor rules or stack definitions |
+| `aitk-prompts`    | Load before editing system prompt templates           |
+| `aitk-scripts`    | Load before editing scripts or sandbox scenarios      |
+| `aitk-snippets`   | Load before editing snippets or `snippets.toml`       |
+| `aitk-standards`  | Load before editing standards or docs                 |
+| `aitk-tooling`    | Load before editing tooling stacks or golden configs  |
 
 ## CLI
 

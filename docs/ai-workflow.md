@@ -62,7 +62,7 @@ Run `gemini dev:review` in terminal. Copy valid findings to Claude Code and fix.
 
 ## Maintenance
 
-Invoke `toolkit:ai-sync` manually when structural changes affect `CLAUDE.md`-relevant content: key paths, commands, skill names, or workflow conventions. It reviews `CLAUDE.md` and `GEMINI.md` against the diff and outputs suggested edits as diff blocks. It does not write. `toolkit:git-ship` prompts you to run it when structural changes are detected in the diff.
+Invoke `toolkit:ai-sync` manually when structural changes affect key paths, commands, skill names, or workflow conventions in `CLAUDE.md`. It reviews `CLAUDE.md` and `GEMINI.md` against the diff and outputs suggested edits as diff blocks; it does not write. `toolkit:git-ship` prompts you to run it when structural changes are detected.
 
 ## Feedback routing
 
