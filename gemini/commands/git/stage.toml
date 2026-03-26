@@ -15,7 +15,7 @@ You group staged files by concern and generate conventional commit messages for 
 
 <DATA_CONTEXT>
 <STAGED_FILES>
-!{git diff --cached --name-only || echo "NO_STAGED_FILES"}
+!{git diff --cached --name-status || echo "NO_STAGED_FILES"}
 </STAGED_FILES>
 
 <DIFF_STAT>
@@ -47,7 +47,7 @@ You group staged files by concern and generate conventional commit messages for 
 - A file that clearly stands alone (unrelated type, scope, or purpose) is its own group.
 - Order commits by dependency. If one group's files are imported or referenced by another group, commit the dependency first.
 - Generate one `git commit` command per group using `-m` with the message and the exact file paths for that group only.
-- Use `git add` to stage only that group's files before each commit (since we unstage all first). For deleted files, use `git rm <file>` instead of `git add <file>`.
+- Use `git add` to stage only that group's files before each commit (since we unstage all first). Files with status `D` in the name-status output are deleted; use `git rm <file>` for those. Files with `A` or `M` use `git add <file>`.
 - Prefix the full command sequence with `git restore --staged .` to unstage everything, then stage + commit each group in order.
 - Count characters in each `<type>(<scope>): <subject>` line. Shorten any subject that exceeds 72 characters and update the preview table before writing final commands.
 
