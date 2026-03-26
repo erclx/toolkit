@@ -15,7 +15,7 @@ Generate conventional commit messages from git diffs.
 
 <DATA_CONTEXT>
 <STAGED_FILES>
-!{git diff --cached --name-only || echo "NO_STAGED_CHANGES"}
+!{git diff --cached --name-status || echo "NO_STAGED_CHANGES"}
 </STAGED_FILES>
 
 <GIT_DIFF_SUMMARY>

@@ -14,7 +14,7 @@ Read these files in parallel:
 
 Run these commands in parallel to gather git context:
 
-- `git diff --cached --name-only 2>/dev/null || echo "NO_STAGED_FILES"`
+- `git diff --cached --name-status 2>/dev/null || echo "NO_STAGED_FILES"`
 - `git diff --cached --stat 2>/dev/null || echo "NO_STAT"`
 - `git diff --cached -- . ':(exclude)*.lock' ':(exclude)*-lock.json' 2>/dev/null || echo "NO_DIFF"`
 
@@ -31,7 +31,7 @@ Run these commands in parallel to gather git context:
 - A file that clearly stands alone is its own group.
 - Order commits by dependency: commit dependencies before the files that import them.
 - Prefix the full command sequence with `git restore --staged .` to unstage everything, then stage and commit each group in order.
-- For deleted files, use `git rm <file>` instead of `git add <file>` in the final commands.
+- Files with status `D` in the name-status output are deleted; use `git rm <file>` for those. Files with `A` or `M` use `git add <file>`.
 
 ## Response format
 
