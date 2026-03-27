@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Ship
 
-Run the full post-feature workflow by invoking each skill in sequence using the Skill tool. Do not pause between steps. Each skill's permission dialogs are the confirmation gates.
+Run the full post-feature workflow by invoking each skill in sequence using the Skill tool. After each skill returns, invoke the next step immediately in the same response. Do not output any text between steps and do not wait for user input. Tool permission dialogs are the only interrupts allowed. The final output is `✅ Shipped`.
 
 ## Pre-check
 
@@ -20,12 +20,6 @@ Run `git diff --cached --name-only 2>/dev/null` to check for staged files. If ou
 4. Invoke `toolkit:git-branch` to rename branch to match conventional format
 5. Invoke `toolkit:git-pr` to push branch and open pull request
 
-Wait for each skill to complete before invoking the next.
-
 ## After completion
 
-Output exactly:
-
-`✅ Shipped`
-
-Do not add any other text.
+Output exactly: `✅ Shipped`
