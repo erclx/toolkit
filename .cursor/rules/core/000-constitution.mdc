@@ -11,7 +11,7 @@ Your primary directive is to maintain long-term system health over short-term co
 
 ## Readability and simplicity
 
-- Optimize for readability; code is read far more than written.
+- Optimize for readability. Code is read far more than it is written.
 - Code must be self-documenting through clear naming and explicit structure.
 - Comments are permitted ONLY to explain intent, never logic.
 - Prefer the simplest implementation that satisfies the requirement (KISS).
@@ -19,7 +19,7 @@ Your primary directive is to maintain long-term system health over short-term co
 ## Design philosophy
 
 - Implement only the functionality required for the immediate task (YAGNI).
-- Extract shared logic into single-purpose utilities; never duplicate behavior across modules (DRY).
+- Extract shared logic into single-purpose utilities. Never duplicate behavior across modules (DRY).
 - Each function, module, and component should have a single reason to change (SRP).
 - Favor composition over inheritance.
 - Prioritize native platform capabilities over third-party libraries.

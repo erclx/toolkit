@@ -40,7 +40,7 @@ tooling/
 
 Configs are golden files and the source of truth. On sync they always overwrite the target. Drift is always wrong.
 
-Seeds are user-owned files that grow with the project. Dictionary files (`.cspell/`) accumulate project-specific terms over time. For the `claude` stack, state documents (`REQUIREMENTS.md`, `ARCHITECTURE.md`, etc.) are seeds; they are created once and then owned by the user. Sync appends only what's missing and never overwrites. Stacks ship seeds pre-populated with terms they introduce, such as `shellcheck` and `vitest`.
+Seeds are user-owned files that grow with the project. Dictionary files (`.cspell/`) accumulate project-specific terms over time. For the `claude` stack, state documents (`REQUIREMENTS.md`, `ARCHITECTURE.md`, etc.) are seeds. The user creates them once and owns them from that point on. Sync appends only what's missing and never overwrites. Stacks ship seeds pre-populated with terms they introduce, such as `shellcheck` and `vitest`.
 
 References are `reference.md` files synced to `tooling/<stack>.md` in target projects. They are AI audit context. Sync them with `aitk tooling ref`, which respects the extends chain.
 
@@ -66,7 +66,7 @@ scaffold = "scaffold-command"  # bootstrap command; read today by sandbox/toolin
 
 `name` must match the folder name exactly. `extends` is the parent stack; configs, seeds, scripts, deps, and gitignore all resolve through the chain. Leave empty if no parent.
 
-`runtime` is reserved and not yet read by any script. `scaffold` is partially active: `scripts/sandbox/tooling/upstream.sh` reads it today to provision raw upstream templates. It is not yet used by `aitk tooling sync`. Declare both fields now so the intent is captured; leave as empty string if not applicable.
+`runtime` is reserved and not yet read by any script. `scaffold` is partially active: `scripts/sandbox/tooling/upstream.sh` reads it today to provision raw upstream templates. It is not yet used by `aitk tooling sync`. Declare both fields now so the intent is captured. Use an empty string if not applicable.
 
 `[stack]` is the only required block. `[dependencies.dev]`, `[scripts]`, and `[gitignore]` are all optional — omit any section the stack does not need.
 

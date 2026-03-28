@@ -68,7 +68,7 @@ To sync updates to an existing project:
 aitk prompts sync ../my-app
 ```
 
-`sync` diffs all `.md` files already present in the target `prompts/` folder against the toolkit source. It is not category-aware; it only updates what is already there, never adds new files.
+`sync` diffs all `.md` files already present in the target `prompts/` folder against the toolkit source. It is not category-aware. It only updates what is already there, never adds new files.
 
 ## Adding a prompt
 

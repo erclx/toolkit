@@ -38,7 +38,7 @@ priority: 200
 
 ## Composition and props
 
-- Avoid prop drilling beyond 2 levels; use context or composition.
+- Avoid prop drilling beyond 2 levels. Use context or composition.
 
 ## Error boundaries and Suspense
 

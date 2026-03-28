@@ -17,7 +17,7 @@ priority: 310
 
 - Use `.strict()` for untrusted external API boundaries to prevent data pollution.
 - Use `.parse()` for blocking validation (env vars) and `.safeParse()` for recoverable flows (forms).
-- Restrict `z.coerce` usage strictly to I/O boundaries (e.g., URL params); never use for internal data flow.
+- Restrict `z.coerce` to I/O boundaries (e.g., URL params). Never use it for internal data flow.
 
 ## Schema safety
 

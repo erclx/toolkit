@@ -26,5 +26,5 @@ priority: 250
 
 - Use `cn()` from `@/lib/utils` for all conditional class application.
 - Do not use the `!` important modifier.
-- Do not use inline `style` props for static styling; use arbitrary values `bg-[#316ff6]` instead.
+- Do not use inline `style` props for static styling. Use arbitrary values (`bg-[#316ff6]`) instead.
 - Use inline styles only for dynamic values from JS/API or to set CSS variables for utility consumption.

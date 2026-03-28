@@ -33,7 +33,7 @@ gemini extensions link ./gemini
 
 ## Commands
 
-Each command is a `.toml` file organized by category and invoked as `/category:command` in Gemini CLI. Atomic commands handle a single operation; `/git:ship` is a multi-phase workflow that chains all release steps in one session. See `prompts/gemini-cli.md` for authoring conventions.
+Each command is a `.toml` file organized by category and invoked as `/category:command` in Gemini CLI. Atomic commands handle a single operation. `/git:ship` is a multi-phase workflow that chains all release steps in one session. See `prompts/gemini-cli.md` for authoring conventions.
 
 | Command              | Description                                                |
 | -------------------- | ---------------------------------------------------------- |
