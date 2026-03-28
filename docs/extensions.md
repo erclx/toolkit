@@ -14,6 +14,6 @@ Used in this toolkit to assemble context payloads for Claude chat sessions when 
 
 [Install from Chrome Web Store](https://chromewebstore.google.com/detail/caret/bpmdbibldelkpncegllkeegdpblgehgk)
 
-A browser prompt library for Claude, Gemini, and ChatGPT. Type the trigger symbol (default `>`) in any chat input to open a searchable picker, select a prompt, and insert it without leaving the keyboard. Prompts are stored in the browser; sync from a GitHub repo is available as a manual pull.
+A browser prompt library for Claude, Gemini, and ChatGPT. Type the trigger symbol (default `>`) in any chat input to open a searchable picker, select a prompt, and insert it without leaving the keyboard. Prompts are stored in the browser. Syncing from a GitHub repo is available as a manual pull.
 
 Used during planning and chat sessions to insert saved prompts without copy-pasting. The trigger picker replaces manual clipboard workflows when working in Claude chat or Gemini.

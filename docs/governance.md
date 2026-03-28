@@ -101,4 +101,4 @@ rules = ["200-react", "250-tailwind"]
 
 - `aitk gov sync` diffs before applying and requires confirmation, so it is safe to run repeatedly.
 - Install overwrites existing rules intentionally. Delete rules you don't need after install rather than creating optional/addon complexity in stack definitions.
-- `strip_frontmatter` and `build_rules_payload` live in `scripts/lib/gov.sh` and are sourced by both `gov/build.sh` and `claude/prompt.sh`. `build_rules_payload` accepts an optional space-separated filter of rule names; when provided, only those rules are included in the payload.
+- `strip_frontmatter` and `build_rules_payload` live in `scripts/lib/gov.sh` and are sourced by both `gov/build.sh` and `claude/prompt.sh`. `build_rules_payload` accepts an optional space-separated filter of rule names. When provided, only those rules are included in the payload.

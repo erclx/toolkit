@@ -11,7 +11,7 @@ description: Reusable prompt snippets for Claude and Gemini. Use for adding snip
 - Kebab-case only, no capitals, no underscores.
 - Plain markdown only. No YAML frontmatter, no structure requirements.
 - One focused purpose per snippet. If it needs sections it is a system prompt, not a snippet.
-- No user fill-in placeholders; if a value depends on context, the user adds it after invocation.
+- No user fill-in placeholders. If a value depends on context, the user adds it after invocation.
 
 ## Categories
 
@@ -30,7 +30,7 @@ When adding a snippet:
 
 When renaming a snippet:
 
-- Rename the file; the slug is derived from the path, nothing else to update in source
+- Rename the file. The slug derives from the path, so nothing else in source needs updating.
 - Notify any projects using the old slug to re-sync
 
 ## Full reference
