@@ -21,7 +21,7 @@ Base snippets live at the root with no prefix. Category snippets live in a named
 
 | Category | Slugs                                                                                                                                |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `base`   | chat-mode, senior-mode, session-notes, code-search, create-snippet                                                                   |
+| `base`   | chat-mode, senior-mode, session-notes, code-search, create-snippet, web-research                                                     |
 | `claude` | claude-edit, claude-figma, claude-prose-audit, claude-seed-audit, claude-steps, claude-tasks-add, claude-tasks-done, claude-ux-audit |
 
 ## Snippets
@@ -33,6 +33,7 @@ Base snippets live at the root with no prefix. Category snippets live in a named
 | `session-notes`      | Capture session decisions                                          |
 | `code-search`        | Generate a git grep bash script                                    |
 | `create-snippet`     | Draft a new snippet (chat/Chrome extension)                        |
+| `web-research`       | Search the web and synthesize findings into a decision-ready block |
 | `claude-edit`        | Generate Claude Code edit prompt                                   |
 | `claude-figma`       | Generate Figma instructions from a design spec                     |
 | `claude-prose-audit` | Audit a file's prose against `standards/prose.md`                  |
