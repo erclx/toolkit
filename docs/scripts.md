@@ -9,6 +9,7 @@
 ```plaintext
 scripts/
 ├── manage-aitk.sh       ← top-level aitk dispatcher
+├── manage-sync.sh       ← aitk sync entry point
 ├── manage-gov.sh        ← aitk gov entry point
 ├── manage-standards.sh  ← aitk standards entry point
 ├── manage-claude.sh     ← aitk claude entry point

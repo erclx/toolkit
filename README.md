@@ -20,6 +20,12 @@ bun link
 
 Run `aitk` from the repo root.
 
+### Sync
+
+| Command            | Description                                    |
+| ------------------ | ---------------------------------------------- |
+| `aitk sync [path]` | Sync all installed domains in a target project |
+
 ### Governance
 
 | Command                           | Description                                            |
