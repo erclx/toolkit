@@ -395,11 +395,7 @@ main() {
     log_error "Stack not found: $stack"
   fi
 
-  local target_abs
-  target_abs=$(cd "$target" && pwd)
-  if [ "$target_abs" = "$PROJECT_ROOT" ]; then
-    log_error "Cannot sync tooling to toolkit root. Files here are the source of truth."
-  fi
+  guard_root "$target"
 
   NEW_FILES=()
   DRIFTED_FILES=()

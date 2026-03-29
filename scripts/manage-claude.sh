@@ -40,13 +40,7 @@ show_help() {
 }
 
 validate_target() {
-  local target="$1"
-  local target_abs
-  target_abs=$(cd "$target" && pwd)
-
-  if [ "$target_abs" = "$PROJECT_ROOT" ]; then
-    log_error "Cannot init claude workflow in toolkit root."
-  fi
+  guard_root "$1"
 }
 
 collect_seeds() {

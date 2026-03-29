@@ -39,15 +39,6 @@ validate_target() {
   echo "$target"
 }
 
-guard_root() {
-  local target="$1"
-  local target_abs
-  target_abs=$(cd "$target" && pwd)
-  if [ "$target_abs" = "$PROJECT_ROOT" ]; then
-    log_error "Cannot write to toolkit root. Files here are the source of truth."
-  fi
-}
-
 open_diffs() {
   while IFS= read -r entry; do
     local src="${entry%%|*}"

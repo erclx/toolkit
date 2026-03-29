@@ -121,11 +121,7 @@ main() {
 
   TARGET_PATH=$(validate_target "$TARGET_PATH")
 
-  local TARGET_ABS
-  TARGET_ABS=$(cd "$TARGET_PATH" && pwd)
-  if [ "$TARGET_ABS" = "$PROJECT_ROOT" ]; then
-    log_error "Cannot sync to toolkit root. Files here are the source of truth."
-  fi
+  guard_root "$TARGET_PATH"
 
   PENDING_FILE=$(mktemp)
   DRIFTED_FILE=$(mktemp)
