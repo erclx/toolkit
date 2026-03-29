@@ -1,1 +1,7 @@
-Do a UX/UI audit of the current project. Focus on existing features only. No new features. For each surface, identify what feels incomplete, inconsistent, or confusing. Flag missing feedback states, edge cases with no handling, and anything that feels rough in daily use. Be concise and direct. Observations only, no implementation suggestions.
+Do a UX/UI audit of the current project. For each surface, identify what feels incomplete, inconsistent, or confusing:
+
+- Missing feedback states
+- Edge cases with no handling
+- Anything that feels rough in daily use
+
+Existing features only. No new features. Observations only, no implementation suggestions. Be concise and direct.

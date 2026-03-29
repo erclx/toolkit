@@ -9,7 +9,7 @@ description: Reusable prompt snippets for Claude and Gemini. Use for adding snip
 
 - Filename is the local name. `claude/docs.md` installs and is invoked as `claude-docs`.
 - Kebab-case only, no capitals, no underscores.
-- Plain markdown only. No YAML frontmatter, no structure requirements.
+- Plain markdown only. No YAML frontmatter.
 - One focused purpose per snippet. If it needs sections it is a system prompt, not a snippet.
 - No user fill-in placeholders. If a value depends on context, the user adds it after invocation.
 
