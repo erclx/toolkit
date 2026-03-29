@@ -12,6 +12,7 @@ claude/
 │   ├── claude-feature/      ← plan a feature by reading Claude setup and scanning source files
 │   ├── claude-review/       ← review all changes since main using the project's reviewer role
 │   ├── claude-ui-test/      ← generate a manual browser verification checklist from session context
+│   ├── create-skill/        ← create a new skill file in .claude/skills/
 │   ├── create-snippet/      ← create a new snippet file in the correct category folder
 │   ├── docs-sync/           ← rewrite stale README.md and docs/*.md sections since main
 │   ├── git-branch/          ← rename current branch to conventional format
@@ -60,6 +61,7 @@ Plugin skills live in `claude/skills/` and are auto-discovered when Claude Code 
 | `claude-feature`    | Plan a feature by reading Claude setup and scanning source files      |
 | `claude-review`     | Review all changes since main using the project's reviewer role       |
 | `claude-ui-test`    | Generate a manual browser verification checklist from session context |
+| `create-skill`      | Create a new skill file in .claude/skills/                            |
 | `create-snippet`    | Create a new snippet file in snippets/                                |
 | `docs-sync`         | Rewrite stale README.md and docs/\*.md sections since main            |
 | `git-branch`        | Rename current branch to match conventional format                    |
@@ -72,7 +74,7 @@ Plugin skills live in `claude/skills/` and are auto-discovered when Claude Code 
 | `toolkit-sync`      | Commit and ship a toolkit sync: stage, commit, branch, and open PR    |
 | `session-resume`    | Resume in-progress work from memory at session start                  |
 
-Invoke with `/skill-name` or let Claude auto-trigger by matching against the skill description. Skills marked with `disable-model-invocation: true` (`ai-sync`, `claude-review`, `git-ship`, `release-changelog`) require explicit invocation and will not auto-trigger. See `standards/skill.md` for authoring conventions.
+Invoke with `/skill-name` or let Claude auto-trigger by matching against the skill description. Skills marked with `disable-model-invocation: true` (`ai-sync`, `claude-review`, `create-skill`, `git-ship`, `release-changelog`) require explicit invocation and will not auto-trigger. See `standards/skill.md` for authoring conventions.
 
 ## Internal skills
 
