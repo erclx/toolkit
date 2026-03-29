@@ -58,7 +58,7 @@ scripts/
 
 ## lib
 
-**`ui.sh`**: source this in any script that needs terminal output. Provides the color palette, all `log_*` functions, interactive prompts (`select_option`, `ask`), and `require_project_root`.
+**`ui.sh`**: source this in any script that needs terminal output. Provides the color palette, all `log_*` functions, interactive prompts (`select_option`, `ask`), `guard_root` (rejects toolkit root as a target), and `require_project_root`.
 
 **`inject.sh`**: tooling injection helpers used by `tooling/sync.sh` and sandbox scripts. The key distinction: configs always overwrite, seeds merge-only. `inject_tooling_manifest` is the orchestrator. It ties together missing dep installation, script injection, and gitignore merging in one call.
 

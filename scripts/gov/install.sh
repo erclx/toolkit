@@ -101,11 +101,7 @@ cmd_install() {
     log_error "Stack not found: $stack"
   fi
 
-  local target_abs
-  target_abs=$(cd "$target" && pwd)
-  if [ "$target_abs" = "$PROJECT_ROOT" ]; then
-    log_error "Cannot install into toolkit root."
-  fi
+  guard_root "$target"
 
   local rules=()
   resolve_rules "$stack" rules
