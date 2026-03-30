@@ -6,6 +6,7 @@ fastapi
 gitattributes
 gsub
 heredoc
+labelledby
 mypy
 nextjs
 noopener
@@ -18,6 +19,7 @@ pycache
 pydantic
 pyproject
 pytest
+tabindex
 tanstack
 tolower
 toupper
