@@ -197,7 +197,7 @@ inject_context() {
 }
 
 inject_gov_rules() {
-  local rules_source="$PROJECT_ROOT/.cursor/rules"
+  local rules_source="$PROJECT_ROOT/governance/rules"
   if [ -d "$rules_source" ]; then
     mkdir -p "$SANDBOX/.cursor/rules"
     find "$rules_source" -type f -name "*.mdc" -exec cp {} "$SANDBOX/.cursor/rules/" \;

@@ -8,8 +8,8 @@ PROJECT_ROOT="${PROJECT_ROOT:-$(dirname "$(dirname "$SCRIPT_DIR")")}"
 source "$PROJECT_ROOT/scripts/lib/ui.sh"
 trap close_timeline EXIT
 
-STACKS_DIR="$PROJECT_ROOT/.cursor/stacks"
-RULES_SOURCE_DIR="$PROJECT_ROOT/.cursor/rules"
+STACKS_DIR="$PROJECT_ROOT/governance/stacks"
+RULES_SOURCE_DIR="$PROJECT_ROOT/governance/rules"
 
 show_help() {
   echo -e "${GREY}┌${NC}"
@@ -34,7 +34,7 @@ select_stack() {
   mapfile -t stacks < <(find "$STACKS_DIR" -maxdepth 1 -name "*.toml" -exec basename {} .toml \; | sort)
 
   if [ "${#stacks[@]}" -eq 0 ]; then
-    log_error "No stacks found in .cursor/stacks/"
+    log_error "No stacks found in governance/stacks/"
   fi
 
   select_option "Select stack to install:" "${stacks[@]}"

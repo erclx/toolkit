@@ -25,12 +25,12 @@ If output is non-empty, stop: `❌ Branch chore/toolkit-sync already exists on r
 
 Map top-level folders to human-readable domain labels for use in the commit and PR:
 
-| Folder       | Label        |
-| ------------ | ------------ |
-| `standards/` | `standards`  |
-| `snippets/`  | `snippets`   |
-| `prompts/`   | `prompts`    |
-| `.cursor/`   | `governance` |
+| Folder        | Label        |
+| ------------- | ------------ |
+| `standards/`  | `standards`  |
+| `snippets/`   | `snippets`   |
+| `prompts/`    | `prompts`    |
+| `governance/` | `governance` |
 
 For any folder not in this map, use the folder name as-is.
 

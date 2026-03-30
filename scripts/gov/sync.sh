@@ -56,7 +56,7 @@ collect_changes() {
     filename=$(basename "$dest_file")
 
     local src_file
-    src_file=$(find "$PROJECT_ROOT/.cursor/rules" -type f -name "$filename" | head -n 1)
+    src_file=$(find "$PROJECT_ROOT/governance/rules" -type f -name "$filename" | head -n 1)
 
     if [ -z "$src_file" ]; then
       log_warn "$filename (not in toolkit source, skipping)"

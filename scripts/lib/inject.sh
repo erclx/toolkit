@@ -3,7 +3,7 @@
 inject_governance() {
   log_step "Injecting governance assets"
 
-  local rules_source="$PROJECT_ROOT/.cursor/rules"
+  local rules_source="$PROJECT_ROOT/governance/rules"
   local rules_target=".cursor/rules"
   local standards_source="$PROJECT_ROOT/standards"
   local standards_target="standards"

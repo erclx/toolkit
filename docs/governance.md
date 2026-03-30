@@ -7,8 +7,8 @@ Governance manages the rules that guide AI agents working in projects. Rules syn
 ## Structure
 
 ```plaintext
-.cursor/rules/         ← source rules (.mdc), organized by domain
-.cursor/stacks/        ← stack definitions (.toml), declare which rules belong to a stack
+governance/rules/      ← source rules (.mdc), organized by domain
+governance/stacks/     ← stack definitions (.toml), declare which rules belong to a stack
 scripts/
 ├── gov/
 │   ├── install.sh      ← bootstraps rules for a stack into a target project
@@ -21,7 +21,7 @@ scripts/
 
 ## Key decisions
 
-Rules flatten on sync. They live in subdirectories by domain (`core/`, `lang/`, `framework/`, `lib/`) for toolkit organization, then flatten into `.cursor/rules/` on sync because Cursor reads rules flat.
+Rules flatten on sync. They live in subdirectories by domain (`core/`, `lang/`, `framework/`, `lib/`) under `governance/rules/` for toolkit organization, then flatten into `.cursor/rules/` on sync because Cursor reads rules flat.
 
 Rules follow a numbering scheme by domain. When adding a rule, pick a number in the appropriate range:
 
@@ -34,7 +34,7 @@ Rules follow a numbering scheme by domain. When adding a rule, pick a number in 
 
 **Install vs sync vs build** are separate concerns. `aitk gov install` bootstraps a project with all rules for a given stack (it overwrites). `aitk gov sync` updates rules already present in the target. It never adds new files. `aitk gov build` concatenates installed rules into a single clean file at `.cursor/.tmp/rules.md`, stripping frontmatter. This is useful for pasting rules into any AI chat directly. Use install once to set up, sync to keep up to date, build to generate the rules payload.
 
-Stacks live in `.cursor/stacks/` as toml files. Each stack declares an optional `extends` chain and a flat `rules` list. The extends chain resolves recursively, so `react` → `node` → `base` and the full deduplicated rule set is installed.
+Stacks live in `governance/stacks/` as toml files. Each stack declares an optional `extends` chain and a flat `rules` list. The extends chain resolves recursively, so `react` → `node` → `base` and the full deduplicated rule set is installed.
 
 ## Stacks
 
@@ -86,11 +86,11 @@ aitk gov build
 
 ## Adding a new rule
 
-Create a `.mdc` file anywhere under `.cursor/rules/` using the numbering convention above. It is auto-discovered with no other changes needed. To include it in a stack, add it to the `rules` array in the relevant `.cursor/stacks/*.toml` file.
+Create a `.mdc` file anywhere under `governance/rules/` using the numbering convention above. It is auto-discovered with no other changes needed. To include it in a stack, add it to the `rules` array in the relevant `governance/stacks/*.toml` file.
 
 ## Adding a stack
 
-Create a new `.toml` file in `.cursor/stacks/`. Set `extends` to the parent stack name or leave it empty. List rule names (without `.mdc`) in the `rules` array. No build step needed.
+Create a new `.toml` file in `governance/stacks/`. Set `extends` to the parent stack name or leave it empty. List rule names (without `.mdc`) in the `rules` array. No build step needed.
 
 ```toml
 extends = "node"

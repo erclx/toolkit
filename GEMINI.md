@@ -5,7 +5,7 @@ CLI toolkit for managing AI workflows, developer standards, and project tooling 
 ## Key paths
 
 - `gemini/commands/`: Gemini CLI command definitions
-- `.cursor/rules/`: governance rules
+- `governance/rules/`: governance rules
 - `standards/`: reference docs synced to target projects
 - `tooling/`: golden configs and manifests per stack
 - `snippets/`: reusable prompt snippets

@@ -22,7 +22,7 @@ The toolkit has seven domains. Each maps to a skill. Load the skill before editi
 | Modifying `scripts/`, sandbox scenarios, `manage-*.sh`, `lib/`    | `aitk-scripts`     |
 | Modifying `tooling/`, manifests, golden configs, seeds            | `aitk-tooling`     |
 | Modifying `standards/`, `docs/`                                   | `aitk-standards`   |
-| Modifying `.cursor/rules/`, `.cursor/stacks/`                     | `aitk-governance`  |
+| Modifying `governance/rules/`, `governance/stacks/`               | `aitk-governance`  |
 | Modifying `snippets/`, `snippets.toml`                            | `aitk-snippets`    |
 | Modifying `prompts/`                                              | `aitk-prompts`     |
 | Modifying `gemini/commands/`, `gemini/README.md`                  | `aitk-gemini`      |
@@ -31,7 +31,7 @@ The toolkit has seven domains. Each maps to a skill. Load the skill before editi
 
 ## Key paths
 
-- `.cursor/rules/`: governance rules
+- `governance/rules/`: governance rules
 - `standards/`: reference docs synced to target projects
 - `tooling/`: golden configs and manifests per stack
 - `gemini/commands/`: Gemini CLI command definitions
