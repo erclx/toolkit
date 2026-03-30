@@ -14,7 +14,7 @@ stage_setup() {
   mkdir -p sync/.cursor/rules
   mkdir -p build/.cursor/rules
 
-  local src_rules="$PROJECT_ROOT/.cursor/rules"
+  local src_rules="$PROJECT_ROOT/governance/rules"
 
   while IFS= read -r file; do
     local filename

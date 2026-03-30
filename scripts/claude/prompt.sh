@@ -119,7 +119,7 @@ build_planner() {
     log_warn "standards/prose.md not found, skipping"
   fi
 
-  local planner_stack="$PROJECT_ROOT/.cursor/stacks/planner.toml"
+  local planner_stack="$PROJECT_ROOT/governance/stacks/planner.toml"
   if [ -f "$planner_stack" ] && grep -qF "{{GOV_PLANNER}}" "$output_file" 2>/dev/null; then
     local stack_filter
     stack_filter=$(grep '^rules' "$planner_stack" | sed 's/rules = \[//;s/\]//' | tr -d '"' | tr ',' ' ' | xargs)
