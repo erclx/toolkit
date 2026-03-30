@@ -18,6 +18,8 @@ pycache
 pydantic
 pyproject
 pytest
+labelledby
+tabindex
 tanstack
 tolower
 toupper
