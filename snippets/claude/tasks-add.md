@@ -8,7 +8,7 @@ Add a `###` block using the task description provided in this session:
 - [ ] <outcome>
 - [ ] <outcome if multiple steps>
 
-> Test strategy: <type and brief justification>
+> Test strategy: <unit | component | e2e | visual | manual>: what is being verified
 ```
 
 1. Remove `### Nothing queued` from "Up next" if present.
