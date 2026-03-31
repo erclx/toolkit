@@ -22,8 +22,7 @@ claude/
 │   ├── git-split/           ← split a mixed-commit branch into focused branches
 │   ├── git-stage/           ← batch-commit staged files grouped by concern
 │   ├── release-changelog/   ← generate changelog entry from commits and staged changes since main
-│   ├── session-resume/      ← resume in-progress work from memory at session start
-│   └── toolkit-sync/        ← commit and ship a toolkit sync in a target project
+│   └── session-resume/      ← resume in-progress work from memory at session start
 └── .claude-plugin/
     └── plugin.json      ← plugin manifest
 
@@ -71,7 +70,6 @@ Plugin skills live in `claude/skills/` and are auto-discovered when Claude Code 
 | `git-stage`         | Batch-commit staged files grouped by concern                          |
 | `release-changelog` | Generate a changelog entry from commits and staged changes since main |
 | `git-ship`          | Run the full post-feature workflow in one sequence                    |
-| `toolkit-sync`      | Commit and ship a toolkit sync: stage, commit, branch, and open PR    |
 | `session-resume`    | Resume in-progress work from memory at session start                  |
 
 Invoke with `/skill-name` or let Claude auto-trigger by matching against the skill description. Skills marked with `disable-model-invocation: true` (`ai-sync`, `claude-review`, `create-skill`, `git-ship`, `release-changelog`) require explicit invocation and will not auto-trigger. Git skills (`git-commit`, `git-pr`, `git-branch`, `git-stage`) override built-in commit and PR behavior. See `standards/skill.md` for authoring conventions.
@@ -120,6 +118,6 @@ Prerequisites: run `aitk claude init` first, then `aitk gov install` to install 
 
 ### gov
 
-Reads `.mdc` files from `.cursor/rules/`, strips frontmatter, concatenates them, and writes `.claude/GOV.md`. Claude Code loads this file automatically each session to provide governance context inline.
+Reads `.mdc` files from `.cursor/rules/`, strips frontmatter, concatenates them, and writes `.claude/GOV.md`. Claude Code loads this file automatically each session to provide governance context inline. `aitk sync` regenerates it automatically if `.claude/GOV.md` already exists in the target.
 
 Prerequisites: run `aitk gov install` first to populate `.cursor/rules/`.
