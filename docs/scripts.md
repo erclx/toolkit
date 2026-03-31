@@ -57,6 +57,14 @@ scripts/
 | `clean.sh`    | `clean`    | Wipes `node_modules/`, clears bun cache, reinstalls from lockfile                              |
 | `snapshot.sh` | `snapshot` | Writes project file tree to `.claude/.tmp/project/PROJECT-SNAPSHOT.md` for Claude chat context |
 
+## manage-sync.sh
+
+`aitk sync [target]` runs all installed domain syncs in sequence (standards, snippets, prompts, governance, antigravity), then runs a git workflow step. The git workflow detects which domains changed, shows a preview of the commit and PR body, prompts for confirmation, then stages everything, commits with `chore(sync): update <domains> from toolkit`, creates `chore/toolkit-sync`, pushes, and opens a PR via `gh`. The PR body lists up to three changed filenames per domain, then a count for the rest.
+
+If `.claude/GOV.md` exists in the target after governance sync, it is regenerated automatically by calling `manage-claude.sh gov` with `AITK_NON_INTERACTIVE=1`.
+
+The git workflow step is skipped if the target is not a git root (no `.git/`), `gh` is not installed, or `chore/toolkit-sync` already exists locally or on the remote.
+
 ## lib
 
 **`ui.sh`**: source this in any script that needs terminal output. Provides the color palette, all `log_*` functions, interactive prompts (`select_option`, `ask`), `guard_root` (rejects toolkit root as a target), and `require_project_root`.

@@ -22,9 +22,9 @@ Run `aitk` from the repo root.
 
 ### Sync
 
-| Command            | Description                                    |
-| ------------------ | ---------------------------------------------- |
-| `aitk sync [path]` | Sync all installed domains in a target project |
+| Command            | Description                                                                         |
+| ------------------ | ----------------------------------------------------------------------------------- |
+| `aitk sync [path]` | Sync all installed domains, regenerate GOV.md if present, then commit and open a PR |
 
 ### Governance
 
