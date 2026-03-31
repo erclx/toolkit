@@ -30,7 +30,7 @@ Task block format:
 - [ ] Outcome: what done looks like
 - [ ] Outcome: what done looks like
 
-> Test strategy: <unit | component | e2e | visual | manual>: what is being verified
+> Test strategy: <unit | component | e2e | visual | manual>, what is being verified
 ```
 
 ## Up next
