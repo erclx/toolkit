@@ -118,6 +118,9 @@ cmd_install() {
 
   guard_root "$target"
 
+  local target_abs
+  target_abs=$(cd "$target" && pwd)
+
   local files=()
   if [ "$category" = "all" ]; then
     collect_all_files files
